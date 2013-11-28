@@ -1,0 +1,24 @@
+class Term, fields to hold any thing, or inheritance <- which ever is better
+
+term, int, string, id, look at bison file
+sub class for each type of term
+
+class for every type of term
+subclasses of term and all other tree node things
+
+-class for each basic type
+
+start with int and function, next pointer, next string and sfunction
+
+write test a naught program with only int and function, return 3;
+write test naught porgram int expression, 3*5+4...
+
+do more stuff later
+
+Friday Night - Naught Programs
+  -- Independly create a bunch of test programs in ranging complexity
+Satuday Night - Expressions/Type
+Sunday Night - kinda working, with bison, start up on library, meet up again or on Monday
+Monday Night - Hopefully working with everything, primarily library, debugging
+Tuesday Night - Either winding down or frantically debugging
+Wednesday Night - Done
