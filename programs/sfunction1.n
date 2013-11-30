@@ -1,0 +1,15 @@
+sfunction hello() {
+  return "Hello";
+}
+
+function world() {
+  return "World";
+}
+
+function main() {
+  string hello = hello();
+  string world = world();
+  string result = hello + " " + world;
+  
+  return 0;
+}

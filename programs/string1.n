@@ -1,0 +1,7 @@
+function main() {
+  string s1 = "Hello";
+  String s2 = " World";
+  String sum = s1 + s2;
+
+  return 0;
+}

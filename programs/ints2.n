@@ -1,0 +1,12 @@
+function main() {
+  int x = 1;
+  int y = x + 1;
+  z = 3;
+  zy = z + y;
+  printf("Expecting 1: %d\n", x);
+  printf("Expecting 2: %d\n", y);
+  printf("Expecting 3: %d\n", z);
+  printf("Expecting 5: %d\n", zy);
+
+  return 0;
+}

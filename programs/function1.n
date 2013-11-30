@@ -1,0 +1,15 @@
+function doubleAdd(int n) {
+  return n + n;
+}
+
+function doubleMultiply(int n) {
+  return n * 2;
+}
+
+function main() {
+  int a = 1;
+  int b = doubleAdd(a);
+  int c = doubleMultiply(a);
+
+  return 0;
+}

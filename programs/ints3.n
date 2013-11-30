@@ -1,0 +1,13 @@
+function main() {
+  int x = 1;
+  int y = x * 1;
+  z = 3;
+  zy = z * y;
+  printf("Expecting 1: %d\n", x);
+  printf("Expecting 1: %d\n", y);
+  printf("Expecting 4: %d\n", z + y);
+  printf("Expecting 3: %d\n", zy);
+  printf("Expecting 3: %d\n", z * y);
+
+  return 0;
+}

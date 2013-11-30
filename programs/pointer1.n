@@ -1,0 +1,10 @@
+# x and y should be equal
+function main() {
+  pointer p;
+  int x = 5;
+  p = &x;
+
+  int y = @p;
+
+  return 0;
+}
