@@ -8,7 +8,8 @@
 
 #include "yy.h"
 #include "StrUtil.h"
-#include "Int.j"
+#include "Int.h"
+#include "Id.h"
 
 using namespace std;
 
@@ -318,7 +319,7 @@ term :
           cout << *$$ << " -> term" << endl;
         }
       | ID
-        { $$ = new StrUtil(*$1);
+        { $$ = new Id(*$1);
           cout << *$$ << " -> term" << endl;
         }
       | LPAREN expr RPAREN
