@@ -2,5 +2,6 @@
   Wrote very basic programs for int, string, pointer, function, sfunction (placed in the programs folder - Gene 
 
 2. Int Type
+   Starting now - Clint
 3. Function Type
 4. other expressions...
