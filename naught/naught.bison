@@ -8,6 +8,7 @@
 
 #include "yy.h"
 #include "StrUtil.h"
+#include "Int.j"
 
 using namespace std;
 
@@ -313,7 +314,7 @@ term :
           cout << *$$ << " -> term" << endl;
         }
       | INT_LITERAL
-        { $$ = new StrUtil(*$1);
+        { $$ = new Int(*$1);
           cout << *$$ << " -> term" << endl;
         }
       | ID
