@@ -3,5 +3,8 @@
 
 2. Int Type
    Starting now - Clint
-3. Function Type
-4. other expressions...
+   Preliminary finish (let's see if int needs to do more) - Clint
+3. Id Type
+   Preliminary finish (let's see if id needs to do more) - Clint
+4. Function Type
+5. other expressions...
