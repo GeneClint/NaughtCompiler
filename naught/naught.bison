@@ -8,8 +8,7 @@
 
 #include "yy.h"
 #include "StrUtil.h"
-#include "Int.h"
-#include "Id.h"
+#include "terms.h"
 
 using namespace std;
 
