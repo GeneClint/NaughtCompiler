@@ -19,6 +19,7 @@ public:
     os << t.toString();
     return os;
   }
+
 };
 
 #endif // __TERM_H

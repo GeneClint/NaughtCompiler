@@ -1,0 +1,15 @@
+#include <string>
+#include "Id.h"
+#include "Param.h"
+
+Id Param::getId() const {
+  return id;
+}
+
+std::string Param::getType const {
+  return type;
+}
+
+std::string toString() const {
+  return type + " " + id.toString();
+}

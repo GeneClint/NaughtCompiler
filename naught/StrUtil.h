@@ -1,9 +1,10 @@
-#ifndef _STRUTIL_H
-#define _STRUTIL_H
-
 #include <iostream>
 #include <string>
 #include "Term.h"
+
+#ifndef _STRUTIL_H
+#define _STRUTIL_H
+
 using namespace std;
 
 // A class that simplfies simply printing which
@@ -15,6 +16,11 @@ class StrUtil {
  StrUtil(const string &s) : str(s){};
  StrUtil(Term *t) : str(t->toString()){};
  StrUtil(Term &t) : str(t.toString()){};
+
+  string toString() const {
+    return str;
+  }
+
   StrUtil operator+(const StrUtil &other) {
     return StrUtil(str + " " + other.str);
   }
@@ -24,7 +30,7 @@ class StrUtil {
     return os;
   }
 
-  friend StrUtil operator+(Term &t, const StrUtil &obj) {
+  friend StrUtil operator+(const Term &t, const StrUtil &obj) {
     return StrUtil(t.toString() + " " + obj.str);
   }
 

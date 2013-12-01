@@ -11,6 +11,7 @@
 #include "terms.h"
 #include "Expression.h"
 #include "ExprTerm.h"
+#include "Param.h"
 
 using namespace std;
 
@@ -32,6 +33,7 @@ extern StrUtil *AST;
 %union {
   StrUtil*    string_val;
   Term*	      term_val;
+  Param*      param_val;
 }
 
 /***********************************************************************
@@ -77,7 +79,7 @@ extern StrUtil *AST;
 %type <string_val> stmt_list
 %type <string_val> vardecl_list
 %type <string_val> funcdecl_list
-%type <string_val> param;
+%type <param_val> param;
 %type <string_val> param_list;
 %type <string_val> funcdef_list
 %type <string_val> arglist;
@@ -234,7 +236,7 @@ param_list :
 
 param :
          TYPE ID
-          { $$ = new StrUtil(*$1 + *$2);
+          { $$ = new Param(*$1, *$2);
             cout << *$$ << " -> param " << endl;
           }
         ;
