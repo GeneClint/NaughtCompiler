@@ -1,15 +1,13 @@
 #include <string>
 
 #include "Int.h"
+using namespace std;
 
-Int::Int(string v) {
-  val = std::stoi( v );
-}
 
-Int::Int (int v) {
-  val = v;
-}
-
-Int::int getValue() const {
+int Int::getValue() const {
   return val;
+}
+
+string Int::toString() const {
+  return std::to_string(val);
 }

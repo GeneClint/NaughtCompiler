@@ -1,10 +1,12 @@
 #include <string>
 #include "Id.h"
 
-Id::Id(const string &n) {
-  name = n;
+using namespace std;
+
+string Id::getName() const {
+  return name;
 }
 
-Id::string getName() const {
-  return const_cast<string>(name);
+string Id::toString() const {
+  return getName();
 }

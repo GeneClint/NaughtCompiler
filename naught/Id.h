@@ -7,11 +7,12 @@
 
 class Id : public Term {
 public:
-  Id (const string &) : Term() {};
-  Id (StrUtil * ignore) : Term() {name = "";};
-  string getName() const;
+  Id (const std::string &n) : Term(), name(n) {};
+  Id (StrUtil * ignore) : Term(), name("") {};
+  std::string getName() const;
+  std::string toString() const;
 private:
-  string name;
+  const std::string name;
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "Term.h"
 using namespace std;
 
 // A class that simplfies simply printing which
@@ -11,7 +12,9 @@ using namespace std;
 
 class StrUtil {
  public:
- StrUtil(const string &s) : str(s){}
+ StrUtil(const string &s) : str(s){};
+ StrUtil(Term *t) : str(t->toString()){};
+ StrUtil(Term &t) : str(t.toString()){};
   StrUtil operator+(const StrUtil &other) {
     return StrUtil(str + " " + other.str);
   }
@@ -19,6 +22,10 @@ class StrUtil {
   friend ostream& operator<<(ostream &os, const StrUtil &obj) {
     os << obj.str;
     return os;
+  }
+
+  friend StrUtil operator+(Term &t, const StrUtil &obj) {
+    return StrUtil(t.toString() + " " + obj.str);
   }
 
  private:

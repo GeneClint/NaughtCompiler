@@ -9,6 +9,8 @@
 #include "yy.h"
 #include "StrUtil.h"
 #include "terms.h"
+#include "Expression.h"
+#include "ExprTerm.h"
 
 using namespace std;
 
@@ -29,6 +31,7 @@ extern StrUtil *AST;
  ***************************************/
 %union {
   StrUtil*    string_val;
+  Term*	      term_val;
 }
 
 /***********************************************************************
@@ -68,7 +71,7 @@ extern StrUtil *AST;
 %type <string_val> vardecl
 %type <string_val> funcdecl
 %type <string_val> expr
-%type <string_val> term
+%type <term_val> term
 %type <string_val> stmt
 
 %type <string_val> stmt_list
@@ -310,8 +313,8 @@ expr :
 
 term :
         STRING_LITERAL
-        { $$ = new StrUtil(*$1);
-          cout << *$$ << " -> term" << endl;
+        { /* GULP $$ = new Term();
+          cout << *$$ << " -> term" << endl; */
         }
       | INT_LITERAL
         { $$ = new Int($1);
@@ -322,20 +325,20 @@ term :
           cout << *$$ << " -> term" << endl;
         }
       | LPAREN expr RPAREN
-       { $$ = new StrUtil( *$1 + *$2 + *$3 );
-         cout << *$$ << " -> term" << endl;
+       { /* GULP $$ = new Term();
+         cout << *$$ << " -> term" << endl; */
         }
       | UNARY_OP term
-        { $$ = new StrUtil( *$1 + *$2);
-          cout << *$$ << " -> term" << endl;
+        { /* GULP $$ = new Term();
+          cout << *$$ << " -> term" << endl; */
         }
       | ID LPAREN arglist RPAREN  /* function call */
-       { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
-         cout << *$$ << " -> term" << endl;
+       { /* GULP $$ = new Term();
+         cout << *$$ << " -> term" << endl; */
        }
       | ID LPAREN RPAREN  /* function call */
-       { $$ = new StrUtil(*$1 + *$2 + *$3);
-         cout << *$$ << " -> term" << endl;
+       { /* GULP $$ = new Term();
+         cout << *$$ << " -> term" << endl; */
        }
       ;
 

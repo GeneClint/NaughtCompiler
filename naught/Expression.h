@@ -7,6 +7,6 @@ class Expression {
  public:
   virtual ~Expression() {}
   
-  Term* evaluate() {return NULL;}
+  //virtual Term* evaluate() =0;
 };
 #endif
