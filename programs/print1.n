@@ -1,0 +1,8 @@
+function main() {
+  int x = 1;
+  string s = "hello";
+  print x;
+  print s;
+
+  return 0;
+}

@@ -1,0 +1,9 @@
+function main() {
+  int x = 1;
+  int y = 2;
+  int z = 3;
+  int a = print y + print x;
+  int b = print y * print x;
+
+  return 0;
+}

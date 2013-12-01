@@ -1,5 +1,6 @@
 1. Naught Programs
-  Wrote very basic programs for int, string, pointer, function, sfunction (placed in the programs folder - Gene 
+  Wrote very basic programs for int, string, pointer, function, sfunction (placed in the programs folder) - Gene 
+  Wrote basic tests for print also - Gene
 
 2. Int Type
    Starting now - Clint
