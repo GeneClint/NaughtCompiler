@@ -9,8 +9,6 @@
 #include "yy.h"
 #include "StrUtil.h"
 #include "terms.h"
-#include "Expression.h"
-#include "ExprTerm.h"
 
 using namespace std;
 
@@ -32,6 +30,7 @@ extern StrUtil *AST;
 %union {
   StrUtil*    string_val;
   Term*	      term_val;
+  Expression* expr_val;
 }
 
 /***********************************************************************
@@ -70,7 +69,7 @@ extern StrUtil *AST;
 %type <string_val> block
 %type <string_val> vardecl
 %type <string_val> funcdecl
-%type <string_val> expr
+%type <expr_val> expr
 %type <term_val> term
 %type <string_val> stmt
 
@@ -187,7 +186,7 @@ vardecl :
             cout << *$$ << " -> vardecl " << endl;
           }
        | TYPE ID ASSIGN expr
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
+          { $$ = new StrUtil(*$1 + *$2 + *$3 /*+ *$4*/);
             cout << *$$ << " -> vardecl " << endl;
           }
        | EXTERN TYPE ID  /* extern variable */
@@ -271,42 +270,50 @@ stmt_list :
 
 stmt : 
          expr SEMI
-          { $$ = new StrUtil(*$1 + *$2);
+          { $$ = new StrUtil(/*$1 + */ *$2);
             cout << *$$ << " -> stmt " << endl;
           }
        | RETURN expr SEMI
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
+          { $$ = new StrUtil(*$1 /*+ *$2 */+ *$3);
             cout << *$$ << " -> stmt " << endl;
           }
      ;
 
 expr : 
         expr ADD expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
+        { $$ = new AddExpression(*$1, *$3);
           cout << *$$ << " -> expr" << endl;
         }
       | expr SUB expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
+        { $$ = new SubExpression(*$1, *$3);
           cout << *$$ << " -> expr" << endl;
         }
       | expr STAR expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
+        { $$ = new StarExpression(*$1, *$3);
           cout << *$$ << " -> expr" << endl;
         }
       | expr DIV expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
+        { $$ = new DivExpression(*$1, *$3);
           cout << *$$ << " -> expr" << endl;
         }
       | term  ASSIGN expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
+        { if(dynamic_cast<Int *>($1)) {
+            $$ = new AssignExpression(*dynamic_cast<Int *>($1), *$3);
+          } else {
+            $$ = new AssignExpression(*dynamic_cast<Id *>($1), *$3);
+          }
           cout << *$$ << " -> expr" << endl;
         }
       | expr QUESTION expr COLON expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+        { $$ = new CondExpression(*$1, *$3, *$5);
           cout << *$$ << " -> expr" << endl;
         }
       | term
-        { $$ = new StrUtil(*$1);
+        { if(dynamic_cast<Int *>($1)) {
+            $$ = new TermExpression(*dynamic_cast<Int *>($1));
+          } else {
+            $$ = new TermExpression(*dynamic_cast<Id *>($1));
+          }
           cout << *$$ << " -> expr" << endl;
         }
       ;
@@ -344,11 +351,11 @@ term :
 
 arglist :
         expr
-        { $$ = new StrUtil(*$1);
-          cout << *$$ << " -> arglist" << endl;
+        { /*$$ = new StrUtil(*$1);
+          cout << *$$ << " -> arglist" << endl;*/
         }
       | arglist COMMA expr
-        { $$ = new StrUtil( *$1 + *$2 + *$3 );
+        { $$ = new StrUtil( *$1 + *$2 /*+ *$3*/ );
         cout << *$$ << " -> arglist" << endl;
         }
       ;

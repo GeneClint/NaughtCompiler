@@ -1,5 +1,6 @@
 #ifndef __EXPR_H
 #define __EXPR_H
+#include <string>
 
 class Term;
 
@@ -7,6 +8,13 @@ class Expression {
  public:
   virtual ~Expression() {}
   
-  virtual Term* evaluate() =0;
+  Expression* evaluate() {return this;}
+
+  virtual std::string toString() const {return "";}
+
+  friend std::ostream& operator<<(std::ostream &os, const Expression &e) {
+    os << e.toString();
+    return os;
+  }
 };
 #endif
