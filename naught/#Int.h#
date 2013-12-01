@@ -1,5 +1,4 @@
-#include <string>
-#include "StrUtil.h"
+x#include <string>
 #include "Term.h"
 
 #ifndef __INT_H
@@ -7,8 +6,8 @@
 
 class Int: public Term {
  public:
-  Int (int v) : Term () {};
-  Int (const string &v) : Term () {};
+  Int (int v) : Term ();
+  Int (string v) : Term ();
   int getValue() const;
  private:
   int val;

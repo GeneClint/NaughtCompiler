@@ -314,11 +314,11 @@ term :
           cout << *$$ << " -> term" << endl;
         }
       | INT_LITERAL
-        { $$ = new Int(*$1);
+        { $$ = new Int($1);
           cout << *$$ << " -> term" << endl;
         }
       | ID
-        { $$ = new Id(*$1);
+        { $$ = new Id($1);
           cout << *$$ << " -> term" << endl;
         }
       | LPAREN expr RPAREN

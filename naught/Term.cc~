@@ -1,0 +1,12 @@
+class Term {
+public:
+  // may be usefull for figuring out what type of term we have
+  enum type {INT, ID};
+  Term (type);
+private:
+  type exptype;
+}
+
+  Term::Term (type t) {
+    exptype = t;
+  }

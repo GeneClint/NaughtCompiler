@@ -3,12 +3,15 @@
 // a class that basically does nothing and then asking typeof seems to
 // be the best solution
 // reference: http://astitcher.github.io/ACCU2012/slides/algebraic.html
+#include "Expression.h"
+
 #ifndef __TERM_H
 #define __TERM_H
 
-class Term {
+class Term : Expression {
 public:
   virtual ~Term() {}
+  Term* evaluate() {return this;}
 };
 
 #endif // __TERM_H
