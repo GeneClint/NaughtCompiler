@@ -6,5 +6,7 @@
    Preliminary finish (let's see if int needs to do more) - Clint
 3. Id Type
    Preliminary finish (let's see if id needs to do more) - Clint
-4. Function Type
-5. other expressions...
+4. Expressions
+   Beginning work on Int Expressions - Clint
+5. Function Type
+6. other expressions...
