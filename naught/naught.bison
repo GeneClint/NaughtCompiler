@@ -320,12 +320,8 @@ expr :
           cout << *$$ << " -> expr" << endl;
         }
       | term  ASSIGN expr
-        { if(dynamic_cast<Int *>($1)) {
-            $$ = new AssignExpression(*dynamic_cast<Int *>($1), *$3);
-          } else {
-            $$ = new AssignExpression(*dynamic_cast<Id *>($1), *$3);
-          }
-          cout << *$$ << " -> expr" << endl;
+        { $$ = new AssignExpression(*$1, *$3);
+      	  cout << *$$ << " -> expr" << endl;
         }
       | expr QUESTION expr COLON expr
         { $$ = new CondExpression(*$1, *$3, *$5);
