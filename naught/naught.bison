@@ -52,6 +52,8 @@ extern StrUtil *AST;
   ArgList*    arglist_val;
   Block*      block_val;
   FunctionCall* func_call_val;
+  FuncDecl*   funcdecl_val;
+  FuncDeclList* funcdecl_list_val;
 }
 
 /***********************************************************************
@@ -89,14 +91,14 @@ extern StrUtil *AST;
 %type <string_val> funcdef
 %type <block_val> block
 %type <vardecl_val> vardecl
-%type <string_val> funcdecl
+%type <funcdecl_val> funcdecl
 %type <expr_val> expr
 %type <term_val> term
 %type <stmnt_val> stmt
 
 %type <stmnt_list_val> stmt_list
 %type <vardecl_list_val> vardecl_list
-%type <string_val> funcdecl_list
+%type <funcdecl_list_val> funcdecl_list
 %type <param_val> param;
 %type <param_list_val> param_list;
 %type <string_val> funcdef_list
@@ -118,40 +120,40 @@ extern StrUtil *AST;
 
 module :
          funcdecl_list vardecl_list funcdef_list
-          { AST = new StrUtil(*$1 + *$2 + *$3);
+          { /*AST = new StrUtil(*$1 + *$2 + *$3);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-          }
+          */}
         |              vardecl_list funcdef_list
           { AST = new StrUtil(*$1 + *$2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list             funcdef_list
-          { AST = new StrUtil(*$1 + *$2);
+          { /*AST = new StrUtil(*$1 + *$2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-          }
+         */ }
         |                            funcdef_list
           { AST = new StrUtil(*$1);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list vardecl_list
-          { AST = new StrUtil(*$1 + *$2);
+          { /*AST = new StrUtil(*$1 + *$2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-          }
+         */ }
         |              vardecl_list
           { AST = new StrUtil((string)*$1);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list             
-          { AST = new StrUtil(*$1);
+          { /*AST = new StrUtil(*$1);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-          }
+          */}
         |
           { AST = new StrUtil(string());
             $$ = AST;
@@ -161,32 +163,35 @@ module :
 
 funcdecl_list :
           funcdecl_list funcdecl SEMI
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
+          { auto add = *$1 + *$2;
+            $$ = &add;
             cout << *$$ << " -> funcdecl_list " << endl;
           }
         | funcdecl SEMI
-          { $$ = new StrUtil(*$1 + *$2);
+          { $$ = new FuncDeclList(*$1);
             cout << *$$ << " -> funcdecl_list " << endl;
           }
        ;
  
 funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 + (string)*$4 +*$5);
+          { Id *id = new Id($2);
+            $$ = new FuncDecl(*id, *$4);
             cout << *$$ << " -> funcdecl " << endl;
           }
         | FUNCTION ID LPAREN  RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
+          { Id *id = new Id($2);
+            $$ = new FuncDecl(*id);
             cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +(string)*$4 +*$5);
+          { /*$$ = new StrUtil(*$1 + *$2 +*$3 +(string)*$4 +*$5);
             cout << *$$ << " -> funcdecl " << endl;
-          }
+          */}
         | SFUNCTION ID LPAREN  RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
+          { /*$$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
             cout << *$$ << " -> funcdecl " << endl;
-          }
+          */}
 	;
 
 

@@ -13,6 +13,8 @@ class FuncDecl {
     FuncDecl(const Id &i) : id(i) {};
     FuncDecl(const Id &i, const ParamList &pl) : id(i), params(pl) {};
     virtual ~FuncDecl() {};
+    
+    const Id getId() const;
     vector<Param> getParams() const;
 
     std::string toString() const;

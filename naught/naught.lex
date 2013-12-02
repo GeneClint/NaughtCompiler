@@ -23,6 +23,7 @@
  #include "Block.h"
  #include "FunctionCall.h"
  #include "FuncDecl.h"
+ #include "FuncDeclList.h"
 
  #include "parser.hh"
 %}
