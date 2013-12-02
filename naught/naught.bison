@@ -20,6 +20,7 @@
 #include "VarDeclList.h"
 #include "ArgList.h"
 #include "UnaryTerm.h"
+#include "FunctionCall.h"
 
 using namespace std;
 
@@ -49,6 +50,7 @@ extern StrUtil *AST;
   VarDecl*    vardecl_val;
   VarDeclList* vardecl_list_val;
   ArgList*    arglist_val;
+  FunctionCall* func_call_val;
 }
 
 /***********************************************************************
@@ -362,12 +364,12 @@ term :
           cout << *$$ << " -> term" << endl;
         }
       | ID LPAREN arglist RPAREN  /* function call */
-       { /* GULP $$ = new Term();
-         cout << *$$ << " -> term" << endl; */
+       { $$ = new FunctionCall(*$1, $3);
+         cout << *$$ << " -> term" << endl;
        }
       | ID LPAREN RPAREN  /* function call */
-       { /* GULP $$ = new Term();
-         cout << *$$ << " -> term" << endl; */
+       { $$ = new FunctionCall(*$1);
+         cout << *$$ << " -> term" << endl;
        }
       ;
 

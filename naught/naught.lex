@@ -20,6 +20,7 @@
  #include "ArgList.h"
  #include "UnaryTerm.h"
  #include "ExprTerm.h"
+ #include "FunctionCall.h"
  
  #include "parser.hh"
 %}
