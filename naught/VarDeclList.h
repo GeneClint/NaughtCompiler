@@ -9,8 +9,14 @@
 
 class VarDeclList {
  public:
-  VarDeclList () {};
+  VarDeclList ();
   VarDeclList (const VarDecl &v);
+
+  VarDeclList(const VarDeclList &other);
+  VarDeclList& operator=(const VarDeclList &other);
+  VarDeclList (VarDeclList &&other) noexcept;
+  VarDeclList& operator=(VarDeclList &&other) noexcept;
+
   VarDeclList operator+ (const VarDecl &v);
   virtual ~VarDeclList () {};
   vector<VarDecl> getVarDecls() const; 
@@ -32,7 +38,7 @@ class VarDeclList {
   }
 
  private:
-  vector<VarDecl> varDecls; 
+  vector<VarDecl> *varDecls; 
 };
 
 #endif

@@ -9,8 +9,14 @@
 
 class StatementList {
  public:
-  StatementList () {};
+  StatementList ();
   StatementList (const Statement &s);
+
+  StatementList(const StatementList &other);
+  StatementList& operator=(const StatementList &other);
+  StatementList (StatementList &&other) noexcept;
+  StatementList& operator=(StatementList &&other) noexcept;
+
   StatementList operator+ (const Statement &s);
   virtual ~StatementList () {};
   vector<Statement> getStatements() const; 
@@ -32,7 +38,7 @@ class StatementList {
   }
 
  private:
-  vector<Statement> statements; 
+  vector<Statement> *statements; 
 };
 
 #endif

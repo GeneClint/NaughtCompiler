@@ -7,17 +7,46 @@
 
 using namespace std;
 
+StatementList::StatementList() {
+  statements = new vector<Statement>;
+}
+
+StatementList::StatementList(StatementList &&other) noexcept {
+  statements = other.statements;
+  other.statements = NULL;
+}
+
+StatementList::StatementList(const StatementList &other) {
+  statements = new vector<Statement>(*other.statements);
+}
+
+StatementList& StatementList::operator=(const StatementList &other) {
+  if (&other == this) return *this;
+  if (statements != NULL) delete statements;
+  statements = new vector<Statement>(*other.statements);
+  return *this;
+}
+
 StatementList::StatementList(const Statement &s) {
-  statements.push_back(s);
+  statements = new vector<Statement>;
+  statements->push_back(s);
+}
+
+StatementList& StatementList::operator=(StatementList &&other) noexcept {
+  if (&other == this) return *this;
+  if (statements != NULL) delete statements;
+  statements = other.statements;
+  other.statements = NULL;
+  return *this;
 }
 
 StatementList StatementList::operator+(const Statement &s) {
-  statements.push_back(s);
+  statements->push_back(s);
   return *this;
 }
 
 vector<Statement> StatementList::getStatements() const {
-  return statements;
+  return *statements;
 }
 
 string StatementList::toString() const {
@@ -25,13 +54,13 @@ string StatementList::toString() const {
   std::cout << "starting statment list toString" << std::endl;
 
   stringstream ss;
-  for(size_t i = 0; i < statements.size(); ++i) {
+  for(size_t i = 0; i < statements->size(); ++i) {
     
-    std::cout << "total size: " << statements.size() <<  " index " << i << " toString" << std::endl;
+    std::cout << "total size: " << statements->size() <<  " index " << i << " toString" << std::endl;
     
     if(i != 0)
       ss << ",";
-    ss << statements[i].toString();
+    ss << ((*statements)[i]).toString();
   }
   return ss.str();
 }
