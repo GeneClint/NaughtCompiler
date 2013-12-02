@@ -1,16 +1,21 @@
 #include <string>
 #include <vector>
+#include <iostream>
 
+#include "Statement.h"
+#include "VarDecl.h"
 #include "VarDeclList.h"
 #include "StatementList.h"
 
-#ifndef __BLOCK_H
-#define __BLOCK_H
+#ifndef __BLOCK_VAL_H
+#define __BLOCK_VAL_H
 
 class Block {
  public:
-  Block(const VarDeclList &vl = NULL, 
-        const StatementList &sl = NULL) :
+  Block() {};
+  Block(const VarDeclList &vl) : vlist(vl) {};
+  Block(const StatementList &sl) : slist(sl) {};
+  Block(const VarDeclList &vl, const StatementList &sl) :
           vlist(vl), slist(sl) {};
   virtual ~Block() {};
 

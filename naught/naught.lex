@@ -20,7 +20,8 @@
  #include "ArgList.h"
  #include "UnaryTerm.h"
  #include "ExprTerm.h"
- 
+ #include "Block.h"
+
  #include "parser.hh"
 %}
 

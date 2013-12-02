@@ -20,6 +20,7 @@
 #include "VarDeclList.h"
 #include "ArgList.h"
 #include "UnaryTerm.h"
+#include "Block.h"
 
 using namespace std;
 
@@ -48,8 +49,8 @@ extern StrUtil *AST;
   StatementList* stmnt_list_val;
   VarDecl*    vardecl_val;
   VarDeclList* vardecl_list_val;
-  Block*      block_val;
   ArgList*    arglist_val;
+  Block*      block_val;
 }
 
 /***********************************************************************
@@ -264,7 +265,7 @@ block :
             cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE              stmt_list RCBRACE
-          { $$ = new Block(NULL, *$2);
+          { $$ = new Block(*(new VarDeclList()), *$2);
             cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE vardecl_list           RCBRACE
