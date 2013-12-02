@@ -11,6 +11,7 @@
 
  #include "StrUtil.h"
  #include "Param.h"
+ #include "ParamList.h"
  #include "parser.hh"
 %}
 

@@ -13,6 +13,7 @@
 #include "Expression.h"
 #include "ExprTerm.h"
 #include "Param.h"
+#include "ParamList.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ extern StrUtil *AST;
   Term*	      term_val;
   Param*      param_val;
   Expression* expr_val;
+  ParamList*  param_list_val;
 }
 
 /***********************************************************************
@@ -82,7 +84,7 @@ extern StrUtil *AST;
 %type <string_val> vardecl_list
 %type <string_val> funcdecl_list
 %type <param_val> param;
-%type <string_val> param_list;
+%type <param_list_val> param_list;
 %type <string_val> funcdef_list
 %type <string_val> arglist;
 
@@ -156,7 +158,7 @@ funcdecl_list :
  
 funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4 +*$5);
+          { $$ = new StrUtil(*$1 + *$2 +*$3 + (string)*$4 +*$5);
             cout << *$$ << " -> funcdecl " << endl;
           }
         | FUNCTION ID LPAREN  RPAREN
@@ -164,7 +166,7 @@ funcdecl :
             cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4 +*$5);
+          { $$ = new StrUtil(*$1 + *$2 +*$3 +(string)*$4 +*$5);
             cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN  RPAREN
@@ -208,7 +210,7 @@ funcdef_list :
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
+          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
             cout << *$$ << " -> funcdef " << endl;
           }
         | FUNCTION ID LPAREN RPAREN block
@@ -216,7 +218,7 @@ funcdef :
             cout << *$$ << " -> funcdef " << endl;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
+          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
             cout << *$$ << " -> funcdef " << endl;
           }
         | SFUNCTION ID LPAREN RPAREN block
@@ -227,11 +229,12 @@ funcdef :
 
 param_list : 
           param_list COMMA param
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
+          { auto add = *$1 + *$3;
+	    $$ = &add;
             cout << *$$ << " -> param_list " << endl;
           }
         | param
-          { $$ = new StrUtil((string)*$1);
+          { $$ = new ParamList(*$1);
             cout << *$$ << " -> param_list " << endl;
           }
         ;
