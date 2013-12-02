@@ -9,6 +9,7 @@
 
 class ParamList {
  public:
+  ParamList () {};
   ParamList (const Param &p);
   ParamList operator+ (const Param &p);
   virtual ~ParamList () {};

@@ -22,7 +22,8 @@
  #include "ExprTerm.h"
  #include "Block.h"
  #include "FunctionCall.h"
- 
+ #include "FuncDecl.h"
+
  #include "parser.hh"
 %}
 

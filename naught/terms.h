@@ -9,3 +9,4 @@
 #include "CondExpression.h"
 #include "AssignExpression.h"
 #include "Block.h"
+#include "FuncDecl.h"
