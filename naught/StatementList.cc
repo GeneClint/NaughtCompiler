@@ -50,14 +50,8 @@ vector<Statement> StatementList::getStatements() const {
 }
 
 string StatementList::toString() const {
-
-  std::cout << "starting statment list toString" << std::endl;
-
   stringstream ss;
   for(size_t i = 0; i < statements->size(); ++i) {
-    
-    std::cout << "total size: " << statements->size() <<  " index " << i << " toString" << std::endl;
-    
     if(i != 0)
       ss << ",";
     ss << ((*statements)[i]).toString();

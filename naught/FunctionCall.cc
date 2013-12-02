@@ -1,5 +1,4 @@
 #include <string>
-#include <iostream>
 #include "FunctionCall.h"
 
 using namespace std;
@@ -17,6 +16,5 @@ Id FunctionCall::getId() const {
 }
 
 string FunctionCall::toString() const {
-  std::cout << "in function call tostring" << std::endl;
   return id.toString() + " " + (hasArgs() ? args->toString() : "");
 }

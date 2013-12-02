@@ -20,7 +20,7 @@ Expression* VarDecl::getExpression() const {
 
 std::string VarDecl::toString() const {
   string external = ext ? "extern " : "";
-  string expression = (exp != NULL) ? exp->toString() : "";
+  string expression = (exp != NULL) ? " = " + exp->toString() : "";
 
   return external + type + " " + id.toString() + expression;
 }

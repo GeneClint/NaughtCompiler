@@ -127,50 +127,42 @@ extern Module *AST;
 
 module :
          funcdecl_list vardecl_list funcdef_list
-          { //cout << "About to make a module" << endl;
-            AST = new Module($1, $2, $3);
+          { AST = new Module($1, $2, $3);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
         |              vardecl_list funcdef_list
-          { //cout << "About to make a module" << endl;
-            AST = new Module(NULL, $1, $2);
+          { AST = new Module(NULL, $1, $2);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
         | funcdecl_list             funcdef_list
-          { //cout << "About to make a module" << endl;
-            AST = new Module($1, NULL, $2);
+          { AST = new Module($1, NULL, $2);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
         |                            funcdef_list
-          { //cout << "About to make a module" << endl;
-            AST = new Module(NULL, NULL, $1);
+          { AST = new Module(NULL, NULL, $1);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
         | funcdecl_list vardecl_list
-          { //cout << "About to make a module" << endl;
-            AST = new Module($1, $2, NULL);
+          {             AST = new Module($1, $2, NULL);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
         |              vardecl_list
-          { //cout << "About to make a module" << endl;
-            AST = new Module(NULL, $1, NULL);
+          { AST = new Module(NULL, $1, NULL);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
         | funcdecl_list             
-          { //cout << "About to make a module" << endl;
-            AST = new Module($1, NULL, NULL);
+          { AST = new Module($1, NULL, NULL);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
         |
-          { //cout << "About to make a module" << endl;
-            AST = new Module(NULL, NULL, NULL);
+          { AST = new Module(NULL, NULL, NULL);
             $$ = AST;
             cout << (*$$).toString() << " -> module " << endl;
           }
@@ -178,39 +170,33 @@ module :
 
 funcdecl_list :
           funcdecl_list funcdecl SEMI
-          { //cout << "About to make a funclist" << endl;
-            auto add = *$1 + *$2;
+          { auto add = *$1 + *$2;
             $$ = &add;
             cout << (*$$).toString() << " -> funcdecl_list " << endl;
           }
         | funcdecl SEMI
-          { //cout << "About to make a funclist" << endl;
-            $$ = new FuncDeclList(*$1);
+          { $$ = new FuncDeclList(*$1);
             cout << (*$$).toString() << " -> funcdecl_list " << endl;
           }
        ;
  
 funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
-          { //cout << "About to make a funcdecl" << endl;
-            Id *id = new Id(*$2);
+          { Id *id = new Id(*$2);
             $$ = new FuncDecl(*id, *$4);
             cout << (*$$).toString() << " -> funcdecl " << endl;
           }
         | FUNCTION ID LPAREN  RPAREN
-          { //cout << "About to make a funcdecl" << endl;
-            Id *id = new Id(*$2);
+          { Id *id = new Id(*$2);
             $$ = new FuncDecl(*id);
             cout << (*$$).toString() << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
-          { //cout << "About to make a funcdecl" << endl;
-            /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +(string)*$4 +*$5);
+          {             /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +(string)*$4 +*$5);
             cout << (*$$).toString() << " -> funcdecl " << endl;
           */}
         | SFUNCTION ID LPAREN  RPAREN
-          { //cout << "About to make a funcdecl" << endl;
-            /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +*$4);
+          {             /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +*$4);
             cout << (*$$).toString() << " -> funcdecl " << endl;
           */}
 	;
@@ -218,237 +204,195 @@ funcdecl :
 
 vardecl_list : 
           vardecl_list vardecl SEMI
-          { //cout << "About to make a vardecl_list" << endl;
-            auto add = *$1 + *$2;
-	    $$ = &add;
+          { auto add = *$1 + *$2;
+	          $$ = &add;
             cout << (*$$).toString() << " -> vardecl_list " << endl;
           }
         | vardecl SEMI
-          { //cout << "About to make a vardecl_list" << endl;
-            $$ = new VarDeclList(*$1);
+          {    $$ = new VarDeclList(*$1);
             cout << (*$$).toString() << " -> vardecl_list " << endl;
           }
         ;
 
 vardecl : 
          TYPE ID
-          { //cout << "about to make a vardecl id" << endl;
-            Id *id = new Id(*$2);
+          { Id *id = new Id(*$2);
             $$ = new VarDecl(*$1, *id);
-            //cout << "made vardecl id" <<endl;
             cout << (*$$).toString() << " -> vardecl " << endl;
           }
        | TYPE ID ASSIGN expr
-          { //cout << "about to make a vardecl assign" << endl;
-            $$ = new VarDecl(*$1, *$2, false, $4);
+          { $$ = new VarDecl(*$1, *$2, false, $4);
             cout << (*$$).toString() << " -> vardecl " << endl;
           }
        | EXTERN TYPE ID  /* extern variable */
-          { //cout << "about to make a vardecl extern type" << endl;
-            $$ = new VarDecl(*$2, *$3, true);
+          {    $$ = new VarDecl(*$2, *$3, true);
             cout << (*$$).toString() << " -> vardecl " << endl;
           }
        ;
 
 funcdef_list :
          funcdef
-	 { //cout << "about to make a funcdef_list" << endl;
-            $$ = new FuncDefList($1);
-	   cout << (*$$).toString() << " -> funcdef_list " << endl;
-	 }	 
+	        { $$ = new FuncDefList($1);
+	          cout << (*$$).toString() << " -> funcdef_list " << endl;
+	        }	 
        | funcdef_list funcdef
          { auto add = *$1 + $2;
-	   //cout << "about to make a funcdef_list" << endl;
-      $$ = &add;
+	         $$ = &add;
 	   cout << (*$$).toString() << " -> funcdef_list " << endl;
 	 }	
 	;
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
-          { //cout << "about to make a funcdef" << endl;
-      $$ = new FuncDef(*$2, $6, $4);
+          {       $$ = new FuncDef(*$2, $6, $4);
             cout << (*$$).toString() << " -> funcdef " << endl;
           }
         | FUNCTION ID LPAREN RPAREN block
-          { //cout << "about to make a funcdef" << endl;
-      $$ = new FuncDef(*$2, $5);
+          { $$ = new FuncDef(*$2, $5);
             cout << (*$$).toString() << " -> funcdef " << endl;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
-          { //cout << "about to make a funcdef" << endl;
-      /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
+          { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
             cout << (*$$).toString() << " -> funcdef " << endl; */
           }
         | SFUNCTION ID LPAREN RPAREN block
-          { //cout << "about to make a funcdef" << endl;
-      /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+          { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
             cout << (*$$).toString() << " -> funcdef " << endl; */
           }
         ;
 
 param_list : 
           param_list COMMA param
-          { //cout << "about to make a param_list" << endl;
-      auto add = *$1 + *$3;
-	    $$ = &add;
+          { auto add = *$1 + *$3;
+	          $$ = $1;
             cout << (*$$).toString() << " -> param_list " << endl;
           }
         | param
-          {  //cout << "about to make a param_list" << endl;
-      $$ = new ParamList(*$1);
+          { $$ = new ParamList(*$1);
             cout << (*$$).toString() << " -> param_list " << endl;
           }
         ;
 
 param :
          TYPE ID
-          {  //cout << "about to make a param" << endl;
-      $$ = new Param(*$1, *$2);
+          { $$ = new Param(*$1, *$2);
             cout << (*$$).toString() << " -> param " << endl;
           }
         ;
 
 block : 
 	  LCBRACE vardecl_list stmt_list RCBRACE
-          { //cout << "about to make an  complete block" << endl;
-        $$ = new Block(*$2, *$3);
-          
-          //cout << "completed block creation" << endl;
-          cout << (*$$).toString() << " -> block " << endl;
+          { $$ = new Block(*$2, *$3);
+            cout << (*$$).toString() << " -> block " << endl;
           }
 	| LCBRACE              stmt_list RCBRACE
-          { //cout << "about to make an onyl statement block" << endl;
-        $$ = new Block(*(new VarDeclList()), *$2);
+          { $$ = new Block(*(new VarDeclList()), *$2);
             cout << (*$$).toString() << " -> block " << endl;
           }
 	| LCBRACE vardecl_list           RCBRACE
-          { //cout << "about to make an only variable  block" << endl;
-        $$ = new Block(*$2);
+          { $$ = new Block(*$2);
             cout << (*$$).toString() << " -> block " << endl;
           }
         | LCBRACE RCBRACE
-          { //cout << "about to make an empty block" << endl;
-        $$ = new Block();
+          { $$ = new Block();
             cout << (*$$).toString() << " -> block " << endl;
           }
         ;
 
 stmt_list :
           stmt_list stmt
-          { //cout << "about to make an stmtlst" << endl;
-            auto add = *$1 + *$2;
-	    $$ = &add;
+          { auto add = *$1 + *$2;
+	          $$ = &add;
             cout << (*$$).toString() << " -> stmt_list " << endl;
           }
         | stmt
-          { //cout << "about to make an stmtlst" << endl;
-            $$ = new StatementList(*$1);
+          { $$ = new StatementList(*$1);
             cout << (*$$).toString() << " -> stmt_list " << endl;
           }
        ;
 
 stmt : 
          expr SEMI
-          { //cout << "about to make an stmt" << endl;
-         $$ = new Statement($1);
+          { $$ = new Statement($1);
             cout << (*$$).toString() << " -> stmt " << endl;
           }
        | RETURN expr SEMI
-          { //cout << "about to make an stmt" << endl;
-            $$ = new Statement($2, true);
+          { $$ = new Statement($2, true);
             cout << (*$$).toString() << " -> stmt " << endl;
           }
      ;
 
 expr : 
         expr ADD expr
-        { //cout << "about to make an expr" << endl;
-         $$ = new AddExpression(*$1, *$3);
+        { $$ = new AddExpression(*$1, *$3);
           cout << (*$$).toString() << " -> expr" << endl;
         }
       | expr SUB expr
-        { //cout << "about to make an expr" << endl;
-         $$ = new SubExpression(*$1, *$3);
+        { $$ = new SubExpression(*$1, *$3);
           cout << (*$$).toString() << " -> expr" << endl;
         }
       | expr STAR expr
-        { //cout << "about to make an expr" << endl;
-         $$ = new StarExpression(*$1, *$3);
+        { $$ = new StarExpression(*$1, *$3);
           cout << (*$$).toString() << " -> expr" << endl;
         }
       | expr DIV expr
-        { //cout << "about to make an expr" << endl;
-         $$ = new DivExpression(*$1, *$3);
+        { $$ = new DivExpression(*$1, *$3);
           cout << (*$$).toString() << " -> expr" << endl;
         }
       | term  ASSIGN expr
-        { //cout << "about to make an expr" << endl;
-         $$ = new AssignExpression(*$1, *$3);
+        { $$ = new AssignExpression(*$1, *$3);
       	  cout << (*$$).toString() << " -> expr" << endl;
         }
       | expr QUESTION expr COLON expr
-        { //cout << "about to make an expr" << endl;
-         $$ = new CondExpression(*$1, *$3, *$5);
+        { $$ = new CondExpression(*$1, *$3, *$5);
           cout << (*$$).toString() << " -> expr" << endl;
         }
       | term
-        { //cout << "about to make an expr" << endl;
-         $$ = $1;
+        { $$ = $1;
           cout << (*$$).toString() << " -> expr" << endl;
         }
       ;
 
 term :
         STRING_LITERAL
-        { //cout << "about to make an int" << endl;
-          /* GULP $$ = new Term();
+        { /* GULP $$ = new Term();
           cout << (*$$).toString() << " -> term" << endl; */
         }
       | INT_LITERAL
-        { 
-          //cout << "about to make an int" << endl;
-          $$ = new Int(*$1);
+        { $$ = new Int(*$1);
           cout << (*$$).toString() << " -> term" << endl;
         }
       | ID
-        { //cout << "about to make an id" << endl;
-          $$ = new Id(*$1);
+        { $$ = new Id(*$1);
           cout << (*$$).toString() << " -> term" << endl;
         }
       | LPAREN expr RPAREN
-       { //cout << "about to make an exprterm" << endl;
-          $$ = new ExprTerm($2);
+       {  $$ = new ExprTerm($2);
          cout << (*$$).toString() << " -> term" << endl;
         }
       | UNARY_OP term
-        { //cout << "about to make a unary operator" << endl;
-          $$ = new UnaryTerm(*$1, $2);
+        {  $$ = new UnaryTerm(*$1, $2);
           cout << (*$$).toString() << " -> term" << endl;
         }
       | ID LPAREN arglist RPAREN  /* function call */
-       { //cout << "about to make a function call" << endl;
-          $$ = new FunctionCall(*$1, $3);
+       {  $$ = new FunctionCall(*$1, $3);
          cout << (*$$).toString() << " -> term" << endl;
        }
       | ID LPAREN RPAREN  /* function call */
-       { //cout << "about to make a different function call" << endl;
-          $$ = new FunctionCall(*$1);
+       {  $$ = new FunctionCall(*$1);
          cout << (*$$).toString() << " -> term" << endl;
        }
       ;
 
 arglist :
         expr
-        { //cout << "about to make an id" << endl;
-         $$ = new ArgList($1);
+        { $$ = new ArgList($1);
           cout << (*$$).toString() << " -> arglist" << endl;
         }
       | arglist COMMA expr
-        { //cout << "about to make an id" << endl;
-         auto add = *$1 + $3;
-	$$ = &add;
-        cout << (*$$).toString() << " -> arglist" << endl;
+        { auto add = *$1 + $3;
+	        $$ = &add;
+          cout << (*$$).toString() << " -> arglist" << endl;
         }
       ;
 
