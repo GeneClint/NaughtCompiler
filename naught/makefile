@@ -1,4 +1,4 @@
-OBJS= lexer.o parser.o comp.o  yy.o Id.o Int.o Param.o ParamList.o
+OBJS= lexer.o parser.o comp.o  yy.o Id.o Int.o Param.o ParamList.o Statement.o StatementList.o
 CC= g++
 CFLAGS= -g -Wall  -std=gnu++0x
 

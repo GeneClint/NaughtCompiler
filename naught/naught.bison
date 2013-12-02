@@ -14,6 +14,8 @@
 #include "ExprTerm.h"
 #include "Param.h"
 #include "ParamList.h"
+#include "Statement.h"
+#include "StatementList.h"
 
 using namespace std;
 
@@ -38,6 +40,8 @@ extern StrUtil *AST;
   Param*      param_val;
   Expression* expr_val;
   ParamList*  param_list_val;
+  Statement*  stmnt_val;
+  StatementList* stmnt_list_val;
 }
 
 /***********************************************************************
@@ -78,9 +82,9 @@ extern StrUtil *AST;
 %type <string_val> funcdecl
 %type <expr_val> expr
 %type <term_val> term
-%type <string_val> stmt
+%type <stmnt_val> stmt
 
-%type <string_val> stmt_list
+%type <stmnt_list_val> stmt_list
 %type <string_val> vardecl_list
 %type <string_val> funcdecl_list
 %type <param_val> param;
@@ -248,11 +252,11 @@ param :
 
 block : 
 	  LCBRACE vardecl_list stmt_list RCBRACE
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
+          { $$ = new StrUtil(*$1 + *$2 + (string)*$3 + *$4);
             cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE              stmt_list RCBRACE
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
+          { $$ = new StrUtil(*$1 + (string)*$2 + *$3);
             cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE vardecl_list           RCBRACE
@@ -267,22 +271,23 @@ block :
 
 stmt_list :
           stmt_list stmt
-          { $$ = new StrUtil(*$1 + *$2);
+          { auto add = *$1 + *$2;
+	    $$ = &add;
             cout << *$$ << " -> stmt_list " << endl;
           }
         | stmt
-          { $$ = new StrUtil(*$1);
+          { $$ = new StatementList(*$1);
             cout << *$$ << " -> stmt_list " << endl;
           }
        ;
 
 stmt : 
          expr SEMI
-          { $$ = new StrUtil(/*$1 + */ *$2);
+          { $$ = new Statement(*$1);
             cout << *$$ << " -> stmt " << endl;
           }
        | RETURN expr SEMI
-          { $$ = new StrUtil(*$1 /*+ *$2 */+ *$3);
+          { $$ = new Statement(*$2, true);
             cout << *$$ << " -> stmt " << endl;
           }
      ;
