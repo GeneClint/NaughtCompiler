@@ -337,13 +337,13 @@ block :
 stmt_list :
           stmt_list stmt
           { //cout << "about to make an stmtlst" << endl;
-        auto add = *$1 + *$2;
+            auto add = *$1 + *$2;
 	    $$ = &add;
             cout << (*$$).toString() << " -> stmt_list " << endl;
           }
         | stmt
           { //cout << "about to make an stmtlst" << endl;
-         $$ = new StatementList(*$1);
+            $$ = new StatementList(*$1);
             cout << (*$$).toString() << " -> stmt_list " << endl;
           }
        ;
@@ -356,7 +356,7 @@ stmt :
           }
        | RETURN expr SEMI
           { //cout << "about to make an stmt" << endl;
-         $$ = new Statement($2, true);
+            $$ = new Statement($2, true);
             cout << (*$$).toString() << " -> stmt " << endl;
           }
      ;

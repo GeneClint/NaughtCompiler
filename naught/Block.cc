@@ -2,6 +2,30 @@
 #include <string>
 #include <vector>
 
+Block::Block(Block &&other) noexcept {
+  vlist = other.vlist;
+  slist = other.slist;
+}
+
+Block::Block(const Block &other) {
+  vlist = other.vlist;
+  slist = other.slist;
+}
+
+Block& Block::operator=(const Block &other) {
+  if (&other == this) return *this;
+  vlist = other.vlist;
+  slist = other.slist;
+  return *this;
+}
+
+Block& Block::operator=(Block &&other) noexcept {
+  if (&other == this) return *this;
+  vlist = other.vlist;
+  slist = other.slist;
+  return *this;
+}
+
 vector<VarDecl> Block::getVarDecls() const {
   return vlist.getVarDecls();
 }

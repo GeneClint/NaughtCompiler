@@ -19,6 +19,11 @@ class Block {
           vlist(vl), slist(sl) {};
   virtual ~Block() {};
 
+  Block(const Block &other);
+  Block& operator=(const Block &other);
+  Block (Block &&other) noexcept;
+  Block& operator=(Block &&other) noexcept;
+
   vector<VarDecl> getVarDecls() const;
   vector<Statement> getStatements() const;
   std::string toString() const;
@@ -29,7 +34,7 @@ class Block {
   }
 
  private:
-  const VarDeclList vlist;
-  const StatementList slist;
+  VarDeclList vlist;
+  StatementList slist;
 };
 #endif
