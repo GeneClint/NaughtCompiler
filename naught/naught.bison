@@ -353,8 +353,8 @@ term :
           cout << *$$ << " -> term" << endl;
         }
       | LPAREN expr RPAREN
-       { /* GULP $$ = new Term();
-         cout << *$$ << " -> term" << endl; */
+       { $$ = new ExprTerm($2);
+         cout << *$$ << " -> term" << endl;
         }
       | UNARY_OP term
         { /* GULP $$ = new Term();

@@ -1899,8 +1899,8 @@ yyreduce:
   case 48:
 /* Line 1813 of yacc.c  */
 #line 356 "naught.bison"
-    { /* GULP $$ = new Term();
-         cout << *$$ << " -> term" << endl; */
+    { (yyval.term_val) = new ExprTerm((yyvsp[(2) - (3)].expr_val));
+         cout << *(yyval.term_val) << " -> term" << endl;
         }
     break;
 
