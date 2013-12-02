@@ -4,13 +4,13 @@
 #ifndef __EXPR_TERM_H
 #define __EXPR_TERM_H
 
-class ExprTerm : public Expression {
+class ExprTerm : public Term {
  public:
-  ExprTerm(Term& t) : internal(&t) {};
-  ExprTerm(Term *t) : internal(t) {};
-  Term* evaluate() const {return internal;};
+  ExprTerm(Expression *e) : internal(e) {};
+  Expression* evaluate() const {return internal;};
+  std::string toString() const;
  private:
-  Term *internal;
+  Expression *internal;
 };
 
 #endif

@@ -17,6 +17,9 @@
  #include "StatementList.h"
  #include "VarDecl.h"
  #include "VarDeclList.h"
+ #include "ArgList.h"
+ #include "UnaryTerm.h"
+ #include "ExprTerm.h"
  
  #include "parser.hh"
 %}

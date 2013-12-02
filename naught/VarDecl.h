@@ -19,7 +19,7 @@ class VarDecl {
   Id getId() const;
   std::string getType() const;
   bool isExtern() const;
-  const Expression* getExpression() const;
+  Expression* getExpression() const;
 
   std::string toString() const;
 

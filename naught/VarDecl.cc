@@ -14,8 +14,8 @@ bool VarDecl::isExtern() const {
   return ext;
 }
 
-const Expression* VarDecl::getExpression() const {
-  return exp;
+Expression* VarDecl::getExpression() const {
+  return const_cast<Expression*>(exp);
 }
 
 std::string VarDecl::toString() const {
