@@ -6,10 +6,10 @@ bool Statement::isReturn() const {
   return isRet;
 }
 
-Expression Statement::getExpression() const {
+Expression* Statement::getExpression() const {
   return exp;
 }
 
 std::string Statement::toString() const {
-  return (isRet ? "return " : "") + exp.toString();
+  return (isRet ? "return " : "") + exp->toString();
 }

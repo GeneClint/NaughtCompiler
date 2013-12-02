@@ -1,14 +1,14 @@
+#include <string>
 #include "DivExpression.h"
 
-DivExpression::DivExpression(Expression e1, Expression e2) {
-  *expr1 = e1;
-  *expr2 = e2;
-}
-
-DivExpression::Expression* getValue1() const {
+Expression* DivExpression::getValue1() const {
   return expr1;
 }
 
-DivExpression::Expression* getValue2() const {
+Expression* DivExpression::getValue2() const {
   return expr2;
+}
+
+std::string DivExpression::toString() const {
+  return "(" + expr1->toString() + " / " + expr2->toString() + ")";
 }

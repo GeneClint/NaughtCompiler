@@ -1,9 +1,14 @@
+#include <string>
 #include "AddExpression.h"
 
-AddExpression::Expression* getValue1() const {
+Expression* AddExpression::getValue1() const {
   return expr1;
 }
 
-AddExpression::Expression* getValue2() const {
+Expression* AddExpression::getValue2() const {
   return expr2;
 }
+
+std::string AddExpression::toString() const {
+  return "(" + expr1->toString() + " + " + expr2->toString() + ")";
+}  

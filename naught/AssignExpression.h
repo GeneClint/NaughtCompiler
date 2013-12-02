@@ -1,3 +1,5 @@
+#include <string>
+
 #ifndef __ASSIGN_EXPR_H
 #define __ASSIGN_EXPR_H
 
@@ -6,10 +8,10 @@
 
 class AssignExpression : public Expression {
   public:
-    AssignExpression(Int t, Expression e) : Expression() {};
-    AssignExpression(Id t, Expression e) : Expression() {};
+    AssignExpression(Term &t, Expression &e) : Expression(), term(&t), expr(&e) {};
     Term* getTerm() const;
     Expression* getExpr() const;
+    virtual std::string toString() const;
 
   private:
     Term* term;

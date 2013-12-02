@@ -1,3 +1,4 @@
+#include <string>
 #ifndef __DIV_EXPR_H
 #define __DIV_EXPR_H
 
@@ -6,9 +7,10 @@
 
 class DivExpression : public Expression {
   public:
-    DivExpression(Expression e1, Expression e2) : Expression() {};
+    DivExpression(Expression &e1, Expression &e2) : Expression(), expr1(&e1), expr2(&e2) {};
     Expression* getValue1() const;
     Expression* getValue2() const;
+    virtual std::string toString() const;
 
   private:
     Expression* expr1;

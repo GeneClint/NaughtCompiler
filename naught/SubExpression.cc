@@ -1,14 +1,14 @@
+#include <string>
 #include "SubExpression.h"
 
-SubExpression::SubExpression(Expression e1, Expression e2) {
-  *expr1 = e1;
-  *expr2 = e2;
-}
-
-SubExpression::Expression* getValue1() const {
+Expression* SubExpression::getValue1() const {
   return expr1;
 }
 
-SubExpression::Expression* getValue2() const {
+Expression* SubExpression::getValue2() const {
   return expr2;
+}
+
+std::string SubExpression::toString() const {
+  return "(" + expr1->toString() + " - " + expr2->toString() + ")";
 }

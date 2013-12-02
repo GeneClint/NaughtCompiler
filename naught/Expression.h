@@ -10,7 +10,8 @@ class Expression {
   
   Expression* evaluate() {return this;}
 
-  virtual std::string toString() const {return "";}
+  virtual std::string toString() const = 0;
+      
 
   friend std::ostream& operator<<(std::ostream &os, const Expression &e) {
     os << e.toString();

@@ -9,7 +9,7 @@
 #ifndef __TERM_H
 #define __TERM_H
 
-class Term : Expression {
+class Term : public Expression {
 public:
   virtual ~Term() {};
   Term* evaluate() {return this;}
