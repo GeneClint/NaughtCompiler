@@ -9,6 +9,7 @@
 
 class StatementList {
  public:
+  StatementList () {};
   StatementList (const Statement &s);
   StatementList operator+ (const Statement &s);
   virtual ~StatementList () {};
