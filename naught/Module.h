@@ -15,6 +15,11 @@ class Module {
            funcDeclList(fdcl), varDeclList(vdl), funcDefList(fdnl) {};
     virtual ~Module() {};
     
+    Module(const Module &other);
+    Module& operator=(const Module &other);
+    Module (Module &&other) noexcept;
+    Module& operator=(Module &&other) noexcept;
+
     bool hasFuncDecls() const;
     bool hasVarDecls() const;
     bool hasFuncDefs() const;

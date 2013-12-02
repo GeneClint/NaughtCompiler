@@ -2,6 +2,46 @@
 
 #include "Module.h"
 
+Module::Module(const Module &other) {
+  funcDeclList = new FuncDeclList(*other.funcDeclList);
+  varDeclList = new VarDeclList(*other.varDeclList);
+  funcDefList = new FuncDefList(*other.funcDefList);
+}
+
+Module& Module::operator=(const Module &other) {
+  if (&other == this) return *this;
+  if (funcDeclList != NULL) delete funcDeclList;
+  if (varDeclList != NULL) delete varDeclList;
+  if (funcDefList != NULL) delete funcDefList;
+  funcDeclList = new FuncDeclList(*other.funcDeclList);
+  varDeclList = new VarDeclList(*other.varDeclList);
+  funcDefList = new FuncDefList(*other.funcDefList);
+  return *this;
+}
+
+Module::Module (Module &&other) noexcept {
+  funcDeclList = other.funcDeclList;
+  varDeclList = other.varDeclList;
+  funcDefList = other.funcDefList;
+  other.funcDeclList = NULL;
+  other.varDeclList = NULL;
+  other.funcDefList = NULL;
+}
+
+Module& Module::operator=(Module &&other) noexcept {
+if (&other == this) return *this;
+  if (funcDeclList != NULL) delete funcDeclList;
+  if (varDeclList != NULL) delete varDeclList;
+  if (funcDefList != NULL) delete funcDefList;
+  funcDeclList = other.funcDeclList;
+  varDeclList = other.varDeclList;
+  funcDefList = other.funcDefList;
+  other.funcDeclList = NULL;
+  other.varDeclList = NULL;
+  other.funcDefList = NULL;
+  return *this;
+}
+
 bool Module::hasFuncDecls() const {
   return funcDeclList != NULL;
 }

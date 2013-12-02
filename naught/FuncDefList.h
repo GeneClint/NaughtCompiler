@@ -13,7 +13,12 @@ class FuncDefList {
   FuncDefList (const FuncDef *f);
   FuncDefList operator+ (const FuncDef *p);
   virtual ~FuncDefList () {};
-  vector<const FuncDef*> getFuncDefs() const; 
+  vector<const FuncDef*> getFuncDefs() const;
+
+  FuncDefList(const FuncDefList &other);
+  FuncDefList& operator=(const FuncDefList &other);
+  FuncDefList (FuncDefList &&other) noexcept;
+  FuncDefList& operator=(FuncDefList &&other) noexcept;
 
   explicit operator string() const { return toString(); }
   std::string toString() const;
@@ -32,7 +37,7 @@ class FuncDefList {
   }
 
  private:
-  vector<const FuncDef*> funcDefs; 
+  vector<const FuncDef*> *funcDefs; 
 };
 
 #endif

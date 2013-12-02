@@ -8,11 +8,16 @@
 
 class FuncDeclList {
  public:
-  FuncDeclList () {};
+  FuncDeclList ();
   FuncDeclList (const FuncDecl &fd);
   FuncDeclList operator+ (const FuncDecl &fd);
   virtual ~FuncDeclList () {};
   vector<FuncDecl> getFuncDecls() const; 
+
+  FuncDeclList(const FuncDeclList &other);
+  FuncDeclList& operator=(const FuncDeclList &other);
+  FuncDeclList (FuncDeclList &&other) noexcept;
+  FuncDeclList& operator=(FuncDeclList &&other) noexcept;
 
   explicit operator string() const { return toString(); }
   std::string toString() const;
@@ -31,7 +36,7 @@ class FuncDeclList {
   }
 
  private:
-  vector<FuncDecl> funcDecls; 
+  vector<FuncDecl> *funcDecls; 
 };
 
 #endif
