@@ -16,6 +16,8 @@
 #include "ParamList.h"
 #include "Statement.h"
 #include "StatementList.h"
+#include "VarDecl.h"
+#include "VarDeclList.h"
 
 using namespace std;
 
@@ -42,6 +44,8 @@ extern StrUtil *AST;
   ParamList*  param_list_val;
   Statement*  stmnt_val;
   StatementList* stmnt_list_val;
+  VarDecl*    vardecl_val;
+  VarDeclList* vardecl_list_val;
 }
 
 /***********************************************************************
@@ -78,14 +82,14 @@ extern StrUtil *AST;
 %type <string_val> module
 %type <string_val> funcdef
 %type <string_val> block
-%type <string_val> vardecl
+%type <vardecl_val> vardecl
 %type <string_val> funcdecl
 %type <expr_val> expr
 %type <term_val> term
 %type <stmnt_val> stmt
 
 %type <stmnt_list_val> stmt_list
-%type <string_val> vardecl_list
+%type <vardecl_list_val> vardecl_list
 %type <string_val> funcdecl_list
 %type <param_val> param;
 %type <param_list_val> param_list;
@@ -133,7 +137,7 @@ module :
             cout << *$$ << " -> module " << endl;
           }
         |              vardecl_list
-          { AST = new StrUtil(*$1);
+          { AST = new StrUtil((string)*$1);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
@@ -182,26 +186,27 @@ funcdecl :
 
 vardecl_list : 
           vardecl_list vardecl SEMI
-          { $$ = new StrUtil(*$1 + *$2 +*$3);
+          { auto add = *$1 + *$2;
+	    $$ = &add;
             cout << *$$ << " -> vardecl_list " << endl;
           }
         | vardecl SEMI
-          { $$ = new StrUtil(*$1 + *$2);
+          { $$ = new VarDeclList(*$1);
             cout << *$$ << " -> vardecl_list " << endl;
           }
         ;
 
 vardecl : 
          TYPE ID
-          { $$ = new StrUtil(*$1 + *$2);
+          { $$ = new VarDecl(*$1, *$2);
             cout << *$$ << " -> vardecl " << endl;
           }
        | TYPE ID ASSIGN expr
-          { $$ = new StrUtil(*$1 + *$2 + *$3 /*+ *$4*/);
+          { $$ = new VarDecl(*$1, *$2, false, $4);
             cout << *$$ << " -> vardecl " << endl;
           }
        | EXTERN TYPE ID  /* extern variable */
-          { $$ = new StrUtil(*$1 + *$2);
+          { $$ = new VarDecl(*$2, *$3, true);
             cout << *$$ << " -> vardecl " << endl;
           }
        ;
