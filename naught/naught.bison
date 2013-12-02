@@ -21,6 +21,8 @@
 #include "ArgList.h"
 #include "UnaryTerm.h"
 #include "FunctionCall.h"
+#include "FuncDef.h"
+#include "FuncDefList.h"
 
 using namespace std;
 
@@ -40,6 +42,7 @@ extern StrUtil *AST;
  * name used later in this file.
  ***************************************/
 %union {
+  int*        int_val;
   StrUtil*    string_val;
   Term*	      term_val;
   Param*      param_val;
@@ -54,6 +57,8 @@ extern StrUtil *AST;
   FunctionCall* func_call_val;
   FuncDecl*   funcdecl_val;
   FuncDeclList* funcdecl_list_val;
+  FuncDef*    funcdef_val;
+  FuncDefList*   funcdef_list_val;
 }
 
 /***********************************************************************
@@ -79,7 +84,7 @@ extern StrUtil *AST;
 
 %token <string_val> TYPE
 %token <string_val> STRING_LITERAL
-%token <string_val> INT_LITERAL
+%token <int_val> INT_LITERAL
 %token <string_val> ID
 
 /**********************************************************
@@ -88,7 +93,7 @@ extern StrUtil *AST;
  **********************************************************/
 
 %type <string_val> module
-%type <string_val> funcdef
+%type <funcdef_val> funcdef
 %type <block_val> block
 %type <vardecl_val> vardecl
 %type <funcdecl_val> funcdecl
@@ -101,7 +106,7 @@ extern StrUtil *AST;
 %type <funcdecl_list_val> funcdecl_list
 %type <param_val> param;
 %type <param_list_val> param_list;
-%type <string_val> funcdef_list
+%type <funcdef_list_val> funcdef_list
 %type <arglist_val> arglist;
 
 /*********************************************
@@ -125,7 +130,7 @@ module :
             cout << *$$ << " -> module " << endl;
           */}
         |              vardecl_list funcdef_list
-          { AST = new StrUtil(*$1 + *$2);
+          { AST = new StrUtil(*$1 + (string)*$2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
@@ -135,7 +140,7 @@ module :
             cout << *$$ << " -> module " << endl;
          */ }
         |                            funcdef_list
-          { AST = new StrUtil(*$1);
+          { AST = new StrUtil((string)*$1);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
@@ -224,25 +229,32 @@ vardecl :
 
 funcdef_list :
          funcdef
+	 { $$ = new FuncDefList($1);
+	   cout << *$$ << " -> funcdef_list " << endl;
+	 }	 
        | funcdef_list funcdef
-        ;
+         { auto add = *$1 + $2;
+	   $$ = &add;
+	   cout << *$$ << " -> funcdef_list " << endl;
+	 }	
+	;
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 /*+ *$6*/);
+          { $$ = new FuncDef(*$2, $6, $4);
             cout << *$$ << " -> funcdef " << endl;
           }
         | FUNCTION ID LPAREN RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4/* + *$5*/);
+          { $$ = new FuncDef(*$2, $5);
             cout << *$$ << " -> funcdef " << endl;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 /*+ *$6*/);
-            cout << *$$ << " -> funcdef " << endl;
+          { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
+            cout << *$$ << " -> funcdef " << endl; */
           }
         | SFUNCTION ID LPAREN RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 /*+ *$5*/);
-            cout << *$$ << " -> funcdef " << endl;
+          { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+            cout << *$$ << " -> funcdef " << endl; */
           }
         ;
 
@@ -344,7 +356,7 @@ term :
           cout << *$$ << " -> term" << endl; */
         }
       | INT_LITERAL
-        { $$ = new Int($1);
+        { $$ = new Int(*$1);
           cout << *$$ << " -> term" << endl;
         }
       | ID
