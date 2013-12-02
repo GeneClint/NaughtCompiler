@@ -67,7 +67,8 @@ FuncDefList* Module::getFuncDefs() const {
 }
 
 std::string Module::toString() const {
-  return funcDeclList->toString() + "\n" 
-          + varDeclList->toString() + "\n" 
-          + funcDefList->toString();
+  string funcdecl = (funcDeclList != NULL) ? (funcDeclList->toString() + "\n") : "";
+  string vardecl = (varDeclList != NULL) ? (varDeclList->toString() + "\n") : "";
+  string funcdef = (funcDefList != NULL) ? (funcDefList->toString() + "\n") : "";
+  return funcdecl + vardecl + funcdef;
 }
