@@ -310,11 +310,7 @@ expr :
           cout << *$$ << " -> expr" << endl;
         }
       | term  ASSIGN expr
-        { if(dynamic_cast<Int *>($1)) {
-            $$ = new AssignExpression(*dynamic_cast<Int *>($1), *$3);
-          } else {
-            $$ = new AssignExpression(*dynamic_cast<Id *>($1), *$3);
-          }
+        { $$ = new AssignExpression(*$1, *$3) 
           cout << *$$ << " -> expr" << endl;
         }
       | expr QUESTION expr COLON expr
@@ -322,12 +318,7 @@ expr :
           cout << *$$ << " -> expr" << endl;
         }
       | term
-        { /*if(dynamic_cast<Int *>($1)) {
-            $$ = new TermExpression(*dynamic_cast<Int *>($1));
-          } else {
-            $$ = new TermExpression(*dynamic_cast<Id *>($1));
-          }*/
-          $$ = $1;
+        { $ = $1;
           cout << *$$ << " -> expr" << endl;
         }
       ;
