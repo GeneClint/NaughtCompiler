@@ -1,18 +1,14 @@
+#include <string>
 #include "AssignExpression.h"
 
-AssignExpression::AssignExpression(Int i, Expression e) {
-  *term = i;
-  *expr = e;
-}
-
-AssignExpression::AssignExpression(Id i, Expression e) {
-  *term = i;
-  *expr = e;
-}
-AssignExpression::Term* getTerm() const {
+Term* AssignExpression::getTerm() const {
   return term;
 }
 
-AssignExpression::Expression* getExpr() const {
+Expression* AssignExpression::getExpr() const {
   return expr;
+}
+
+std::string AssignExpression::toString() const {
+  return "(" + term->toString() + " = " + expr->toString() + ")";
 }

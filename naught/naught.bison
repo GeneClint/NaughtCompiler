@@ -322,11 +322,12 @@ expr :
           cout << *$$ << " -> expr" << endl;
         }
       | term
-        { if(dynamic_cast<Int *>($1)) {
+        { /*if(dynamic_cast<Int *>($1)) {
             $$ = new TermExpression(*dynamic_cast<Int *>($1));
           } else {
             $$ = new TermExpression(*dynamic_cast<Id *>($1));
-          }
+          }*/
+          $$ = $1;
           cout << *$$ << " -> expr" << endl;
         }
       ;

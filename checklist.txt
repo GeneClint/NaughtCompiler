@@ -10,6 +10,8 @@
 4. Expressions
    Beginning work on Int Expressions - Clint
    Preliminary finish (will definitely need to add more as we add string and pointer and so forth) - expression nodes - Gene
+   Cleaned up a lot of the code, using more of the existing c++ inheritence functionality - Gene
+
 5. Function Type
    Atoms of functions done, (params, paramlists, statements, and statement lists) - Clint 
 6. other expressions...
