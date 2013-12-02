@@ -15,3 +15,4 @@
 5. Function Type
    Atoms of functions done, (params, paramlists, statements, and statement lists) - Clint 
 6. other expressions...
+  Completed nodes, but tree does not build correctly (expression pointers in the Statement class seems to get deleted) - Gene
