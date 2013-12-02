@@ -10,10 +10,14 @@
  int yyerror(char *s);
 
  #include "StrUtil.h"
+ #include "VarDecl.h"
  #include "Param.h"
  #include "ParamList.h"
  #include "Statement.h"
  #include "StatementList.h"
+ #include "VarDecl.h"
+ #include "VarDeclList.h"
+ 
  #include "parser.hh"
 %}
 

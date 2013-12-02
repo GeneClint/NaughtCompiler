@@ -509,12 +509,16 @@ char *yytext;
  int yyerror(char *s);
 
  #include "StrUtil.h"
+ #include "VarDecl.h"
  #include "Param.h"
  #include "ParamList.h"
  #include "Statement.h"
  #include "StatementList.h"
+ #include "VarDecl.h"
+ #include "VarDeclList.h"
+ 
  #include "parser.hh"
-#line 518 "lexer.cc"
+#line 522 "lexer.cc"
 
 #define INITIAL 0
 
@@ -696,10 +700,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 27 "naught.lex"
+#line 31 "naught.lex"
 
 
-#line 703 "lexer.cc"
+#line 707 "lexer.cc"
 
 	if ( !(yy_init) )
 		{
@@ -784,154 +788,154 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 29 "naught.lex"
+#line 33 "naught.lex"
 { /* ignore single line comments. */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 30 "naught.lex"
+#line 34 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return SEMI; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 31 "naught.lex"
+#line 35 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return COMMA; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 32 "naught.lex"
+#line 36 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return ASSIGN; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 33 "naught.lex"
+#line 37 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return ADD; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 34 "naught.lex"
+#line 38 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return STAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 35 "naught.lex"
+#line 39 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return SUB; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 36 "naught.lex"
+#line 40 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return DIV; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 37 "naught.lex"
+#line 41 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return QUESTION; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 38 "naught.lex"
+#line 42 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return COLON; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 39 "naught.lex"
+#line 43 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return LPAREN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 40 "naught.lex"
+#line 44 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return RPAREN; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 41 "naught.lex"
+#line 45 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return LCBRACE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 42 "naught.lex"
+#line 46 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return RCBRACE; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 43 "naught.lex"
+#line 47 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return EXTERN; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 44 "naught.lex"
+#line 48 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return SFUNCTION; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 45 "naught.lex"
+#line 49 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return FUNCTION; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 46 "naught.lex"
+#line 50 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return RETURN; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 47 "naught.lex"
+#line 51 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return UNARY_OP; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 48 "naught.lex"
+#line 52 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return UNARY_OP; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 49 "naught.lex"
+#line 53 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return UNARY_OP; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 50 "naught.lex"
+#line 54 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return TYPE; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 51 "naught.lex"
+#line 55 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return TYPE; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 52 "naught.lex"
+#line 56 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return TYPE; }
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 53 "naught.lex"
+#line 57 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return STRING_LITERAL; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 54 "naught.lex"
+#line 58 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return INT_LITERAL; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 55 "naught.lex"
+#line 59 "naught.lex"
 { yylval.string_val = new StrUtil(yytext); return ID; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 56 "naught.lex"
+#line 60 "naught.lex"
 { /* ignore white space. */ }
 	YY_BREAK
 case 29:
 /* rule 29 can match eol */
 YY_RULE_SETUP
-#line 57 "naught.lex"
+#line 61 "naught.lex"
 { yylineno++; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 58 "naught.lex"
+#line 62 "naught.lex"
 { runtime_error e(string("Lexer: Line ") + to_string(yylineno) + 
                        ": Illegal character: " + yytext);
                throw e;
@@ -939,10 +943,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 62 "naught.lex"
+#line 66 "naught.lex"
 ECHO;
 	YY_BREAK
-#line 946 "lexer.cc"
+#line 950 "lexer.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1936,4 +1940,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 62 "naught.lex"
+#line 66 "naught.lex"
