@@ -9,6 +9,7 @@
 
 class VarDeclList {
  public:
+  VarDeclList () {};
   VarDeclList (const VarDecl &v);
   VarDeclList operator+ (const VarDecl &v);
   virtual ~VarDeclList () {};
