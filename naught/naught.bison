@@ -21,6 +21,7 @@
 #include "ArgList.h"
 #include "UnaryTerm.h"
 #include "Block.h"
+#include "FunctionCall.h"
 
 using namespace std;
 
@@ -51,6 +52,7 @@ extern StrUtil *AST;
   VarDeclList* vardecl_list_val;
   ArgList*    arglist_val;
   Block*      block_val;
+  FunctionCall* func_call_val;
 }
 
 /***********************************************************************
@@ -319,8 +321,8 @@ expr :
           cout << *$$ << " -> expr" << endl;
         }
       | term  ASSIGN expr
-        { $$ = new AssignExpression(*$1, *$3); 
-          cout << *$$ << " -> expr" << endl;
+        { $$ = new AssignExpression(*$1, *$3);
+      	  cout << *$$ << " -> expr" << endl;
         }
       | expr QUESTION expr COLON expr
         { $$ = new CondExpression(*$1, *$3, *$5);
@@ -354,12 +356,12 @@ term :
           cout << *$$ << " -> term" << endl;
         }
       | ID LPAREN arglist RPAREN  /* function call */
-       { /* GULP $$ = new Term();
-         cout << *$$ << " -> term" << endl; */
+       { $$ = new FunctionCall(*$1, $3);
+         cout << *$$ << " -> term" << endl;
        }
       | ID LPAREN RPAREN  /* function call */
-       { /* GULP $$ = new Term();
-         cout << *$$ << " -> term" << endl; */
+       { $$ = new FunctionCall(*$1);
+         cout << *$$ << " -> term" << endl;
        }
       ;
 
