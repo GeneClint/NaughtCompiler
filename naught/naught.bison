@@ -264,7 +264,7 @@ funcdef :
 param_list : 
           param_list COMMA param
           { auto add = *$1 + *$3;
-	          $$ = $1;
+	          $$ = &add;
             cout << (*$$).toString() << " -> param_list " << endl;
           }
         | param
