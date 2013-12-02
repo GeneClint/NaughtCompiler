@@ -89,6 +89,7 @@
 #include "Block.h"
 #include "FunctionCall.h"
 #include "FuncDef.h"
+#include "FuncDefList.h"
 
 using namespace std;
 
@@ -99,7 +100,7 @@ extern StrUtil *AST;
 
 
 /* Line 358 of yacc.c  */
-#line 103 "parser.cc"
+#line 104 "parser.cc"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -165,7 +166,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 374 of yacc.c  */
-#line 44 "naught.bison"
+#line 45 "naught.bison"
 
   StrUtil*    string_val;
   Term*	      term_val;
@@ -178,12 +179,13 @@ typedef union YYSTYPE
   VarDeclList* vardecl_list_val;
   ArgList*    arglist_val;
   Block*      block_val;
-  FunctionCall* func_call_val;
+  FunctionCall*  func_call_val;
   FuncDef*    funcdef_val;
+  FuncDefList*   funcdef_list_val;
 
 
 /* Line 374 of yacc.c  */
-#line 187 "parser.cc"
+#line 189 "parser.cc"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -211,7 +213,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 377 of yacc.c  */
-#line 215 "parser.cc"
+#line 217 "parser.cc"
 
 #ifdef short
 # undef short
@@ -523,12 +525,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   123,   123,   128,   133,   138,   143,   148,   153,   159,
-     166,   170,   177,   181,   185,   189,   197,   202,   209,   213,
-     217,   224,   227,   233,   237,   241,   245,   252,   257,   264,
-     271,   275,   279,   283,   290,   295,   302,   306,   313,   317,
-     321,   325,   329,   333,   337,   344,   348,   352,   356,   360,
-     364,   368,   375,   379
+       0,   125,   125,   130,   135,   140,   145,   150,   155,   161,
+     168,   172,   179,   183,   187,   191,   199,   204,   211,   215,
+     219,   226,   230,   238,   242,   246,   250,   257,   262,   269,
+     276,   280,   284,   288,   295,   300,   307,   311,   318,   322,
+     326,   330,   334,   338,   342,   349,   353,   357,   361,   365,
+     369,   373,   380,   384
 };
 #endif
 
@@ -1533,8 +1535,8 @@ yyreduce:
     {
         case 2:
 /* Line 1813 of yacc.c  */
-#line 124 "naught.bison"
-    { AST = new StrUtil(*(yyvsp[(1) - (3)].string_val) + *(yyvsp[(2) - (3)].vardecl_list_val) + *(yyvsp[(3) - (3)].string_val));
+#line 126 "naught.bison"
+    { AST = new StrUtil(*(yyvsp[(1) - (3)].string_val) + *(yyvsp[(2) - (3)].vardecl_list_val) + (string)*(yyvsp[(3) - (3)].funcdef_list_val));
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
           }
@@ -1542,8 +1544,8 @@ yyreduce:
 
   case 3:
 /* Line 1813 of yacc.c  */
-#line 129 "naught.bison"
-    { AST = new StrUtil(*(yyvsp[(1) - (2)].vardecl_list_val) + *(yyvsp[(2) - (2)].string_val));
+#line 131 "naught.bison"
+    { AST = new StrUtil(*(yyvsp[(1) - (2)].vardecl_list_val) + (string)*(yyvsp[(2) - (2)].funcdef_list_val));
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
           }
@@ -1551,8 +1553,8 @@ yyreduce:
 
   case 4:
 /* Line 1813 of yacc.c  */
-#line 134 "naught.bison"
-    { AST = new StrUtil(*(yyvsp[(1) - (2)].string_val) + *(yyvsp[(2) - (2)].string_val));
+#line 136 "naught.bison"
+    { AST = new StrUtil(*(yyvsp[(1) - (2)].string_val) + (string)*(yyvsp[(2) - (2)].funcdef_list_val));
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
           }
@@ -1560,8 +1562,8 @@ yyreduce:
 
   case 5:
 /* Line 1813 of yacc.c  */
-#line 139 "naught.bison"
-    { AST = new StrUtil(*(yyvsp[(1) - (1)].string_val));
+#line 141 "naught.bison"
+    { AST = new StrUtil((string)*(yyvsp[(1) - (1)].funcdef_list_val));
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
           }
@@ -1569,7 +1571,7 @@ yyreduce:
 
   case 6:
 /* Line 1813 of yacc.c  */
-#line 144 "naught.bison"
+#line 146 "naught.bison"
     { AST = new StrUtil(*(yyvsp[(1) - (2)].string_val) + *(yyvsp[(2) - (2)].vardecl_list_val));
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
@@ -1578,7 +1580,7 @@ yyreduce:
 
   case 7:
 /* Line 1813 of yacc.c  */
-#line 149 "naught.bison"
+#line 151 "naught.bison"
     { AST = new StrUtil((string)*(yyvsp[(1) - (1)].vardecl_list_val));
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
@@ -1587,7 +1589,7 @@ yyreduce:
 
   case 8:
 /* Line 1813 of yacc.c  */
-#line 154 "naught.bison"
+#line 156 "naught.bison"
     { AST = new StrUtil(*(yyvsp[(1) - (1)].string_val));
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
@@ -1596,7 +1598,7 @@ yyreduce:
 
   case 9:
 /* Line 1813 of yacc.c  */
-#line 159 "naught.bison"
+#line 161 "naught.bison"
     { AST = new StrUtil(string());
             (yyval.string_val) = AST;
             cout << *(yyval.string_val) << " -> module " << endl;
@@ -1605,7 +1607,7 @@ yyreduce:
 
   case 10:
 /* Line 1813 of yacc.c  */
-#line 167 "naught.bison"
+#line 169 "naught.bison"
     { (yyval.string_val) = new StrUtil(*(yyvsp[(1) - (3)].string_val) + *(yyvsp[(2) - (3)].string_val) + *(yyvsp[(3) - (3)].string_val));
             cout << *(yyval.string_val) << " -> funcdecl_list " << endl;
           }
@@ -1613,7 +1615,7 @@ yyreduce:
 
   case 11:
 /* Line 1813 of yacc.c  */
-#line 171 "naught.bison"
+#line 173 "naught.bison"
     { (yyval.string_val) = new StrUtil(*(yyvsp[(1) - (2)].string_val) + *(yyvsp[(2) - (2)].string_val));
             cout << *(yyval.string_val) << " -> funcdecl_list " << endl;
           }
@@ -1621,7 +1623,7 @@ yyreduce:
 
   case 12:
 /* Line 1813 of yacc.c  */
-#line 178 "naught.bison"
+#line 180 "naught.bison"
     { (yyval.string_val) = new StrUtil(*(yyvsp[(1) - (5)].string_val) + *(yyvsp[(2) - (5)].string_val) +*(yyvsp[(3) - (5)].string_val) + (string)*(yyvsp[(4) - (5)].param_list_val) +*(yyvsp[(5) - (5)].string_val));
             cout << *(yyval.string_val) << " -> funcdecl " << endl;
           }
@@ -1629,7 +1631,7 @@ yyreduce:
 
   case 13:
 /* Line 1813 of yacc.c  */
-#line 182 "naught.bison"
+#line 184 "naught.bison"
     { (yyval.string_val) = new StrUtil(*(yyvsp[(1) - (4)].string_val) + *(yyvsp[(2) - (4)].string_val) +*(yyvsp[(3) - (4)].string_val) +*(yyvsp[(4) - (4)].string_val));
             cout << *(yyval.string_val) << " -> funcdecl " << endl;
           }
@@ -1637,7 +1639,7 @@ yyreduce:
 
   case 14:
 /* Line 1813 of yacc.c  */
-#line 186 "naught.bison"
+#line 188 "naught.bison"
     { (yyval.string_val) = new StrUtil(*(yyvsp[(1) - (5)].string_val) + *(yyvsp[(2) - (5)].string_val) +*(yyvsp[(3) - (5)].string_val) +(string)*(yyvsp[(4) - (5)].param_list_val) +*(yyvsp[(5) - (5)].string_val));
             cout << *(yyval.string_val) << " -> funcdecl " << endl;
           }
@@ -1645,7 +1647,7 @@ yyreduce:
 
   case 15:
 /* Line 1813 of yacc.c  */
-#line 190 "naught.bison"
+#line 192 "naught.bison"
     { (yyval.string_val) = new StrUtil(*(yyvsp[(1) - (4)].string_val) + *(yyvsp[(2) - (4)].string_val) +*(yyvsp[(3) - (4)].string_val) +*(yyvsp[(4) - (4)].string_val));
             cout << *(yyval.string_val) << " -> funcdecl " << endl;
           }
@@ -1653,7 +1655,7 @@ yyreduce:
 
   case 16:
 /* Line 1813 of yacc.c  */
-#line 198 "naught.bison"
+#line 200 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].vardecl_list_val) + *(yyvsp[(2) - (3)].vardecl_val);
 	    (yyval.vardecl_list_val) = &add;
             cout << *(yyval.vardecl_list_val) << " -> vardecl_list " << endl;
@@ -1662,7 +1664,7 @@ yyreduce:
 
   case 17:
 /* Line 1813 of yacc.c  */
-#line 203 "naught.bison"
+#line 205 "naught.bison"
     { (yyval.vardecl_list_val) = new VarDeclList(*(yyvsp[(1) - (2)].vardecl_val));
             cout << *(yyval.vardecl_list_val) << " -> vardecl_list " << endl;
           }
@@ -1670,7 +1672,7 @@ yyreduce:
 
   case 18:
 /* Line 1813 of yacc.c  */
-#line 210 "naught.bison"
+#line 212 "naught.bison"
     { (yyval.vardecl_val) = new VarDecl(*(yyvsp[(1) - (2)].string_val), *(yyvsp[(2) - (2)].string_val));
             cout << *(yyval.vardecl_val) << " -> vardecl " << endl;
           }
@@ -1678,7 +1680,7 @@ yyreduce:
 
   case 19:
 /* Line 1813 of yacc.c  */
-#line 214 "naught.bison"
+#line 216 "naught.bison"
     { (yyval.vardecl_val) = new VarDecl(*(yyvsp[(1) - (4)].string_val), *(yyvsp[(2) - (4)].string_val), false, (yyvsp[(4) - (4)].expr_val));
             cout << *(yyval.vardecl_val) << " -> vardecl " << endl;
           }
@@ -1686,7 +1688,7 @@ yyreduce:
 
   case 20:
 /* Line 1813 of yacc.c  */
-#line 218 "naught.bison"
+#line 220 "naught.bison"
     { (yyval.vardecl_val) = new VarDecl(*(yyvsp[(2) - (3)].string_val), *(yyvsp[(3) - (3)].string_val), true);
             cout << *(yyval.vardecl_val) << " -> vardecl " << endl;
           }
@@ -1694,21 +1696,24 @@ yyreduce:
 
   case 21:
 /* Line 1813 of yacc.c  */
-#line 225 "naught.bison"
-    {
+#line 227 "naught.bison"
+    { (yyval.funcdef_list_val) = new FuncDefList((yyvsp[(1) - (1)].funcdef_val));
+	   cout << *(yyval.funcdef_list_val) << " -> funcdef_list " << endl;
 	 }
     break;
 
   case 22:
 /* Line 1813 of yacc.c  */
-#line 228 "naught.bison"
-    {
+#line 231 "naught.bison"
+    { auto add = *(yyvsp[(1) - (2)].funcdef_list_val) + (yyvsp[(2) - (2)].funcdef_val);
+	   (yyval.funcdef_list_val) = &add;
+	   cout << *(yyval.funcdef_list_val) << " -> funcdef_list " << endl;
 	 }
     break;
 
   case 23:
 /* Line 1813 of yacc.c  */
-#line 234 "naught.bison"
+#line 239 "naught.bison"
     { (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (6)].string_val), (yyvsp[(6) - (6)].block_val), (yyvsp[(4) - (6)].param_list_val));
             cout << *(yyval.funcdef_val) << " -> funcdef " << endl;
           }
@@ -1716,7 +1721,7 @@ yyreduce:
 
   case 24:
 /* Line 1813 of yacc.c  */
-#line 238 "naught.bison"
+#line 243 "naught.bison"
     { (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (5)].string_val), (yyvsp[(5) - (5)].block_val));
             cout << *(yyval.funcdef_val) << " -> funcdef " << endl;
           }
@@ -1724,7 +1729,7 @@ yyreduce:
 
   case 25:
 /* Line 1813 of yacc.c  */
-#line 242 "naught.bison"
+#line 247 "naught.bison"
     { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
             cout << *$$ << " -> funcdef " << endl; */
           }
@@ -1732,7 +1737,7 @@ yyreduce:
 
   case 26:
 /* Line 1813 of yacc.c  */
-#line 246 "naught.bison"
+#line 251 "naught.bison"
     { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
             cout << *$$ << " -> funcdef " << endl; */
           }
@@ -1740,7 +1745,7 @@ yyreduce:
 
   case 27:
 /* Line 1813 of yacc.c  */
-#line 253 "naught.bison"
+#line 258 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].param_list_val) + *(yyvsp[(3) - (3)].param_val);
 	    (yyval.param_list_val) = &add;
             cout << *(yyval.param_list_val) << " -> param_list " << endl;
@@ -1749,7 +1754,7 @@ yyreduce:
 
   case 28:
 /* Line 1813 of yacc.c  */
-#line 258 "naught.bison"
+#line 263 "naught.bison"
     { (yyval.param_list_val) = new ParamList(*(yyvsp[(1) - (1)].param_val));
             cout << *(yyval.param_list_val) << " -> param_list " << endl;
           }
@@ -1757,7 +1762,7 @@ yyreduce:
 
   case 29:
 /* Line 1813 of yacc.c  */
-#line 265 "naught.bison"
+#line 270 "naught.bison"
     { (yyval.param_val) = new Param(*(yyvsp[(1) - (2)].string_val), *(yyvsp[(2) - (2)].string_val));
             cout << *(yyval.param_val) << " -> param " << endl;
           }
@@ -1765,7 +1770,7 @@ yyreduce:
 
   case 30:
 /* Line 1813 of yacc.c  */
-#line 272 "naught.bison"
+#line 277 "naught.bison"
     { (yyval.block_val) = new Block(*(yyvsp[(2) - (4)].vardecl_list_val), *(yyvsp[(3) - (4)].stmnt_list_val));
             cout << *(yyval.block_val) << " -> block " << endl;
           }
@@ -1773,7 +1778,7 @@ yyreduce:
 
   case 31:
 /* Line 1813 of yacc.c  */
-#line 276 "naught.bison"
+#line 281 "naught.bison"
     { (yyval.block_val) = new Block(*(new VarDeclList()), *(yyvsp[(2) - (3)].stmnt_list_val));
             cout << *(yyval.block_val) << " -> block " << endl;
           }
@@ -1781,7 +1786,7 @@ yyreduce:
 
   case 32:
 /* Line 1813 of yacc.c  */
-#line 280 "naught.bison"
+#line 285 "naught.bison"
     { (yyval.block_val) = new Block(*(yyvsp[(2) - (3)].vardecl_list_val));
             cout << *(yyval.block_val) << " -> block " << endl;
           }
@@ -1789,7 +1794,7 @@ yyreduce:
 
   case 33:
 /* Line 1813 of yacc.c  */
-#line 284 "naught.bison"
+#line 289 "naught.bison"
     { (yyval.block_val) = new Block();
             cout << *(yyval.block_val) << " -> block " << endl;
           }
@@ -1797,7 +1802,7 @@ yyreduce:
 
   case 34:
 /* Line 1813 of yacc.c  */
-#line 291 "naught.bison"
+#line 296 "naught.bison"
     { auto add = *(yyvsp[(1) - (2)].stmnt_list_val) + *(yyvsp[(2) - (2)].stmnt_val);
 	    (yyval.stmnt_list_val) = &add;
             cout << *(yyval.stmnt_list_val) << " -> stmt_list " << endl;
@@ -1806,7 +1811,7 @@ yyreduce:
 
   case 35:
 /* Line 1813 of yacc.c  */
-#line 296 "naught.bison"
+#line 301 "naught.bison"
     { (yyval.stmnt_list_val) = new StatementList(*(yyvsp[(1) - (1)].stmnt_val));
             cout << *(yyval.stmnt_list_val) << " -> stmt_list " << endl;
           }
@@ -1814,7 +1819,7 @@ yyreduce:
 
   case 36:
 /* Line 1813 of yacc.c  */
-#line 303 "naught.bison"
+#line 308 "naught.bison"
     { (yyval.stmnt_val) = new Statement(*(yyvsp[(1) - (2)].expr_val));
             cout << *(yyval.stmnt_val) << " -> stmt " << endl;
           }
@@ -1822,7 +1827,7 @@ yyreduce:
 
   case 37:
 /* Line 1813 of yacc.c  */
-#line 307 "naught.bison"
+#line 312 "naught.bison"
     { (yyval.stmnt_val) = new Statement(*(yyvsp[(2) - (3)].expr_val), true);
             cout << *(yyval.stmnt_val) << " -> stmt " << endl;
           }
@@ -1830,7 +1835,7 @@ yyreduce:
 
   case 38:
 /* Line 1813 of yacc.c  */
-#line 314 "naught.bison"
+#line 319 "naught.bison"
     { (yyval.expr_val) = new AddExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val));
           cout << *(yyval.expr_val) << " -> expr" << endl;
         }
@@ -1838,7 +1843,7 @@ yyreduce:
 
   case 39:
 /* Line 1813 of yacc.c  */
-#line 318 "naught.bison"
+#line 323 "naught.bison"
     { (yyval.expr_val) = new SubExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val));
           cout << *(yyval.expr_val) << " -> expr" << endl;
         }
@@ -1846,7 +1851,7 @@ yyreduce:
 
   case 40:
 /* Line 1813 of yacc.c  */
-#line 322 "naught.bison"
+#line 327 "naught.bison"
     { (yyval.expr_val) = new StarExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val));
           cout << *(yyval.expr_val) << " -> expr" << endl;
         }
@@ -1854,7 +1859,7 @@ yyreduce:
 
   case 41:
 /* Line 1813 of yacc.c  */
-#line 326 "naught.bison"
+#line 331 "naught.bison"
     { (yyval.expr_val) = new DivExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val));
           cout << *(yyval.expr_val) << " -> expr" << endl;
         }
@@ -1862,7 +1867,7 @@ yyreduce:
 
   case 42:
 /* Line 1813 of yacc.c  */
-#line 330 "naught.bison"
+#line 335 "naught.bison"
     { (yyval.expr_val) = new AssignExpression(*(yyvsp[(1) - (3)].term_val), *(yyvsp[(3) - (3)].expr_val));
       	  cout << *(yyval.expr_val) << " -> expr" << endl;
         }
@@ -1870,7 +1875,7 @@ yyreduce:
 
   case 43:
 /* Line 1813 of yacc.c  */
-#line 334 "naught.bison"
+#line 339 "naught.bison"
     { (yyval.expr_val) = new CondExpression(*(yyvsp[(1) - (5)].expr_val), *(yyvsp[(3) - (5)].expr_val), *(yyvsp[(5) - (5)].expr_val));
           cout << *(yyval.expr_val) << " -> expr" << endl;
         }
@@ -1878,7 +1883,7 @@ yyreduce:
 
   case 44:
 /* Line 1813 of yacc.c  */
-#line 338 "naught.bison"
+#line 343 "naught.bison"
     { (yyval.expr_val) = (yyvsp[(1) - (1)].term_val);
           cout << *(yyval.expr_val) << " -> expr" << endl;
         }
@@ -1886,7 +1891,7 @@ yyreduce:
 
   case 45:
 /* Line 1813 of yacc.c  */
-#line 345 "naught.bison"
+#line 350 "naught.bison"
     { /* GULP $$ = new Term();
           cout << *$$ << " -> term" << endl; */
         }
@@ -1894,7 +1899,7 @@ yyreduce:
 
   case 46:
 /* Line 1813 of yacc.c  */
-#line 349 "naught.bison"
+#line 354 "naught.bison"
     { (yyval.term_val) = new Int((yyvsp[(1) - (1)].string_val));
           cout << *(yyval.term_val) << " -> term" << endl;
         }
@@ -1902,7 +1907,7 @@ yyreduce:
 
   case 47:
 /* Line 1813 of yacc.c  */
-#line 353 "naught.bison"
+#line 358 "naught.bison"
     { (yyval.term_val) = new Id((yyvsp[(1) - (1)].string_val));
           cout << *(yyval.term_val) << " -> term" << endl;
         }
@@ -1910,7 +1915,7 @@ yyreduce:
 
   case 48:
 /* Line 1813 of yacc.c  */
-#line 357 "naught.bison"
+#line 362 "naught.bison"
     { (yyval.term_val) = new ExprTerm((yyvsp[(2) - (3)].expr_val));
          cout << *(yyval.term_val) << " -> term" << endl;
         }
@@ -1918,7 +1923,7 @@ yyreduce:
 
   case 49:
 /* Line 1813 of yacc.c  */
-#line 361 "naught.bison"
+#line 366 "naught.bison"
     { (yyval.term_val) = new UnaryTerm(*(yyvsp[(1) - (2)].string_val), (yyvsp[(2) - (2)].term_val));
           cout << *(yyval.term_val) << " -> term" << endl;
         }
@@ -1926,7 +1931,7 @@ yyreduce:
 
   case 50:
 /* Line 1813 of yacc.c  */
-#line 365 "naught.bison"
+#line 370 "naught.bison"
     { (yyval.term_val) = new FunctionCall(*(yyvsp[(1) - (4)].string_val), (yyvsp[(3) - (4)].arglist_val));
          cout << *(yyval.term_val) << " -> term" << endl;
        }
@@ -1934,7 +1939,7 @@ yyreduce:
 
   case 51:
 /* Line 1813 of yacc.c  */
-#line 369 "naught.bison"
+#line 374 "naught.bison"
     { (yyval.term_val) = new FunctionCall(*(yyvsp[(1) - (3)].string_val));
          cout << *(yyval.term_val) << " -> term" << endl;
        }
@@ -1942,7 +1947,7 @@ yyreduce:
 
   case 52:
 /* Line 1813 of yacc.c  */
-#line 376 "naught.bison"
+#line 381 "naught.bison"
     { (yyval.arglist_val) = new ArgList((yyvsp[(1) - (1)].expr_val));
           cout << *(yyval.arglist_val) << " -> arglist" << endl;
         }
@@ -1950,7 +1955,7 @@ yyreduce:
 
   case 53:
 /* Line 1813 of yacc.c  */
-#line 380 "naught.bison"
+#line 385 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].arglist_val) + (yyvsp[(3) - (3)].expr_val);
 	(yyval.arglist_val) = &add;
         cout << *(yyval.arglist_val) << " -> arglist" << endl;
@@ -1959,7 +1964,7 @@ yyreduce:
 
 
 /* Line 1813 of yacc.c  */
-#line 1963 "parser.cc"
+#line 1968 "parser.cc"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2191,5 +2196,5 @@ yyreturn:
 
 
 /* Line 2076 of yacc.c  */
-#line 386 "naught.bison"
+#line 391 "naught.bison"
 

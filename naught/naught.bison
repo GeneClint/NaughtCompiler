@@ -23,6 +23,7 @@
 #include "Block.h"
 #include "FunctionCall.h"
 #include "FuncDef.h"
+#include "FuncDefList.h"
 
 using namespace std;
 
@@ -53,8 +54,9 @@ extern StrUtil *AST;
   VarDeclList* vardecl_list_val;
   ArgList*    arglist_val;
   Block*      block_val;
-  FunctionCall* func_call_val;
+  FunctionCall*  func_call_val;
   FuncDef*    funcdef_val;
+  FuncDefList*   funcdef_list_val;
 }
 
 /***********************************************************************
@@ -102,7 +104,7 @@ extern StrUtil *AST;
 %type <string_val> funcdecl_list
 %type <param_val> param;
 %type <param_list_val> param_list;
-%type <string_val> funcdef_list
+%type <funcdef_list_val> funcdef_list
 %type <arglist_val> arglist;
 
 /*********************************************
@@ -121,22 +123,22 @@ extern StrUtil *AST;
 
 module :
          funcdecl_list vardecl_list funcdef_list
-          { AST = new StrUtil(*$1 + *$2 + *$3);
+          { AST = new StrUtil(*$1 + *$2 + (string)*$3);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         |              vardecl_list funcdef_list
-          { AST = new StrUtil(*$1 + *$2);
+          { AST = new StrUtil(*$1 + (string)*$2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list             funcdef_list
-          { AST = new StrUtil(*$1 + *$2);
+          { AST = new StrUtil(*$1 + (string)*$2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         |                            funcdef_list
-          { AST = new StrUtil(*$1);
+          { AST = new StrUtil((string)*$1);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
@@ -222,10 +224,13 @@ vardecl :
 
 funcdef_list :
          funcdef
-	 {
+	 { $$ = new FuncDefList($1);
+	   cout << *$$ << " -> funcdef_list " << endl;
 	 }	 
        | funcdef_list funcdef
-         {
+         { auto add = *$1 + $2;
+	   $$ = &add;
+	   cout << *$$ << " -> funcdef_list " << endl;
 	 }	
 	;
 
