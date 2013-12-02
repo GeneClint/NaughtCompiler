@@ -18,6 +18,7 @@
 #include "StatementList.h"
 #include "VarDecl.h"
 #include "VarDeclList.h"
+#include "ArgList.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ extern StrUtil *AST;
   StatementList* stmnt_list_val;
   VarDecl*    vardecl_val;
   VarDeclList* vardecl_list_val;
+  ArgList*    arglist_val;
 }
 
 /***********************************************************************
@@ -94,7 +96,7 @@ extern StrUtil *AST;
 %type <param_val> param;
 %type <param_list_val> param_list;
 %type <string_val> funcdef_list
-%type <string_val> arglist;
+%type <arglist_val> arglist;
 
 /*********************************************
  * This is the terminal symbol.  The entire
@@ -370,11 +372,12 @@ term :
 
 arglist :
         expr
-        { /*$$ = new StrUtil(*$1);
-          cout << *$$ << " -> arglist" << endl;*/
+        { $$ = new ArgList($1);
+          cout << *$$ << " -> arglist" << endl;
         }
       | arglist COMMA expr
-        { $$ = new StrUtil( *$1 + *$2 /*+ *$3*/ );
+        { auto add = *$1 + $3;
+	$$ = &add;
         cout << *$$ << " -> arglist" << endl;
         }
       ;
