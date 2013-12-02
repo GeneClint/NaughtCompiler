@@ -62,7 +62,7 @@ number      {digit}+
 "string"     { yylval.string_val = new StrUtil(yytext); return TYPE; }
 "pointer"    { yylval.string_val = new StrUtil(yytext); return TYPE; }
 \"[^\"]*\"   { yylval.string_val = new StrUtil(yytext); return STRING_LITERAL; }
-{number}     { yylval.string_val = new StrUtil(yytext); return INT_LITERAL; }
+{number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = &temp; return INT_LITERAL; }
 {ident}      { yylval.string_val = new StrUtil(yytext); return ID; }
 [ \t\r\f]    { /* ignore white space. */ }
 [\n]         { yylineno++; }

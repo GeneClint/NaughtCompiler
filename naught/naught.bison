@@ -43,6 +43,7 @@ extern StrUtil *AST;
  * name used later in this file.
  ***************************************/
 %union {
+  int*        int_val;
   StrUtil*    string_val;
   Term*	      term_val;
   Param*      param_val;
@@ -82,7 +83,7 @@ extern StrUtil *AST;
 
 %token <string_val> TYPE
 %token <string_val> STRING_LITERAL
-%token <string_val> INT_LITERAL
+%token <int_val> INT_LITERAL
 %token <string_val> ID
 
 /**********************************************************
@@ -351,7 +352,7 @@ term :
           cout << *$$ << " -> term" << endl; */
         }
       | INT_LITERAL
-        { $$ = new Int($1);
+        { $$ = new Int(*$1);
           cout << *$$ << " -> term" << endl;
         }
       | ID
