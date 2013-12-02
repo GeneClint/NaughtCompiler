@@ -8,7 +8,7 @@ class Expression {
  public:
   virtual ~Expression() {}
   
-  Expression* evaluate() {return this;}
+  const Expression* evaluate() {return this;}
 
   virtual std::string toString() const = 0;
       

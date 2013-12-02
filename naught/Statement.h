@@ -9,7 +9,7 @@ class Statement {
  public:
   Statement (Expression &e, const bool &r = false) : isRet(r), exp(&e) {};
   bool isReturn() const;
-  Expression* getExpression() const;
+  const Expression* getExpression() const;
   std::string toString() const;
 
   friend std::ostream& operator<<(std::ostream &os, const Statement &p) {
@@ -19,7 +19,7 @@ class Statement {
 
  private:
   const bool isRet;
-  Expression* exp; 
+  const Expression* exp; 
 };
 
 #endif

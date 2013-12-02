@@ -46,6 +46,7 @@ extern StrUtil *AST;
   StatementList* stmnt_list_val;
   VarDecl*    vardecl_val;
   VarDeclList* vardecl_list_val;
+  Block*      block_val;
 }
 
 /***********************************************************************
@@ -81,7 +82,7 @@ extern StrUtil *AST;
 
 %type <string_val> module
 %type <string_val> funcdef
-%type <string_val> block
+%type <block_val> block
 %type <vardecl_val> vardecl
 %type <string_val> funcdecl
 %type <expr_val> expr
@@ -211,7 +212,6 @@ vardecl :
           }
        ;
 
-
 funcdef_list :
          funcdef
        | funcdef_list funcdef
@@ -219,19 +219,19 @@ funcdef_list :
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
+          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 /*+ *$6*/);
             cout << *$$ << " -> funcdef " << endl;
           }
         | FUNCTION ID LPAREN RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4/* + *$5*/);
             cout << *$$ << " -> funcdef " << endl;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
+          { $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 /*+ *$6*/);
             cout << *$$ << " -> funcdef " << endl;
           }
         | SFUNCTION ID LPAREN RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 /*+ *$5*/);
             cout << *$$ << " -> funcdef " << endl;
           }
         ;
@@ -257,19 +257,19 @@ param :
 
 block : 
 	  LCBRACE vardecl_list stmt_list RCBRACE
-          { $$ = new StrUtil(*$1 + *$2 + (string)*$3 + *$4);
+          { $$ = new Block(*$2, *$3);
             cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE              stmt_list RCBRACE
-          { $$ = new StrUtil(*$1 + (string)*$2 + *$3);
+          { $$ = new Block(NULL, *$2);
             cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE vardecl_list           RCBRACE
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
+          { $$ = new Block(*$2);
             cout << *$$ << " -> block " << endl;
           }
         | LCBRACE RCBRACE
-          { $$ = new StrUtil(*$1 + *$2);
+          { $$ = new Block();
             cout << *$$ << " -> block " << endl;
           }
         ;
@@ -315,7 +315,7 @@ expr :
           cout << *$$ << " -> expr" << endl;
         }
       | term  ASSIGN expr
-        { $$ = new AssignExpression(*$1, *$3) 
+        { $$ = new AssignExpression(*$1, *$3); 
           cout << *$$ << " -> expr" << endl;
         }
       | expr QUESTION expr COLON expr
@@ -323,7 +323,7 @@ expr :
           cout << *$$ << " -> expr" << endl;
         }
       | term
-        { $ = $1;
+        { $$ = $1;
           cout << *$$ << " -> expr" << endl;
         }
       ;

@@ -6,7 +6,7 @@ bool Statement::isReturn() const {
   return isRet;
 }
 
-Expression* Statement::getExpression() const {
+const Expression* Statement::getExpression() const {
   return exp;
 }
 
