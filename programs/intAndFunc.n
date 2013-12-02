@@ -1,0 +1,9 @@
+int x;
+int y = 1;
+function add(int x, int y) {
+  return x + y;
+}
+
+function sub(int x, int y) {
+  return x - y;
+}
