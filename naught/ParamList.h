@@ -9,8 +9,14 @@
 
 class ParamList {
  public:
-  ParamList () {};
+  ParamList ();
   ParamList (const Param &p);
+
+  ParamList(const ParamList &other);
+  ParamList& operator=(const ParamList &other);
+  ParamList (ParamList &&other) noexcept;
+  ParamList& operator=(ParamList &&other) noexcept;
+
   ParamList operator+ (const Param &p);
   virtual ~ParamList () {};
   vector<Param> getParams() const; 
@@ -32,7 +38,7 @@ class ParamList {
   }
 
  private:
-  vector<Param> params; 
+  vector<Param> *params; 
 };
 
 #endif
