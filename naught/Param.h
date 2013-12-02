@@ -10,7 +10,10 @@ class Param {
  public:
   Param (const std::string &_type, const Id &_id) : type(_type), id(_id) {};
   Param (const StrUtil &_type, const Id &_id) : type(_type.toString()), id(_id) {};
+  Param (const StrUtil &_type, const StrUtil &_id) : 
+    type(_type.toString()), id(Id(_id.toString())) {};
   Id getId() const;
+  explicit operator string() const { return toString(); }
   std::string getType() const;
   std::string toString() const;
   

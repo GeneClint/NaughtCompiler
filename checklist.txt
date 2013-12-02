@@ -9,7 +9,7 @@
    Preliminary finish (let's see if id needs to do more) - Clint
 4. Expressions
    Beginning work on Int Expressions - Clint
-   Beginning on expression nodes - Gene
+   Preliminary finish (will definitely need to add more as we add string and pointer and so forth) - expression nodes - Gene
 
 5. Function Type
 6. other expressions...

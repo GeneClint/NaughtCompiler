@@ -6,10 +6,10 @@ Id Param::getId() const {
   return id;
 }
 
-std::string Param::getType const {
+std::string Param::getType() const {
   return type;
 }
 
-std::string toString() const {
+std::string Param::toString() const {
   return type + " " + id.toString();
 }

@@ -10,6 +10,7 @@
  int yyerror(char *s);
 
  #include "StrUtil.h"
+ #include "Param.h"
  #include "parser.hh"
 %}
 

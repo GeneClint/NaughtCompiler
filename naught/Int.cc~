@@ -1,7 +1,0 @@
-class Int: public Term {
-public:
-  Int (int v) : Term
-
-private:
-  int val;
-}

@@ -1,8 +1,6 @@
 #include <string>
 
 #include "Int.h"
-using namespace std;
-
 
 int Int::getValue() const {
   return val;
