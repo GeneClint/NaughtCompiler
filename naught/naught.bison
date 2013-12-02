@@ -19,6 +19,7 @@
 #include "VarDecl.h"
 #include "VarDeclList.h"
 #include "ArgList.h"
+#include "UnaryTerm.h"
 
 using namespace std;
 
@@ -357,8 +358,8 @@ term :
          cout << *$$ << " -> term" << endl;
         }
       | UNARY_OP term
-        { /* GULP $$ = new Term();
-          cout << *$$ << " -> term" << endl; */
+        { $$ = new UnaryTerm(*$1, $2);
+          cout << *$$ << " -> term" << endl;
         }
       | ID LPAREN arglist RPAREN  /* function call */
        { /* GULP $$ = new Term();
