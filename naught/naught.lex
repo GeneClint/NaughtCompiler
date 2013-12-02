@@ -26,7 +26,8 @@
  #include "FuncDeclList.h"
  #include "FuncDef.h"
  #include "FuncDefList.h"
- 
+ #include "Module.h"
+
  #include "parser.hh"
 %}
 

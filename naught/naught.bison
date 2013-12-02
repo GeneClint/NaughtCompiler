@@ -28,7 +28,7 @@ using namespace std;
 
 extern int _WANT_DEBUG;
 
-extern StrUtil *AST;
+extern Module *AST;
 
 
 %}
@@ -59,6 +59,7 @@ extern StrUtil *AST;
   FuncDeclList* funcdecl_list_val;
   FuncDef*    funcdef_val;
   FuncDefList*   funcdef_list_val;
+  Module*     module_val;
 }
 
 /***********************************************************************
@@ -92,7 +93,7 @@ extern StrUtil *AST;
  * corresponding to non-terminals.
  **********************************************************/
 
-%type <string_val> module
+%type <module_val> module
 %type <funcdef_val> funcdef
 %type <block_val> block
 %type <vardecl_val> vardecl
@@ -125,42 +126,42 @@ extern StrUtil *AST;
 
 module :
          funcdecl_list vardecl_list funcdef_list
-          { /*AST = new StrUtil(*$1 + *$2 + *$3);
+          { AST = new Module($1, $2, $3);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-          */}
+          }
         |              vardecl_list funcdef_list
-          { AST = new StrUtil(*$1 + (string)*$2);
+          { AST = new Module(NULL, $1, $2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list             funcdef_list
-          { /*AST = new StrUtil(*$1 + *$2);
+          { AST = new Module($1, NULL, $2);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-         */ }
+          }
         |                            funcdef_list
-          { AST = new StrUtil((string)*$1);
+          { AST = new Module(NULL, NULL, $1);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list vardecl_list
-          { /*AST = new StrUtil(*$1 + *$2);
+          { AST = new Module($1, $2, NULL);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-         */ }
+          }
         |              vardecl_list
-          { AST = new StrUtil((string)*$1);
+          { AST = new Module(NULL, $1, NULL);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list             
-          { /*AST = new StrUtil(*$1);
+          { AST = new Module($1, NULL, NULL);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
-          */}
+          }
         |
-          { AST = new StrUtil(string());
+          { AST = new Module(NULL, NULL, NULL);
             $$ = AST;
             cout << *$$ << " -> module " << endl;
           }
