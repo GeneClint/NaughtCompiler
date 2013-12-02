@@ -9,7 +9,7 @@ class Int: public Term {
  public:
   virtual ~Int() {};
   Int  (StrUtil *ignore) : Term(), val(0) {};
-  Int (int &v) : Term (), val(v) {};
+  Int (int &v) : Term (), val(v) {std::cout << "int creations" <<v << std::endl;};
   int getValue() const;
   virtual std::string toString() const;
  private:

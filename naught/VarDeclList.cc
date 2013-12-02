@@ -22,10 +22,12 @@ vector<VarDecl> VarDeclList::getVarDecls() const {
 
 string VarDeclList::toString() const {
   stringstream ss;
+  
   for(size_t i = 0; i < varDecls.size(); ++i) {
     if(i != 0)
       ss << ",";
     ss << varDecls[i].toString();
   }
+  ss << ";";
   return ss.str();
 }

@@ -9,11 +9,12 @@
 #include <cstdlib>
 #include <unistd.h>
 
+#include "terms.h"
 #include "StrUtil.h"
 
 #include "yy.h"
 
-StrUtil *AST = nullptr;
+Module *AST = nullptr;
 
 int _WANT_DEBUG = 0;
 
@@ -68,11 +69,17 @@ int main(int argc, char **argv)
     outFilename[outFilename.length()-1] = 'c';
   }
 
+  std::cout << "about to build" << std::endl;
+
   // The parser leaves the AST in variable AST
   if ( yyparse() ) return EXIT_FAILURE;
 
+  std::cout << "yay?" << std::endl;
+
   if ( AST == nullptr ) return EXIT_SUCCESS;  // empty file?
-  
+ 
+  std::cout << "continuing!" << std::endl;
+
   // Generate code
   // ...
 

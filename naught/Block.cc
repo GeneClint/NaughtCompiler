@@ -11,5 +11,12 @@ vector<Statement> Block::getStatements() const {
 }
 
 std::string Block::toString() const {
+  std::cout << "starting block toString " << vlist << endl;
+  vlist.toString();
+  std::cout << "completed vlist toString" << endl;
+  slist.toString();
+  std::cout <<"completed slist tostring" <<endl;
+
+  
   return "{" + vlist.toString() + ", " + slist.toString() + "}";
 }
