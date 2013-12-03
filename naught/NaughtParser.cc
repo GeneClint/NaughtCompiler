@@ -7,6 +7,9 @@ void NaughtParser::write(Module *ast, string o) {
 }
 
 void NaughtParser::writeModule(Module m) {
+  
+  writeHeader();
+
   if (m.hasFuncDecls()) {
     vector<FuncDecl> decls = m.getFuncDecls()->getFuncDecls();
     for(FuncDecl fdecl : decls) {
@@ -105,9 +108,20 @@ string NaughtParser::writeTerm(Term *t) {
     string temp = writeExpression(et->evaluate());
     return " ( " + temp + ")";
   } else if (ut) {
-    string otherTemp = writeTerm(ut->getInnerTerm());
+    string otherTemp = writeTerm(ut->evaluate());
     string temp = temps.next();
-    out << temp << " = " << ut->getOperator() << otherTemp << " ;";
+    string oper = ut->getOperator();
+    string result = "";
+    
+
+    if(oper.compare("print") == 0) {
+      out << "printf(\"%d\", " << otherTemp << ");" << endl; 
+      result = otherTemp;
+    } else {
+      result = oper + otherTemp;
+    }
+    
+    out << temp << " = " << result << " ;";
     return temp;
   } else {
     string temp = temps.next();
@@ -162,3 +176,9 @@ void NaughtParser::writeStatement(Statement s) {
   }
   out << endl;
 }
+
+void NaughtParser::writeHeader() {
+  out << "#include <stdio.h>" << endl;
+  out << "#include <stdlib.h>" << endl << endl;
+}
+

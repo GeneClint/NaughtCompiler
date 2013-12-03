@@ -1,6 +1,7 @@
 #include "Term.h"
 #include "Int.h"
 #include "Id.h"
+#include "String.h"
 #include "Expression.h"
 #include "AddExpression.h"
 #include "SubExpression.h"

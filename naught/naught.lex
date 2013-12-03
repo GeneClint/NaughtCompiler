@@ -27,6 +27,7 @@
  #include "FuncDef.h"
  #include "FuncDefList.h"
  #include "Module.h"
+ #include "String.h"
 
  #include "parser.hh"
 %}
@@ -62,9 +63,9 @@ number      {digit}+
 "&"          { yylval.type_val = new string("&"); return UNARY_OP; }
 "@"          { yylval.type_val = new string("*"); return UNARY_OP; }
 "int"        { yylval.type_val = new string("int32_t"); return TYPE; }
-"string"     { yylval.string_val = new StrUtil(yytext); return TYPE; }
+"string"     { yylval.type_val = new string("nstring_st"); return TYPE; }
 "pointer"    { yylval.type_val = new string("int32_t *"); return TYPE; }
-\"[^\"]*\"   { yylval.string_val = new StrUtil(yytext); return STRING_LITERAL; }
+\"[^\"]*\"   { yylval.nstring_val = new String(yytext); return STRING_LITERAL; }
 {number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = &temp; return INT_LITERAL; }
 {ident}      { yylval.string_val = new StrUtil(yytext); return ID; }
 [ \t\r\f]    { /* ignore white space. */ }

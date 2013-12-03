@@ -44,6 +44,7 @@ extern Module *AST;
 %union {
   string*     type_val;
   int*        int_val;
+  String*     nstring_val;
   StrUtil*    string_val;
   Term*	      term_val;
   Param*      param_val;
@@ -85,7 +86,7 @@ extern Module *AST;
 %token <string_val> LCBRACE RCBRACE RPAREN LPAREN SEMI COMMA EXTERN FUNCTION SFUNCTION RETURN
 
 %token <type_val> TYPE
-%token <string_val> STRING_LITERAL
+%token <nstring_val> STRING_LITERAL
 %token <int_val> INT_LITERAL
 %token <type_val> ID
 
@@ -355,8 +356,8 @@ expr :
 
 term :
         STRING_LITERAL
-        { /* GULP $$ = new Term();
-          cout << (*$$).toString() << " -> term" << endl; */
+        { $$ = $1;
+          cout << (*$$).toString() << " -> term" << endl;
         }
       | INT_LITERAL
         { $$ = new Int(*$1);
