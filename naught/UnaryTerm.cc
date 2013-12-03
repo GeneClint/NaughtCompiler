@@ -4,5 +4,6 @@
 using namespace std;
 
 string UnaryTerm::toString() const {
-  return internal->toString();
+  string oper = op.compare("print") == 0 ? "print " : op;
+  return oper + internal->toString();
 }

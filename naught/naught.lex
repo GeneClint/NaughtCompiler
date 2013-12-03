@@ -58,12 +58,12 @@ number      {digit}+
 "sfunction"  { yylval.string_val = new StrUtil(yytext); return SFUNCTION; }
 "function"   { yylval.string_val = new StrUtil(yytext); return FUNCTION; }
 "return"     { yylval.string_val = new StrUtil(yytext); return RETURN; }
-"print"      { yylval.string_val = new StrUtil(yytext); return UNARY_OP; }
-"&"          { yylval.string_val = new StrUtil(yytext); return UNARY_OP; }
-"@"          { yylval.string_val = new StrUtil(yytext); return UNARY_OP; }
-"int"        { yylval.string_val = new StrUtil(yytext); return TYPE; }
+"print"      { yylval.type_val = new string("print"); return UNARY_OP; }
+"&"          { yylval.type_val = new string("&"); return UNARY_OP; }
+"@"          { yylval.type_val = new string("*"); return UNARY_OP; }
+"int"        { yylval.type_val = new string("int32_t"); return TYPE; }
 "string"     { yylval.string_val = new StrUtil(yytext); return TYPE; }
-"pointer"    { yylval.string_val = new StrUtil(yytext); return TYPE; }
+"pointer"    { yylval.type_val = new string("int32_t *"); return TYPE; }
 \"[^\"]*\"   { yylval.string_val = new StrUtil(yytext); return STRING_LITERAL; }
 {number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = &temp; return INT_LITERAL; }
 {ident}      { yylval.string_val = new StrUtil(yytext); return ID; }

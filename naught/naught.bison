@@ -71,7 +71,7 @@ extern Module *AST;
 %right <string_val> COLON QUESTION
 %left <string_val> ADD SUB
 %left <string_val> STAR DIV
-%right <string_val> UNARY_OP
+%right <type_val> UNARY_OP
 /*********************************************************
  * Okay, that's it -- after this order doesn't matter
  *********************************************************/
