@@ -82,7 +82,7 @@ void NaughtParser::writeStatement(Statement s) {
     tempvar = writeExpression(*exp);
   }
   if (s.isReturn()) {
-    out << "return " << tempvar;
+    out << "return " << tempvar << ";";
   }
   out << endl;
 }
