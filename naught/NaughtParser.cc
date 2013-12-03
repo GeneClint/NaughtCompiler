@@ -45,7 +45,12 @@ void NaughtParser::writeFunctionDecl(FuncDecl f) {
 }
 
 void NaughtParser::writeVarDecl(VarDecl v) {
-  out << v.toString();
+   out << v.toString() << ";" << endl;
+}
+
+string NaughtParser::writeExpression(Expression e) {
+  string tempname = temps.next();
+  out << tempname << " = " << e.toString();
 }
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
