@@ -11,6 +11,7 @@
 
 #include "terms.h"
 #include "StrUtil.h"
+#include "NaughtParser.h"
 
 #include "yy.h"
 
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
 
   // Generate code
   // ...
-
+  NaughtParser::write(AST, outFilename);
 
   // clean up
   delete AST;

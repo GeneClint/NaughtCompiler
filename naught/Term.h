@@ -13,6 +13,11 @@ class Term : public Expression {
 public:
   virtual ~Term() {};
   Term* evaluate() {return this;}
+  Term* getTerm() {return this;}
+  Term* getInnerTerm() {return NULL;}
+  Expression* getInnerExpression() {return NULL;}
+  
+  std::vector<std::string> getConnectors() const {return std::vector<std::string>();}
   virtual std::string toString() const =0;
 
   friend std::ostream& operator<<(std::ostream &os, const Term &t) {

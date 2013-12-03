@@ -11,6 +11,8 @@ class StarExpression : public Expression {
     StarExpression(Expression &e1, Expression &e2) : Expression(), expr1(&e1), expr2(&e2) {};
     Expression* getValue1() const;
     Expression* getValue2() const;
+
+    std::vector<std::string> getConnectors() const {return std::vector<std::string>({"*"});};
     virtual std::string toString() const;
 
   private:

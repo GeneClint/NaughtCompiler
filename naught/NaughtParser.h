@@ -5,6 +5,9 @@
 
 #include "Module.h"
 #include "TempGen.h"
+#include "Decl.h"
+#include "UnaryTerm.h"
+#include "ExprTerm.h"
 
 #ifndef __NAUGHT_PARSER_H
 #define __NAUGHT_PARSER_H
@@ -12,20 +15,21 @@ using std::string;
 
 class NaughtParser {
  public:
-  static void write(Module ast, string o);
+  static void write(Module *ast, string o);
  private:
-  NaughtParser(std::ofstream o) : out(o), exprCount(0), temps(new TempGen()) {};
+  NaughtParser(std::string o) : out(o) {};
 
   void writeModule(Module m);
-  void writeVarDecl(VarDecl v);
-  std::string writeExpression(Expression e);
-  void writeFunctionDecl(FuncDecl f);
+  std::string writeVarDecl(VarDecl *v);
+  std::string writeExpression(const Expression *e);
+  void writeFunctionDecl(FuncDecl *f);
   void writeFunctionDef(FuncDef f);
   void writeBlock(Block b);
+  void writeStatement(Statement s);
+  std::string writeTerm(Term *t);
 
   std::ofstream out;
-  size_t exprCount;
-  std::unordered_map<string, VarDecl> symbols;
+  std::unordered_map<string, Decl*> symbols;
   TempGen temps;
 };
 
