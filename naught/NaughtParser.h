@@ -19,6 +19,7 @@ class NaughtParser {
   void writeExpression(Expression e);
   void writeFunctionDecl(FuncDecl f);
   void writeFunctionDef(FuncDef f);
+  void writeBlock(Block b);
 
   std::ofstream out;
   size_t exprCount;

@@ -47,3 +47,45 @@ void NaughtParser::writeFunctionDecl(FuncDecl f) {
 void NaughtParser::writeVarDecl(VarDecl v) {
   out << v.toString();
 }
+
+void NaughtParser::writeFunctionDef(FuncDef f) {
+  out << "int " << f.getId().toString() << " ( ";
+  auto params = f.getParams();
+  if (params.size() > 0) {
+    out << params[0].toString();
+    for(size_t i = 1; i < params.size(); i++) {
+      out << " , " << params[i].toString();
+    }
+  }
+  out << " ) " << endl;
+  if (bloc != NULL) {
+    writeBlock(*bloc);
+  }
+}
+
+void NaughtParser::writeBlock(Block b) {
+  out << " { " << endl;
+  auto decls = b..getVarDecls();
+  for(auto decl : decls) {
+    writeVarDecl(decl);
+    out << endl;
+  }
+  auto stmts = b.getStatements();
+  for(auto stmt : stmts) {
+    writeStatement(stmt);
+    out << endl;
+  }
+  out << " } " << endl;
+}
+
+void NaughtParser::writeStatement(Statement s) {
+  auto exp = s.getExpression();
+  string tempvar;
+  if (exp != NULL) {
+    tempvar = writeExpression(*exp);
+  }
+  if (s.isReturn()) {
+    out << "return " << tempvar << ";";
+  }
+  out << endl;
+}
