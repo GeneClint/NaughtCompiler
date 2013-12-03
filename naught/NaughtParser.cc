@@ -43,3 +43,7 @@ void NaughtParser::writeFunctionDecl(FuncDecl f) {
   }
   out << " );" << endl;
 }
+
+void NaughtParser::writeVarDecl(VarDecl v) {
+  out << v.toString();
+}
