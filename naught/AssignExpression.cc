@@ -5,7 +5,7 @@ Term* AssignExpression::getTerm() const {
   return term;
 }
 
-Expression* AssignExpression::getExpr() const {
+Expression* AssignExpression::getValue1() const {
   return expr;
 }
 

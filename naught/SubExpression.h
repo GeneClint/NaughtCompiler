@@ -13,6 +13,8 @@ class SubExpression : public Expression {
     Expression* getValue2() const;
     virtual std::string toString() const;
 
+    std::vector<std::string> getConnectors() const {return std::vector<std::string>({"-"});};
+
   private:
     Expression* expr1;
     Expression* expr2;

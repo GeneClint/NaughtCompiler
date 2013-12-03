@@ -12,6 +12,8 @@ class CondExpression : public Expression {
     Expression* getValue1() const;
     Expression* getValue2() const;
     Expression* getValue3() const;
+
+    std::vector<std::string> getConnectors() const {return std::vector<std::string>({"?",":"});};
     virtual std::string toString() const; 
 
   private:

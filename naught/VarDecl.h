@@ -3,11 +3,12 @@
 #include "Id.h"
 #include "StrUtil.h"
 #include "Expression.h"
+#include "Decl.h"
 
 #ifndef __VARDECL_H
 #define __VARDECL_H
 
-class VarDecl {
+class VarDecl : public Decl {
  public:
   VarDecl (const std::string &t, const Id &i,
 	   const bool &ex = false, const Expression *e = NULL) :
@@ -20,6 +21,7 @@ class VarDecl {
   std::string getType() const;
   bool isExtern() const;
   Expression* getExpression() const;
+  bool isFunction() const {return false;};
 
   std::string toString() const;
 

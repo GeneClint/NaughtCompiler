@@ -1,40 +1,40 @@
 #include "NaughtParser.h"
 using namespace std;
 
-static void NaughtParser::write(Module ast, string o) {
-  ofstream output;
-  output.open ("o");
+void NaughtParser::write(Module *ast, string o) {
   NaughtParser parser(o);
-  parser.writeModule(ast);
+  parser.writeModule(*ast);
 }
 
 void NaughtParser::writeModule(Module m) {
-  if (m.hasFunctionDecls()) {
-    auto decls = *(m.getFunctionDecls());
-    for(auto decl : decls) {
-      writeFunctionDecl(decl);
+  if (m.hasFuncDecls()) {
+    vector<FuncDecl> decls = m.getFuncDecls()->getFuncDecls();
+    for(FuncDecl fdecl : decls) {
+      writeFunctionDecl(&fdecl);
       out << endl;
     }
   }
   if (m.hasVarDecls()) {
-    auto decls = *(m.getVarDecls());
-    for(auto decl : decls) {
-      writeVarDecl(decl);
+    vector<VarDecl> vdecls = m.getVarDecls()->getVarDecls();
+    for(VarDecl vdecl : vdecls) {
+      writeVarDecl(&vdecl);
       out << endl;
     }
   }
   if (m.hasFuncDefs()) {
-    auto defs = *(m.getFunDefs());
-    for(auto def : defs) {
-      writeFunctionDef(def);
+    vector<const FuncDef*> defs = m.getFuncDefs()->getFuncDefs();
+    for(const FuncDef* def : defs) {
+      writeFunctionDef(*def);
       out << endl;
     }
   }
 }
 
-void NaughtParser::writeFunctionDecl(FuncDecl f) {
-  out << "int " << f.getId().toString() << " ( ";
-  auto params = f.getParams();
+void NaughtParser::writeFunctionDecl(FuncDecl *f) {
+  string id = f->getId().toString();
+  symbols.insert({id, f});
+  out << "int " << id << " ( ";
+  auto params = f->getParams();
   if (params.size() > 0) {
     out << params[0].toString();
     for(size_t i = 1; i < params.size(); i++) {
@@ -44,18 +44,81 @@ void NaughtParser::writeFunctionDecl(FuncDecl f) {
   out << " );" << endl;
 }
 
-void NaughtParser::writeVarDecl(VarDecl v) {
-   out << v.toString() << ";" << endl;
+string NaughtParser::writeVarDecl(VarDecl* v) {
+  string tempvar; 
+  string id = v->getId().toString();
+  Expression* exp = v->getExpression();
+  if (exp)
+    tempvar = writeExpression(exp);
+  if (v->isExtern())
+    out << "extern ";
+  out << id;
+  if (exp) {
+    out << " = " << tempvar;
+  }
+  out << ";";
+  symbols.insert({id, v});
+  return id;
 }
 
-string NaughtParser::writeExpression(Expression e) {
-  string tempname = temps.next();
-  out << tempname << " = " << e.toString();
+string NaughtParser::writeExpression(const Expression *e) {
+  Term* t = e->getTerm();
+
+  Expression* sub_e;
+  vector<string> connections = e->getConnectors();
+  vector<string> temps;
+
+  sub_e = e->getValue1();
+  if (sub_e) {
+    temps.push_back(writeExpression(sub_e));
+  }
+
+  sub_e = e->getValue2();
+  if (sub_e) {
+    temps.push_back(writeExpression(sub_e));
+  }
+
+  sub_e = e->getValue3();
+  if (sub_e) {
+    temps.push_back(writeExpression(sub_e));
+  }
+
+  string tempname = this->temps.next();
+  out << tempname << " = ";
+  int connectIndex = 0;
+  if (t != nullptr) {
+    out << writeTerm(t);
+    if (connections.size() > 0)
+      out << connections[connectIndex++];
+  }
+
+  for(string temp : temps)
+    out << " " << temp << " " << connections[connectIndex++];
+  out << ";" << endl;
+  return tempname;
+}
+
+string NaughtParser::writeTerm(Term *t) {
+  UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
+  ExprTerm *et = dynamic_cast<ExprTerm*>(t);
+  if (et) {
+    string temp = writeExpression(et->evaluate());
+    return " ( " + temp + ")";
+  } else if (ut) {
+    string otherTemp = writeTerm(ut->getInnerTerm());
+    string temp = temps.next();
+    out << temp << " = " << ut->getOperator() << otherTemp << " ;";
+    return temp;
+  } else {
+    string temp = temps.next();
+    out << temp << " = " << t->toString();
+    return temp;
+  }
 }
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
   out << "int " << f.getId().toString() << " ( ";
-  auto params = f.getParams();
+  auto params = f.getParams()->getParams();
   if (params.size() > 0) {
     out << params[0].toString();
     for(size_t i = 1; i < params.size(); i++) {
@@ -63,16 +126,18 @@ void NaughtParser::writeFunctionDef(FuncDef f) {
     }
   }
   out << " ) " << endl;
-  if (bloc != NULL) {
+  Block* bloc = f.getBlock();
+  if (bloc) {
     writeBlock(*bloc);
   }
 }
 
 void NaughtParser::writeBlock(Block b) {
   out << " { " << endl;
-  auto decls = b..getVarDecls();
+  auto decls = b.getVarDecls();
+  vector<string> scope;
   for(auto decl : decls) {
-    writeVarDecl(decl);
+    scope.push_back(writeVarDecl(&decl));
     out << endl;
   }
   auto stmts = b.getStatements();
@@ -80,14 +145,17 @@ void NaughtParser::writeBlock(Block b) {
     writeStatement(stmt);
     out << endl;
   }
+  for (auto id : scope) {
+    symbols.erase (id);
+  }
   out << " } " << endl;
 }
 
 void NaughtParser::writeStatement(Statement s) {
   auto exp = s.getExpression();
   string tempvar;
-  if (exp != NULL) {
-    tempvar = writeExpression(*exp);
+  if (exp) {
+    tempvar = writeExpression(exp);
   }
   if (s.isReturn()) {
     out << "return " << tempvar << ";";
