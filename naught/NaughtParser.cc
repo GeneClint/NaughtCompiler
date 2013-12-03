@@ -31,3 +31,15 @@ void NaughtParser::writeModule(Module m) {
     }
   }
 }
+
+void NaughtParser::writeFunctionDecl(FuncDecl f) {
+  out << "int " << f.getId().toString() << " ( ";
+  auto params = f.getParams();
+  if (params.size() > 0) {
+    out << params[0].toString();
+    for(size_t i = 1; i < params.size(); i++) {
+      out << " , " << params[i].toString();
+    }
+  }
+  out << " );" << endl;
+}

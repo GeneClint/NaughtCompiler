@@ -1755,7 +1755,7 @@ yyreduce:
 /* Line 1813 of yacc.c  */
 #line 266 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].param_list_val) + *(yyvsp[(3) - (3)].param_val);
-	          (yyval.param_list_val) = (yyvsp[(1) - (3)].param_list_val);
+	          (yyval.param_list_val) = &add;
             cout << (*(yyval.param_list_val)).toString() << " -> param_list " << endl;
           }
     break;
