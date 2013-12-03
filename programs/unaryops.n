@@ -1,0 +1,3 @@
+pointer x;
+int y = @x;
+pointer z = &y;
