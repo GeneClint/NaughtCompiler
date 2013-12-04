@@ -97,7 +97,7 @@ string NaughtParser::writeExpression(const Expression *e) {
 
   if (temps.size() > 0) {
     out << " " << temps[0];
-    for(int i = 1; i < temps.size(); i++) {
+    for(size_t i = 1; i < temps.size(); i++) {
       out << connections[connectOffset + i - 1] << " " << temps[i] << " ";
     }
   }
