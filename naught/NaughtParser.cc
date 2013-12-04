@@ -64,7 +64,7 @@ tempName NaughtParser::writeVarDecl(VarDecl* v) {
   }
   out << ";";
   
-  symbols.insert({id, v});
+  symbols.insert({id, new VarDecl(v->getType(), new Id(id))});
  
   tempName retVal = make_pair(type, id);
 
@@ -95,10 +95,9 @@ tempName NaughtParser::writeExpression(const Expression *e) {
 
   Term* thisTerm = dynamic_cast<Term *>(const_cast<Expression *>(e));
 
-  // if the expression itself is a term
+  // a VarDecl
   if(thisTerm) {
     // variable
-  /* 
     Id *id = dynamic_cast<Id *>(thisTerm);
     if(id) {
       string name = id->getName();
@@ -109,13 +108,12 @@ tempName NaughtParser::writeExpression(const Expression *e) {
         
         if(vd) {
           // variable exists, so just return the variable with type
-          return make_pair(vd->getType(), name);
+          return writeTerm(thisTerm);
         } 
       } else {
         // TODO: error, unknown id
       }
     }
-*/
     tempName temp = writeTerm(thisTerm);
     out << temp.first << " " << temp.second << " = " << thisTerm->toString() << ";" << endl;
     return temp;
@@ -184,15 +182,15 @@ tempName NaughtParser::writeTerm(Term *&t) {
       string name = id->getName();
       if(symbols.find(name) != symbols.end()) {
         // exists
-        Decl *res = symbols.find(id->getName())->second;
+        Decl *res = symbols.find(name)->second;
         VarDecl *vd   = dynamic_cast<VarDecl *>(res);
-        
+       
         if(vd) {
           // variable exists, so just return the variable with type
           return make_pair(vd->getType(), name);
-        } 
-        // TODO: ERROR
+        }
        }
+    // TODO: ERROR message
     tempName temp = make_pair("id", id->getName());
     return temp;
   } else {
