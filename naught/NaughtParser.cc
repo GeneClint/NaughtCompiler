@@ -127,10 +127,10 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   return temp;
 }
 
-tempName NaughtParser::writeTerm(Term *t) {
-  String *s     = dynamic_cast<String *>(t);
-  Int *in       = dynamic_cast<Int *>(t);
-  Id *id        = dynamic_cast<Id *>(t);
+tempName NaughtParser::writeTerm(Term *&t) {
+  String *s     = dynamic_cast<String*>(t);
+  Int *in       = dynamic_cast<Int*>(t);
+  Id *id        = dynamic_cast<Id*>(t);
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
   ExprTerm *et  = dynamic_cast<ExprTerm*>(t);
   
@@ -138,13 +138,12 @@ tempName NaughtParser::writeTerm(Term *t) {
 
   if (et) {
     tempName temp = writeExpression(et->evaluate());
-    temp.second = " ( " + temp.second + " ) ";
-
-    return temp;
+    t = new Id(temp.second);
+    return temps.next(temp.first);
   } else if (ut) {
-    tempName otherTemp = writeTerm(ut->evaluate());
-    
     // TODO: change type based on operator
+    Term* other = ut->evaluate();
+    tempName otherTemp = writeTerm(other);
     tempName temp = temps.next("int32_t");
     string oper = ut->getOperator();
     string result = "";
@@ -158,7 +157,17 @@ tempName NaughtParser::writeTerm(Term *t) {
     }
     
     return temp;
+  } else if(s) {
+    tempName temp = temps.next("char *");
+    return temp;
+  } else if(in) {
+    tempName temp = temps.next("int32_t");
+    return temp;
+  } else if(id) { 
+    tempName temp = make_pair("id", id->getName());
+    return temp;
   } else {
+    // defualt...
     tempName temp = temps.next("int32_t");
     return temp;
   }
@@ -216,5 +225,10 @@ void NaughtParser::writeStatement(Statement s) {
 void NaughtParser::writeHeader() {
   out << "#include <stdio.h>" << endl;
   out << "#include <stdlib.h>" << endl << endl;
+  
+  out << "typedef struct nstring_st {" << endl <<
+         "  int32_t   len;" << endl <<
+         "  char      str[];" << endl <<
+         "} nstring_st;" << endl << endl;
 }
 

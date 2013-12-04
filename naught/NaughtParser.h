@@ -9,6 +9,9 @@
 #include "Decl.h"
 #include "UnaryTerm.h"
 #include "ExprTerm.h"
+#include "String.h"
+#include "Int.h"
+#include "Id.h"
 
 #ifndef __NAUGHT_PARSER_H
 #define __NAUGHT_PARSER_H
@@ -32,7 +35,7 @@ class NaughtParser {
   void writeFunctionDef(FuncDef f);
   void writeBlock(Block b);
   void writeStatement(Statement s);
-  tempName writeTerm(Term *t);
+  tempName writeTerm(Term * &t);
 
   std::ofstream out;
   std::unordered_map<string, Decl*> symbols;
