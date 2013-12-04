@@ -33,7 +33,7 @@ class NaughtParser {
   tempName writeExpression(const Expression *e);
   void writeFunctionDecl(FuncDecl *f);
   void writeFunctionDef(FuncDef f);
-  void writeBlock(Block b);
+  void writeBlock(Block b, vector<tempName> params);
   void writeStatement(Statement s);
   tempName writeTerm(Term *& t);
 
