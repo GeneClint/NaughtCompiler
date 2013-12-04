@@ -17,6 +17,7 @@ class Expression {
   virtual Expression* getValue3() const {return NULL;};
   virtual Term* getTerm() const {return NULL;};
   virtual std::vector<std::string> getConnectors() const = 0;
+  virtual std::vector<std::string> getConnectorsString() {return getConnectors();};
 
   friend std::ostream& operator<<(std::ostream &os, const Expression &e) {
     os << e.toString();

@@ -37,7 +37,7 @@ void NaughtParser::writeModule(Module *m) {
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   string id = f->getId().toString();
   symbols.insert({id, f});
-  string type = f->isStringReturning() ? "nstring_st " : "int32_t ";
+  string type = f->isStringReturning() ? "char * " : "int32_t ";
   out << type << id << " ( ";
   auto params = f->getParams();
   if (params.size() > 0) {
@@ -107,23 +107,41 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   
   tempName temp;
 
-  // if the expression is an assignment expression
-  if (t != nullptr && !thisTerm) { 
-    temp = writeTerm(t);
-    out << t->toString() << " "; 
-    if (connections.size() > 0)
-      out << connections[connectOffset++];
-  } else {
-    temp = (this->temps).next("int32_t");
-    out << temp.first << " " << temp.second << " = ";
-  }
-
-  if (temps.size() > 0) {
-    out << " " << temps[0].second;
-    for(size_t i = 1; i < temps.size(); i++) {
-      out << " " << connections[connectOffset + i - 1] << " " << temps[i].second << " ";
+  if (temps[0].first == "char *") {
+    if (connections[0] == "+") {
+      tempName snew = (this->temps).next("nstring_st");
+      tempName newLength = (this->temps).next("int32_t");
+      out << newLength.first << " " << newLength.second << " = ";
+      out << "*((int32_t*)" << temps[0].second << " - 1) + *((int32_t*)" << temps[1].second << " - 1);" << endl;
+      out << snew.first << " " << snew.second << " = " << " malloc(sizeof(int32_t) + newLength * sizeof(char));" << endl;
+      tempName fakestring = (this->temps).next("char *");
+      out << fakestring.first << " " << fakestring.second << " = " << snew.second << "->str;" << endl;
+      out << "strcpy (" << fakestring.second << ", " << temps[0].second << ");" << endl;
+      out << "strcat (" << fakestring.second << ", " << temps[1].second << ");" << endl;
+      return fakestring;
+    } else {
+      temp = (this->temps).next("char *");
+      out << temp.first << " " << temp.second << " = " << " " << temps[0].second;
     }
-  }
+  } else {
+    // if the expression is an assignment expression
+    if (t != nullptr && !thisTerm) { 
+      temp = writeTerm(t);
+      out << t->toString() << " "; 
+      if (connections.size() > 0)
+	out << connections[connectOffset++];
+    } else {
+      temp = (this->temps).next("int32_t");
+      out << temp.first << " " << temp.second << " = ";
+    }
+
+    if (temps.size() > 0) {
+      out << " " << temps[0].second;
+      for(size_t i = 1; i < temps.size(); i++) {
+	out << " " << connections[connectOffset + i - 1] << " " << temps[i].second << " ";
+      }
+    }
+  } 
   out << ";" << endl;
   return temp;
 }
@@ -175,7 +193,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
 }
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
-  string type = f.isStringReturning() ? "nstring_st " : "int32_t ";
+  string type = f.isStringReturning() ? "char * " : "int32_t ";
   out << type << f.getId().toString() << " ( ";
   if (f.hasParams()) {
     auto params = f.getParams()->getParams();
