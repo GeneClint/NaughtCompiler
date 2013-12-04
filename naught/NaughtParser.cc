@@ -37,7 +37,8 @@ void NaughtParser::writeModule(Module *m) {
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   string id = f->getId().toString();
   symbols.insert({id, f});
-  out << "int32_t " << id << " ( ";
+  string type = f->isStringReturning() ? "nstring_st " : "int32_t ";
+  out << type << id << " ( ";
   auto params = f->getParams();
   if (params.size() > 0) {
     out << params[0].toString();
@@ -159,7 +160,8 @@ tempName NaughtParser::writeTerm(Term*&t) {
 }
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
-  out << "int32_t " << f.getId().toString() << " ( ";
+  string type = f.isStringReturning() ? "nstring_st " : "int32_t ";
+  out << type << f.getId().toString() << " ( ";
   if (f.hasParams()) {
     auto params = f.getParams()->getParams();
     if (params.size() > 0) {

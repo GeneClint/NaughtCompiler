@@ -1648,17 +1648,17 @@ yyreduce:
   case 14:
 /* Line 1813 of yacc.c  */
 #line 196 "naught.bison"
-    {             /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +(string)*$4 +*$5);
-            cout << (*$$).toString() << " -> funcdecl " << endl;
-          */}
+    { (yyval.funcdecl_val) = new FuncDecl(Id(*(yyvsp[(2) - (5)].type_val)), *(yyvsp[(4) - (5)].param_list_val), true);
+            cout << (*(yyval.funcdecl_val)).toString() << " -> funcdecl " << endl;
+          }
     break;
 
   case 15:
 /* Line 1813 of yacc.c  */
 #line 200 "naught.bison"
-    {             /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +*$4);
-            cout << (*$$).toString() << " -> funcdecl " << endl;
-          */}
+    { (yyval.funcdecl_val) = new FuncDecl(Id(*(yyvsp[(2) - (4)].type_val)), true);
+            cout << (*(yyval.funcdecl_val)).toString() << " -> funcdecl " << endl;
+          }
     break;
 
   case 16:
@@ -1739,16 +1739,16 @@ yyreduce:
   case 25:
 /* Line 1813 of yacc.c  */
 #line 256 "naught.bison"
-    { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
-            cout << (*$$).toString() << " -> funcdef " << endl; */
+    { (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (6)].type_val), (yyvsp[(6) - (6)].block_val), (yyvsp[(4) - (6)].param_list_val), true);
+            cout << (*(yyval.funcdef_val)).toString() << " -> funcdef " << endl;
           }
     break;
 
   case 26:
 /* Line 1813 of yacc.c  */
 #line 260 "naught.bison"
-    { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-            cout << (*$$).toString() << " -> funcdef " << endl; */
+    { (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (5)].type_val), (yyvsp[(5) - (5)].block_val), true);
+            cout << (*(yyval.funcdef_val)).toString() << " -> funcdef " << endl;
           }
     break;
 
