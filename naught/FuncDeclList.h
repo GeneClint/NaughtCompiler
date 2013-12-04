@@ -10,7 +10,7 @@ class FuncDeclList {
  public:
   FuncDeclList ();
   FuncDeclList (const FuncDecl &fd);
-  FuncDeclList operator+ (const FuncDecl &fd);
+  FuncDeclList* operator+ (const FuncDecl &fd);
   virtual ~FuncDeclList () {};
   vector<FuncDecl> getFuncDecls() const; 
 

@@ -17,7 +17,7 @@ class StatementList {
   StatementList (StatementList &&other) noexcept;
   StatementList& operator=(StatementList &&other) noexcept;
 
-  StatementList operator+ (const Statement &s);
+  StatementList* operator+ (const Statement &s);
   virtual ~StatementList () {};
   vector<Statement> getStatements() const; 
 

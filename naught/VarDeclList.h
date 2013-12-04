@@ -17,7 +17,7 @@ class VarDeclList {
   VarDeclList (VarDeclList &&other) noexcept;
   VarDeclList& operator=(VarDeclList &&other) noexcept;
 
-  VarDeclList operator+ (const VarDecl &v);
+  VarDeclList* operator+ (const VarDecl &v);
   virtual ~VarDeclList () {};
   vector<VarDecl> getVarDecls() const; 
 

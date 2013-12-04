@@ -1,0 +1,15 @@
+function complex (int a, int b) {
+  int x = a + b;
+  a = (2 * b * 3) + (3 * a * a);
+  return a;
+}
+
+function main() {
+  int x = 1;
+  int z = 3;
+  int y = x + 1;
+  z = z + y;
+  complex(z, x);
+
+  return z;
+}

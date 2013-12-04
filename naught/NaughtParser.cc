@@ -38,7 +38,7 @@ void NaughtParser::writeModule(Module *m) {
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   string id = f->getId().toString();
   symbols.insert({id, f});
-  out << "int " << id << " ( ";
+  out << "int32_t " << id << " ( ";
   auto params = f->getParams();
   if (params.size() > 0) {
     out << params[0].toString();
@@ -94,9 +94,9 @@ tempName NaughtParser::writeExpression(const Expression *e) {
     temps.push_back(writeExpression(sub_e));
   }
 
-  tempName tempname = this->temps.next("int");
+  tempName tempname = this->temps.next("int32_t");
   out << tempname.first << " " << tempname.second << " = ";
-  int connectOffset = 0;
+  int32_t connectOffset = 0;
   if (t != nullptr) {
     writeTerm(t);
     if (connections.size() > 0)
@@ -123,7 +123,7 @@ tempName NaughtParser::writeTerm(Term *t) {
     return temp;
   } else if (ut) {
     tempName otherTemp = writeTerm(ut->evaluate());
-    tempName temp = temps.next("int");
+    tempName temp = temps.next("int32_t");
     string oper = ut->getOperator();
     string result = "";
     
@@ -138,14 +138,14 @@ tempName NaughtParser::writeTerm(Term *t) {
     out << result;
     return temp;
   } else {
-    tempName temp = temps.next("int");
+    tempName temp = temps.next("int32_t");
     out << t->toString();
     return temp;
   }
 }
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
-  out << "int " << f.getId().toString() << " ( ";
+  out << "int32_t " << f.getId().toString() << " ( ";
   if (f.hasParams()) {
     auto params = f.getParams()->getParams();
     if (params.size() > 0) {

@@ -40,9 +40,9 @@ StatementList& StatementList::operator=(StatementList &&other) noexcept {
   return *this;
 }
 
-StatementList StatementList::operator+(const Statement &s) {
+StatementList* StatementList::operator+(const Statement &s) {
   statements->push_back(s);
-  return *this;
+  return this;
 }
 
 vector<Statement> StatementList::getStatements() const {

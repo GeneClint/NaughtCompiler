@@ -11,7 +11,7 @@ class FuncDefList {
  public:
   FuncDefList ();
   FuncDefList (const FuncDef *f);
-  FuncDefList operator+ (const FuncDef *p);
+  FuncDefList* operator+ (const FuncDef *p);
   virtual ~FuncDefList () {};
   vector<const FuncDef*> getFuncDefs() const;
 
