@@ -97,6 +97,24 @@ tempName NaughtParser::writeExpression(const Expression *e) {
 
   // if the expression itself is a term
   if(thisTerm) {
+    // variable
+    Id *id = dynamic_cast<Id *>(thisTerm);
+    if(id) {
+      string name = id->getName();
+      if(symbols.find(name) != symbols.end()) {
+        // exists
+        Decl *res = symbols.find(id->getName())->second;
+        VarDecl *vd   = dynamic_cast<VarDecl *>(res);
+        
+        if(vd) {
+          // variable exists, so just return the variable with type
+          return make_pair(vd->getType(), name);
+        } 
+      } else {
+        // TODO: error, unknown id
+      }
+    }
+
     tempName temp = writeTerm(thisTerm);
     out << temp.first << " " << temp.second << " = " << thisTerm->toString() << ";" << endl;
     return temp;
@@ -133,8 +151,6 @@ tempName NaughtParser::writeTerm(Term *&t) {
   Id *id        = dynamic_cast<Id*>(t);
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
   ExprTerm *et  = dynamic_cast<ExprTerm*>(t);
-  
-
 
   if (et) {
     tempName temp = writeExpression(et->evaluate());
@@ -175,8 +191,10 @@ tempName NaughtParser::writeTerm(Term *&t) {
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
   out << "int32_t " << f.getId().toString() << " ( ";
+  
+  vector<Param> params; 
   if (f.hasParams()) {
-    auto params = f.getParams()->getParams();
+    params = f.getParams()->getParams();
     if (params.size() > 0) {
       out << params[0].toString();
       for(size_t i = 1; i < params.size(); i++) {
@@ -187,14 +205,25 @@ void NaughtParser::writeFunctionDef(FuncDef f) {
   out << " ) " << endl;
   Block* bloc = f.getBlock();
   if (bloc) {
-    writeBlock(*bloc);
+    vector<tempName> blocParams;
+    for(Param p : params) {
+      blocParams.push_back(make_pair(p.getType(), p.getId().getName()));
+    }
+
+    writeBlock(*bloc, blocParams);
   }
 }
 
-void NaughtParser::writeBlock(Block b) {
+void NaughtParser::writeBlock(Block b, vector<tempName> params) {
   out << " { " << endl;
   auto decls = b.getVarDecls();
-  vector<tempName> scope;
+  vector<tempName> scope(params);
+  
+  // add parameters to symbol table
+  for(tempName param : params) {
+    symbols.insert({param.second, new VarDecl(param.first, new Id(param.second))});
+  }
+
   for(auto decl : decls) {
     scope.push_back(writeVarDecl(&decl));
     out << endl;
