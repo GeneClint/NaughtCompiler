@@ -10,5 +10,5 @@ Expression* AssignExpression::getValue1() const {
 }
 
 std::string AssignExpression::toString() const {
-  return "(" + term->toString() + " = " + expr->toString() + ")";
+  return term->toString() + " = " + expr->toString();
 }

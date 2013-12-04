@@ -12,6 +12,7 @@ class Statement {
   const Expression* getExpression() const;
   std::string toString() const;
 /*
+ TODO: remove
   Statement(const Statement &other);
   Statement& operator=(const Statement &other);
 */
