@@ -127,11 +127,12 @@ tempName NaughtParser::writeExpression(const Expression *e) {
 
   if (temps[0].first == "char *") {
     if (connections[0] == "+") {
-      tempName snew = (this->temps).next("nstring_st");
       tempName newLength = (this->temps).next("int32_t");
+      tempName snew = (this->temps).next("nstring_st*");
       out << newLength.first << " " << newLength.second << " = ";
       out << "*((int32_t*)" << temps[0].second << " - 1) + *((int32_t*)" << temps[1].second << " - 1);" << endl;
-      out << snew.first << " " << snew.second << " = " << " malloc(sizeof(int32_t) + newLength * sizeof(char));" << endl;
+      out << snew.first << " " << snew.second << " = " << " malloc(sizeof(int32_t) + (" << newLength.second << " + 1) * sizeof(char));" << endl;
+      out << snew.second << "->len = " << newLength.second << " ;" << endl;
       tempName fakestring = (this->temps).next("char *");
       out << fakestring.first << " " << fakestring.second << " = " << snew.second << "->str;" << endl;
       out << "strcpy (" << fakestring.second << ", " << temps[0].second << ");" << endl;
@@ -193,8 +194,15 @@ tempName NaughtParser::writeTerm(Term *&t) {
     
     return temp;
   } else if(s) {
-    tempName temp = temps.next("char *");
-    return temp;
+    string val = s->getString();
+    tempName len = temps.next("int32_t");
+    out << len.first << " " << len.second << " = strlen(" << val << ");" << endl;
+    tempName snew = temps.next("nstring_st*");
+    out << snew.first << " " << snew.second << " = malloc(sizeof(int32_t) + sizeof(char) * " << len.second << " + 1);" << endl;
+    out << snew.second << "->len = " << len.second << ";" << endl;
+    out << "strcpy(" << snew.second << "->str, " << val << ");" << endl;
+    t = new Id(snew.second + "->str");
+    return temps.next("char *");
   } else if(in) {
     tempName temp = temps.next("int32_t");
     return temp;
@@ -273,7 +281,8 @@ void NaughtParser::writeStatement(Statement s) {
 
 void NaughtParser::writeHeader() {
   out << "#include <stdio.h>" << endl;
-  out << "#include <stdlib.h>" << endl << endl;
+  out << "#include <stdlib.h>" << endl;
+  out << "#include <string.h>" << endl << endl;
   
   out << "typedef struct nstring_st {" << endl <<
          "  int32_t   len;" << endl <<
