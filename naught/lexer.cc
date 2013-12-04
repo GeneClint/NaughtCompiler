@@ -931,7 +931,7 @@ YY_RULE_SETUP
 case 27:
 YY_RULE_SETUP
 #line 70 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return ID; }
+{ yylval.type_val = new string(yytext); return ID; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP

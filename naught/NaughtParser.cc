@@ -132,8 +132,7 @@ tempName NaughtParser::writeTerm(Term *t) {
   ExprTerm *et = dynamic_cast<ExprTerm*>(t);
   if (et) {
     tempName temp = writeExpression(et->evaluate());
-    temp.second = " ( " + temp.second + " ) ";
-
+ 
     return temp;
   } else if (ut) {
     tempName otherTemp = writeTerm(ut->evaluate());
