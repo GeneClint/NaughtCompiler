@@ -16,6 +16,7 @@ using std::string;
 class NaughtParser {
  public:
   static void write(Module *ast, string o);
+  virtual ~NaughtParser () {out.close();}
  private:
   NaughtParser(std::string o) : out(o) {};
 
