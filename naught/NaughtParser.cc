@@ -88,15 +88,19 @@ string NaughtParser::writeExpression(const Expression *e) {
 
   string tempname = this->temps.next("int");
   out << tempname << " = ";
-  int connectIndex = 0;
+  int connectOffset = 0;
   if (t != nullptr) {
     out << writeTerm(t);
     if (connections.size() > 0)
-      out << connections[connectIndex++];
+      out << connections[connectOffset++];
   }
 
-  for(string temp : temps)
-    out << " " << temp << " " << connections[connectIndex++];
+  if (temps.size() > 0) {
+    out << " " << temps[0];
+    for(int i = 1; i < temps.size(); i++) {
+      out << connections[connectOffset + i - 1] << " " << temps[i] << " ";
+    }
+  }
   out << ";" << endl;
   return tempname;
 }
