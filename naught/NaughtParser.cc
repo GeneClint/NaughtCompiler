@@ -105,8 +105,8 @@ tempName NaughtParser::writeExpression(const Expression *e) {
 
   if (temps.size() > 0) {
     out << " " << temps[0].second;
-    for(int i = 1; i < temps.size(); i++) {
-      out << connections[connectOffset + i - 1] << " " << temps[i].second << " ";
+    for(size_t i = 1; i < temps.size(); i++) {
+      out << " " << connections[connectOffset + i - 1] << " " << temps[i].second << " ";
     }
   }
   out << ";" << endl;
