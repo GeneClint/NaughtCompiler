@@ -1,18 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int test (  ) 
+typedef struct nstring_st {
+  int32_t   len;
+  char      str[];
+} nstring_st;
+
+int32_t test (  ) 
  { 
 int32_t x;
-inttemp0 = x;
-inttemp2 = 2;
-inttemp4 = y;
-inttemp6 =  temp2 * temp4 ;
-inttemp7 =  temp0 + temp6 ;
+id x = x;
+int32_t temp0 = 2;
+id y = y;
+int32_t temp1 =  temp0 * y ;
+int32_t temp2 =  x + temp1 ;
 
 
-inttemp8 = 0;
-return temp8;
+int32_t temp3 = 0;
+return temp3;
 
  } 
 

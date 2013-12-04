@@ -36,8 +36,6 @@ int32_t z = temp12;
 int32_t temp13 = 1;
 int32_t temp14 =  x + temp13 ;
 int32_t y = temp14;
-id z = z;
-id y = y;
 int32_t temp15 =  z + y ;
 z = temp15;
 
@@ -45,7 +43,6 @@ z = temp15;
 int32_t temp16 = complex (z,x);
 
 
-id z = z;
 return z;
 
  } 
