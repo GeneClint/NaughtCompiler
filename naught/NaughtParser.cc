@@ -90,7 +90,7 @@ string NaughtParser::writeExpression(const Expression *e) {
   out << tempname << " = ";
   int connectOffset = 0;
   if (t != nullptr) {
-    out << writeTerm(t);
+    writeTerm(t);
     if (connections.size() > 0)
       out << connections[connectOffset++];
   }
@@ -105,32 +105,36 @@ string NaughtParser::writeExpression(const Expression *e) {
   return tempname;
 }
 
-string NaughtParser::writeTerm(Term *t) {
+void NaughtParser::writeTerm(Term *t) {
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
   ExprTerm *et = dynamic_cast<ExprTerm*>(t);
   if (et) {
     string temp = writeExpression(et->evaluate());
-    return " ( " + temp + ")";
+    //return " ( " + temp + ")";
   } else if (ut) {
-    string otherTemp = writeTerm(ut->evaluate());
+
     string temp = temps.next("int");
+    out << temp << " = ";
+    writeTerm(ut->evaluate());
+    out << ";" << endl;
+    
     string oper = ut->getOperator();
     string result = "";
     
 
     if(oper.compare("print") == 0) {
-      out << "printf(\"%d\", " << otherTemp << ");" << endl; 
-      result = otherTemp;
+      out << "printf(\"%d\", " << temp << ");" << endl; 
+      result = temp;
     } else {
-      result = oper + otherTemp;
+      result = oper + temp;
     }
     
-    out << temp << " = " << result << " ;";
-    return temp;
+    out << result;
+    //return temp;
   } else {
-    string temp = temps.next("int");
-    out << temp << " = " << t->toString();
-    return temp;
+    //string temp = temps.next("int");
+    out << t->toString();
+    //return temp;
   }
 }
 
@@ -141,7 +145,7 @@ void NaughtParser::writeFunctionDef(FuncDef f) {
     if (params.size() > 0) {
       out << params[0].toString();
       for(size_t i = 1; i < params.size(); i++) {
-	out << " , " << params[i].toString();
+	      out << " , " << params[i].toString();
       }
     }
   }

@@ -13,7 +13,7 @@ class Term : public Expression {
 public:
   virtual ~Term() {};
   Term* evaluate() {return this;}
-  Term* getTerm() {return this;}
+  Term* getTerm() const {return const_cast<Term *>(this);}
   Term* getInnerTerm() {return NULL;}
   Expression* getInnerExpression() {return NULL;}
   
