@@ -11,8 +11,9 @@ void NaughtParser::write(Module *ast, string o) {
 void NaughtParser::writeModule(Module *m) {
   
   writeHeader();
-
+  cout << "after header" << endl;
   if (m->hasFuncDecls()) {
+    cout << "in func decls" << endl;
     vector<FuncDecl> decls = m->getFuncDecls()->getFuncDecls();
     for(FuncDecl fdecl : decls) {
       writeFunctionDecl(&fdecl);
@@ -20,13 +21,16 @@ void NaughtParser::writeModule(Module *m) {
     }
   }
   if (m->hasVarDecls()) {
+    cout << "in var decl" << endl;
     vector<VarDecl> vdecls = m->getVarDecls()->getVarDecls();
+    cout << "after vdecls call" << endl;
     for(VarDecl vdecl : vdecls) {
       writeVarDecl(&vdecl);
       out << endl;
     }
   }
   if (m->hasFuncDefs()) {
+    cout << "in func def" << endl;
     vector<const FuncDef*> defs = m->getFuncDefs()->getFuncDefs();
     for(const FuncDef* def : defs) {
       writeFunctionDef(*def);
@@ -38,7 +42,7 @@ void NaughtParser::writeModule(Module *m) {
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   string id = f->getId().toString();
   symbols.insert({id, f});
-  out << "int " << id << " ( ";
+  out << "int32_t " << id << " ( ";
   auto params = f->getParams();
   if (params.size() > 0) {
     out << params[0].toString();
@@ -50,6 +54,9 @@ void NaughtParser::writeFunctionDecl(FuncDecl *f) {
 }
 
 tempName NaughtParser::writeVarDecl(VarDecl* v) {
+  
+  cout << "in writeVarDecl" << endl;
+  
   tempName tempvar; 
   string id = v->getId().toString();
   string type = v->getType();
@@ -73,6 +80,7 @@ tempName NaughtParser::writeVarDecl(VarDecl* v) {
 }
 
 tempName NaughtParser::writeExpression(const Expression *e) {
+  cout << "in writeExpression" << endl;
   Term* t = e->getTerm();
 
   Expression* sub_e;
@@ -94,13 +102,29 @@ tempName NaughtParser::writeExpression(const Expression *e) {
     temps.push_back(writeExpression(sub_e));
   }
 
-  tempName tempname = this->temps.next("int");
-  out << tempname.first << " " << tempname.second << " = ";
+  Term* thisTerm = dynamic_cast<Term *>(const_cast<Expression *>(e));
+
+  // if the expression itself is a term
+  if(thisTerm) {
+    tempName temp = writeTerm(thisTerm);
+    out << temp.first << " " << temp.second << " = " << thisTerm->toString() << ";" << endl;
+    return temp;
+  }
+
   int connectOffset = 0;
-  if (t != nullptr) {
-    writeTerm(t);
+  
+  tempName temp;
+
+  // if the expression is an assignment expression
+  if (t != nullptr) { 
+    temp = writeTerm(t);
+    out << temp.first << " " << temp.second << " = " << t->toString() << ";" << endl;
+    out << t->toString() << " = "; 
     if (connections.size() > 0)
       out << connections[connectOffset++];
+  } else {
+    temp = (this->temps).next("int32_t");
+    out << temp.first << " " << temp.second << " = ";
   }
 
   if (temps.size() > 0) {
@@ -110,10 +134,11 @@ tempName NaughtParser::writeExpression(const Expression *e) {
     }
   }
   out << ";" << endl;
-  return tempname;
+  return temp;
 }
 
 tempName NaughtParser::writeTerm(Term *t) {
+  cout << "in writeTerm" << endl;
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
   ExprTerm *et = dynamic_cast<ExprTerm*>(t);
   if (et) {
@@ -123,7 +148,7 @@ tempName NaughtParser::writeTerm(Term *t) {
     return temp;
   } else if (ut) {
     tempName otherTemp = writeTerm(ut->evaluate());
-    tempName temp = temps.next("int");
+    tempName temp = temps.next("int32_t");
     string oper = ut->getOperator();
     string result = "";
     
@@ -135,17 +160,17 @@ tempName NaughtParser::writeTerm(Term *t) {
       result = oper + temp.second;
     }
     
-    out << result;
+    //out << result;
     return temp;
   } else {
-    tempName temp = temps.next("int");
-    out << t->toString();
+    tempName temp = temps.next("int32_t");
+    //out << t->toString();
     return temp;
   }
 }
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
-  out << "int " << f.getId().toString() << " ( ";
+  out << "int32_t " << f.getId().toString() << " ( ";
   if (f.hasParams()) {
     auto params = f.getParams()->getParams();
     if (params.size() > 0) {

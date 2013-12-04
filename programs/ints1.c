@@ -3,18 +3,18 @@
 
 int main (  ) 
  { 
-int temp0 = ;
-x = int temp0;
-int temp1 = ;
-y = int temp1;
-int temp2 = ;
+int temp0 = 1;
+int32_t x = temp0;
+int temp2 = 2;
+int32_t y = temp2;
+int temp4 = printf ;
 
 
-int temp3 = ;
+int temp6 = printf ;
 
 
-int temp4 = ;
-return int temp4;
+int temp8 = 0;
+return temp8;
 
  } 
 

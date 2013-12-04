@@ -50,11 +50,11 @@ bool Module::hasFuncDecls() const {
 }
 
 bool Module::hasVarDecls() const {
-  return varDeclList;
+  return varDeclList != NULL;
 }
 
 bool Module::hasFuncDefs() const {
-  return funcDefList;
+  return funcDefList != NULL;
 }
 
 FuncDeclList* Module::getFuncDecls() const {

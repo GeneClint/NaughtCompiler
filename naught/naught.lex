@@ -67,7 +67,7 @@ number      {digit}+
 "pointer"    { yylval.type_val = new string("int32_t *"); return TYPE; }
 \"[^\"]*\"   { yylval.nstring_val = new String(yytext); return STRING_LITERAL; }
 {number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = &temp; return INT_LITERAL; }
-{ident}      { yylval.string_val = new StrUtil(yytext); return ID; }
+{ident}      { yylval.type_val = new string(yytext); return ID; }
 [ \t\r\f]    { /* ignore white space. */ }
 [\n]         { yylineno++; }
 .            { runtime_error e(string("Lexer: Line ") + to_string(yylineno) + 
