@@ -1,4 +1,6 @@
 #include "NaughtParser.h"
+#include "TempGen.h"
+
 using namespace std;
 
 void NaughtParser::write(Module *ast, string o) {
@@ -47,29 +49,35 @@ void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   out << " );" << endl;
 }
 
-string NaughtParser::writeVarDecl(VarDecl* v) {
-  string tempvar; 
+tempName NaughtParser::writeVarDecl(VarDecl* v) {
+  tempName tempvar; 
   string id = v->getId().toString();
+  string type = v->getType();
   Expression* exp = v->getExpression();
+  
   if (exp)
     tempvar = writeExpression(exp);
   if (v->isExtern())
     out << "extern ";
-  out << id;
+  out << type << " " << id;
   if (exp) {
-    out << " = " << tempvar;
+    out << " = " << tempvar.second;
   }
   out << ";";
+  
   symbols.insert({id, v});
-  return id;
+ 
+  tempName retVal = make_pair(type, id);
+
+  return retVal;
 }
 
-string NaughtParser::writeExpression(const Expression *e) {
+tempName NaughtParser::writeExpression(const Expression *e) {
   Term* t = e->getTerm();
 
   Expression* sub_e;
   vector<string> connections = e->getConnectors();
-  vector<string> temps;
+  vector<tempName> temps;
 
   sub_e = e->getValue1();
   if (sub_e) {
@@ -86,8 +94,8 @@ string NaughtParser::writeExpression(const Expression *e) {
     temps.push_back(writeExpression(sub_e));
   }
 
-  string tempname = this->temps.next("int");
-  out << tempname << " = ";
+  tempName tempname = this->temps.next("int");
+  out << tempname.first << tempname.second << " = ";
   int connectOffset = 0;
   if (t != nullptr) {
     writeTerm(t);
@@ -96,45 +104,43 @@ string NaughtParser::writeExpression(const Expression *e) {
   }
 
   if (temps.size() > 0) {
-    out << " " << temps[0];
+    out << " " << temps[0].second;
     for(int i = 1; i < temps.size(); i++) {
-      out << connections[connectOffset + i - 1] << " " << temps[i] << " ";
+      out << connections[connectOffset + i - 1] << " " << temps[i].second << " ";
     }
   }
   out << ";" << endl;
   return tempname;
 }
 
-void NaughtParser::writeTerm(Term *t) {
+tempName NaughtParser::writeTerm(Term *t) {
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
   ExprTerm *et = dynamic_cast<ExprTerm*>(t);
   if (et) {
-    string temp = writeExpression(et->evaluate());
-    //return " ( " + temp + ")";
-  } else if (ut) {
+    tempName temp = writeExpression(et->evaluate());
+    temp.second = " ( " + temp.second + " ) ";
 
-    string temp = temps.next("int");
-    out << temp << " = ";
-    writeTerm(ut->evaluate());
-    out << ";" << endl;
-    
+    return temp;
+  } else if (ut) {
+    tempName otherTemp = writeTerm(ut->evaluate());
+    tempName temp = temps.next("int");
     string oper = ut->getOperator();
     string result = "";
     
 
     if(oper.compare("print") == 0) {
-      out << "printf(\"%d\", " << temp << ");" << endl; 
-      result = temp;
+      out << "printf(\"%d\", " << temp.second << ");" << endl; 
+      result = temp.second;
     } else {
-      result = oper + temp;
+      result = oper + temp.second;
     }
     
     out << result;
-    //return temp;
+    return temp;
   } else {
-    //string temp = temps.next("int");
+    tempName temp = temps.next("int");
     out << t->toString();
-    //return temp;
+    return temp;
   }
 }
 
@@ -159,7 +165,7 @@ void NaughtParser::writeFunctionDef(FuncDef f) {
 void NaughtParser::writeBlock(Block b) {
   out << " { " << endl;
   auto decls = b.getVarDecls();
-  vector<string> scope;
+  vector<tempName> scope;
   for(auto decl : decls) {
     scope.push_back(writeVarDecl(&decl));
     out << endl;
@@ -170,19 +176,19 @@ void NaughtParser::writeBlock(Block b) {
     out << endl;
   }
   for (auto id : scope) {
-    symbols.erase (id);
+    symbols.erase (id.second);
   }
   out << " } " << endl;
 }
 
 void NaughtParser::writeStatement(Statement s) {
   auto exp = s.getExpression();
-  string tempvar;
+  tempName tempvar;
   if (exp) {
     tempvar = writeExpression(exp);
   }
   if (s.isReturn()) {
-    out << "return " << tempvar << ";";
+    out << "return " << tempvar.second << ";";
   }
   out << endl;
 }

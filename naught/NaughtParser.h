@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <fstream>
+#include <utility>
 
 #include "Module.h"
 #include "TempGen.h"
@@ -12,6 +13,9 @@
 #ifndef __NAUGHT_PARSER_H
 #define __NAUGHT_PARSER_H
 using std::string;
+using std::pair;
+
+typedef pair<string, string> tempName;
 
 class NaughtParser {
  public:
@@ -21,13 +25,13 @@ class NaughtParser {
 
   void writeHeader();
   void writeModule(Module *m);
-  std::string writeVarDecl(VarDecl *v);
-  std::string writeExpression(const Expression *e);
+  tempName writeVarDecl(VarDecl *v);
+  tempName writeExpression(const Expression *e);
   void writeFunctionDecl(FuncDecl *f);
   void writeFunctionDef(FuncDef f);
   void writeBlock(Block b);
   void writeStatement(Statement s);
-  void writeTerm(Term *t);
+  tempName writeTerm(Term *t);
 
   std::ofstream out;
   std::unordered_map<string, Decl*> symbols;
