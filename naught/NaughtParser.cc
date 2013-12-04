@@ -3,29 +3,29 @@ using namespace std;
 
 void NaughtParser::write(Module *ast, string o) {
   NaughtParser parser(o);
-  parser.writeModule(*ast);
+  parser.writeModule(ast);
 }
 
-void NaughtParser::writeModule(Module m) {
+void NaughtParser::writeModule(Module *m) {
   
   writeHeader();
 
-  if (m.hasFuncDecls()) {
-    vector<FuncDecl> decls = m.getFuncDecls()->getFuncDecls();
+  if (m->hasFuncDecls()) {
+    vector<FuncDecl> decls = m->getFuncDecls()->getFuncDecls();
     for(FuncDecl fdecl : decls) {
       writeFunctionDecl(&fdecl);
       out << endl;
     }
   }
-  if (m.hasVarDecls()) {
-    vector<VarDecl> vdecls = m.getVarDecls()->getVarDecls();
+  if (m->hasVarDecls()) {
+    vector<VarDecl> vdecls = m->getVarDecls()->getVarDecls();
     for(VarDecl vdecl : vdecls) {
       writeVarDecl(&vdecl);
       out << endl;
     }
   }
-  if (m.hasFuncDefs()) {
-    vector<const FuncDef*> defs = m.getFuncDefs()->getFuncDefs();
+  if (m->hasFuncDefs()) {
+    vector<const FuncDef*> defs = m->getFuncDefs()->getFuncDefs();
     for(const FuncDef* def : defs) {
       writeFunctionDef(*def);
       out << endl;
@@ -86,7 +86,7 @@ string NaughtParser::writeExpression(const Expression *e) {
     temps.push_back(writeExpression(sub_e));
   }
 
-  string tempname = this->temps.next();
+  string tempname = this->temps.next("int");
   out << tempname << " = ";
   int connectIndex = 0;
   if (t != nullptr) {
@@ -109,7 +109,7 @@ string NaughtParser::writeTerm(Term *t) {
     return " ( " + temp + ")";
   } else if (ut) {
     string otherTemp = writeTerm(ut->evaluate());
-    string temp = temps.next();
+    string temp = temps.next("int");
     string oper = ut->getOperator();
     string result = "";
     
@@ -124,7 +124,7 @@ string NaughtParser::writeTerm(Term *t) {
     out << temp << " = " << result << " ;";
     return temp;
   } else {
-    string temp = temps.next();
+    string temp = temps.next("int");
     out << temp << " = " << t->toString();
     return temp;
   }
@@ -132,11 +132,13 @@ string NaughtParser::writeTerm(Term *t) {
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
   out << "int " << f.getId().toString() << " ( ";
-  auto params = f.getParams()->getParams();
-  if (params.size() > 0) {
-    out << params[0].toString();
-    for(size_t i = 1; i < params.size(); i++) {
-      out << " , " << params[i].toString();
+  if (f.hasParams()) {
+    auto params = f.getParams()->getParams();
+    if (params.size() > 0) {
+      out << params[0].toString();
+      for(size_t i = 1; i < params.size(); i++) {
+	out << " , " << params[i].toString();
+      }
     }
   }
   out << " ) " << endl;

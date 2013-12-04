@@ -20,7 +20,7 @@ class NaughtParser {
   NaughtParser(std::string o) : out(o) {};
 
   void writeHeader();
-  void writeModule(Module m);
+  void writeModule(Module *m);
   std::string writeVarDecl(VarDecl *v);
   std::string writeExpression(const Expression *e);
   void writeFunctionDecl(FuncDecl *f);
