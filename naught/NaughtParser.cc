@@ -95,7 +95,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   }
 
   tempName tempname = this->temps.next("int");
-  out << tempname.first << tempname.second << " = ";
+  out << tempname.first << " " << tempname.second << " = ";
   int connectOffset = 0;
   if (t != nullptr) {
     writeTerm(t);
