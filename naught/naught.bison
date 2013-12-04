@@ -172,7 +172,7 @@ module :
 funcdecl_list :
           funcdecl_list funcdecl SEMI
           { auto add = *$1 + *$2;
-            $$ = &add;
+            $$ = add;
             cout << (*$$).toString() << " -> funcdecl_list " << endl;
           }
         | funcdecl SEMI
@@ -206,7 +206,7 @@ funcdecl :
 vardecl_list : 
           vardecl_list vardecl SEMI
           { auto add = *$1 + *$2;
-	          $$ = &add;
+	          $$ = add;
             cout << (*$$).toString() << " -> vardecl_list " << endl;
           }
         | vardecl SEMI
@@ -238,7 +238,7 @@ funcdef_list :
 	        }	 
        | funcdef_list funcdef
          { auto add = *$1 + $2;
-	         $$ = &add;
+	   $$ = add;
 	   cout << (*$$).toString() << " -> funcdef_list " << endl;
 	 }	
 	;
@@ -265,7 +265,7 @@ funcdef :
 param_list : 
           param_list COMMA param
           { auto add = *$1 + *$3;
-	          $$ = &add;
+	          $$ = add;
             cout << (*$$).toString() << " -> param_list " << endl;
           }
         | param
@@ -303,7 +303,7 @@ block :
 stmt_list :
           stmt_list stmt
           { auto add = *$1 + *$2;
-	          $$ = &add;
+	          $$ = add;
             cout << (*$$).toString() << " -> stmt_list " << endl;
           }
         | stmt
@@ -392,7 +392,7 @@ arglist :
         }
       | arglist COMMA expr
         { auto add = *$1 + $3;
-	        $$ = &add;
+	        $$ = add;
           cout << (*$$).toString() << " -> arglist" << endl;
         }
       ;

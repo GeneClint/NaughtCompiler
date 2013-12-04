@@ -11,9 +11,9 @@ ArgList::ArgList(const Expression *e) {
   args.push_back(e);
 }
 
-ArgList ArgList::operator+(const Expression *e) {
+ArgList* ArgList::operator+(const Expression *e) {
   args.push_back(e);
-  return *this;
+  return this;
 }
 
 vector<const Expression*> ArgList::getArgs() const {

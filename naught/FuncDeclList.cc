@@ -40,9 +40,9 @@ FuncDeclList::FuncDeclList(const FuncDecl &fd) {
   funcDecls->push_back(fd);
 }
 
-FuncDeclList FuncDeclList::operator+(const FuncDecl &fd) {
+FuncDeclList* FuncDeclList::operator+(const FuncDecl &fd) {
   funcDecls->push_back(fd);
-  return *this;
+  return this;
 }
 
 vector<FuncDecl> FuncDeclList::getFuncDecls() const {

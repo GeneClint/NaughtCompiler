@@ -10,7 +10,7 @@
 class ArgList {
  public:
   ArgList (const Expression* e);
-  ArgList operator+ (const Expression* e);
+  ArgList* operator+ (const Expression* e);
   virtual ~ArgList () {};
   vector<const Expression*> getArgs() const; 
 

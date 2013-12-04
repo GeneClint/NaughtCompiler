@@ -11,9 +11,7 @@ void NaughtParser::write(Module *ast, string o) {
 void NaughtParser::writeModule(Module *m) {
   
   writeHeader();
-  cout << "after header" << endl;
   if (m->hasFuncDecls()) {
-    cout << "in func decls" << endl;
     vector<FuncDecl> decls = m->getFuncDecls()->getFuncDecls();
     for(FuncDecl fdecl : decls) {
       writeFunctionDecl(&fdecl);
@@ -21,16 +19,13 @@ void NaughtParser::writeModule(Module *m) {
     }
   }
   if (m->hasVarDecls()) {
-    cout << "in var decl" << endl;
     vector<VarDecl> vdecls = m->getVarDecls()->getVarDecls();
-    cout << "after vdecls call" << endl;
     for(VarDecl vdecl : vdecls) {
       writeVarDecl(&vdecl);
       out << endl;
     }
   }
   if (m->hasFuncDefs()) {
-    cout << "in func def" << endl;
     vector<const FuncDef*> defs = m->getFuncDefs()->getFuncDefs();
     for(const FuncDef* def : defs) {
       writeFunctionDef(*def);
@@ -54,9 +49,6 @@ void NaughtParser::writeFunctionDecl(FuncDecl *f) {
 }
 
 tempName NaughtParser::writeVarDecl(VarDecl* v) {
-  
-  cout << "in writeVarDecl" << endl;
-  
   tempName tempvar; 
   string id = v->getId().toString();
   string type = v->getType();
@@ -80,7 +72,6 @@ tempName NaughtParser::writeVarDecl(VarDecl* v) {
 }
 
 tempName NaughtParser::writeExpression(const Expression *e) {
-  cout << "in writeExpression" << endl;
   Term* t = e->getTerm();
 
   Expression* sub_e;
@@ -138,7 +129,6 @@ tempName NaughtParser::writeExpression(const Expression *e) {
 }
 
 tempName NaughtParser::writeTerm(Term *t) {
-  cout << "in writeTerm" << endl;
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
   ExprTerm *et = dynamic_cast<ExprTerm*>(t);
   if (et) {

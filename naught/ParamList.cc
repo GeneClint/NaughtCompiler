@@ -40,9 +40,9 @@ ParamList& ParamList::operator=(ParamList &&other) noexcept {
   return *this;
 }
 
-ParamList ParamList::operator+(const Param &p) {
+ParamList* ParamList::operator+(const Param &p) {
   params->push_back(p);
-  return *this;
+  return this;
 }
 
 vector<Param> ParamList::getParams() const {

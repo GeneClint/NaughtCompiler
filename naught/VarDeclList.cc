@@ -40,9 +40,9 @@ VarDeclList& VarDeclList::operator=(VarDeclList &&other) noexcept {
   return *this;
 }
 
-VarDeclList VarDeclList::operator+(const VarDecl &p) {
+VarDeclList* VarDeclList::operator+(const VarDecl &p) {
   varDecls->push_back(p);
-  return *this;
+  return this;
 }
 
 vector<VarDecl> VarDeclList::getVarDecls() const {

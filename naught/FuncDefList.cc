@@ -40,9 +40,9 @@ FuncDefList::FuncDefList(const FuncDef *p) {
   funcDefs->push_back(p);
 }
 
-FuncDefList FuncDefList::operator+(const FuncDef *p) {
+FuncDefList* FuncDefList::operator+(const FuncDef *p) {
   funcDefs->push_back(p);
-  return *this;
+  return this;
 }
 
 vector<const FuncDef*> FuncDefList::getFuncDefs() const {

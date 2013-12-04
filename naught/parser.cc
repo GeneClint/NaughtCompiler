@@ -1614,7 +1614,7 @@ yyreduce:
 /* Line 1813 of yacc.c  */
 #line 174 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].funcdecl_list_val) + *(yyvsp[(2) - (3)].funcdecl_val);
-            (yyval.funcdecl_list_val) = &add;
+            (yyval.funcdecl_list_val) = add;
             cout << (*(yyval.funcdecl_list_val)).toString() << " -> funcdecl_list " << endl;
           }
     break;
@@ -1665,7 +1665,7 @@ yyreduce:
 /* Line 1813 of yacc.c  */
 #line 208 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].vardecl_list_val) + *(yyvsp[(2) - (3)].vardecl_val);
-	          (yyval.vardecl_list_val) = &add;
+	          (yyval.vardecl_list_val) = add;
             cout << (*(yyval.vardecl_list_val)).toString() << " -> vardecl_list " << endl;
           }
     break;
@@ -1715,7 +1715,7 @@ yyreduce:
 /* Line 1813 of yacc.c  */
 #line 240 "naught.bison"
     { auto add = *(yyvsp[(1) - (2)].funcdef_list_val) + (yyvsp[(2) - (2)].funcdef_val);
-	         (yyval.funcdef_list_val) = &add;
+	   (yyval.funcdef_list_val) = add;
 	   cout << (*(yyval.funcdef_list_val)).toString() << " -> funcdef_list " << endl;
 	 }
     break;
@@ -1756,7 +1756,7 @@ yyreduce:
 /* Line 1813 of yacc.c  */
 #line 267 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].param_list_val) + *(yyvsp[(3) - (3)].param_val);
-	          (yyval.param_list_val) = &add;
+	          (yyval.param_list_val) = add;
             cout << (*(yyval.param_list_val)).toString() << " -> param_list " << endl;
           }
     break;
@@ -1813,7 +1813,7 @@ yyreduce:
 /* Line 1813 of yacc.c  */
 #line 305 "naught.bison"
     { auto add = *(yyvsp[(1) - (2)].stmnt_list_val) + *(yyvsp[(2) - (2)].stmnt_val);
-	          (yyval.stmnt_list_val) = &add;
+	          (yyval.stmnt_list_val) = add;
             cout << (*(yyval.stmnt_list_val)).toString() << " -> stmt_list " << endl;
           }
     break;
@@ -1966,7 +1966,7 @@ yyreduce:
 /* Line 1813 of yacc.c  */
 #line 394 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].arglist_val) + (yyvsp[(3) - (3)].expr_val);
-	        (yyval.arglist_val) = &add;
+	        (yyval.arglist_val) = add;
           cout << (*(yyval.arglist_val)).toString() << " -> arglist" << endl;
         }
     break;
