@@ -147,7 +147,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
       temp = writeTerm(t);
       out << t->toString() << " "; 
       if (connections.size() > 0)
-	out << connections[connectOffset++];
+	      out << connections[connectOffset++];
     } else {
       temp = (this->temps).next("int32_t");
       out << temp.first << " " << temp.second << " = ";
@@ -185,10 +185,15 @@ tempName NaughtParser::writeTerm(Term *&t) {
     
 
     if(oper.compare("print") == 0) {
-      out << "printf(\"%d\", " << temp.second << ");" << endl; 
+      if(temp.first.compare("int32_t") == 0) {
+        out << "printf(\"%d\", " << temp.second << ");" << endl; 
+      } else if(temp.first.compare("int32_t *") == 0) { 
+        out << "printf(\"%p\", (void *)" << temp.second << ");" << endl; 
+      } 
       result = temp.second;
-    } else {
+    } else if(oper.compare("&") == 0) {
       result = oper + temp.second;
+      temp.first = temp.first + " *";
     }
     
     return temp;
