@@ -98,6 +98,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   // if the expression itself is a term
   if(thisTerm) {
     // variable
+  /* 
     Id *id = dynamic_cast<Id *>(thisTerm);
     if(id) {
       string name = id->getName();
@@ -114,7 +115,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
         // TODO: error, unknown id
       }
     }
-
+*/
     tempName temp = writeTerm(thisTerm);
     out << temp.first << " " << temp.second << " = " << thisTerm->toString() << ";" << endl;
     return temp;
@@ -179,7 +180,19 @@ tempName NaughtParser::writeTerm(Term *&t) {
   } else if(in) {
     tempName temp = temps.next("int32_t");
     return temp;
-  } else if(id) { 
+  } else if(id) {  
+      string name = id->getName();
+      if(symbols.find(name) != symbols.end()) {
+        // exists
+        Decl *res = symbols.find(id->getName())->second;
+        VarDecl *vd   = dynamic_cast<VarDecl *>(res);
+        
+        if(vd) {
+          // variable exists, so just return the variable with type
+          return make_pair(vd->getType(), name);
+        } 
+        // TODO: ERROR
+       }
     tempName temp = make_pair("id", id->getName());
     return temp;
   } else {
