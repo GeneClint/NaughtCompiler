@@ -4,7 +4,7 @@
 using namespace std;
 
 bool FunctionCall::hasArgs() const {
-  return args == NULL;
+  return args;
 }
 
 ArgList* FunctionCall::getArgs() const {
@@ -16,5 +16,5 @@ Id FunctionCall::getId() const {
 }
 
 string FunctionCall::toString() const {
-  return id.toString() + " " + (hasArgs() ? args->toString() : "");
+  return id.toString() + " (" + (hasArgs() ? args->toString() : "") + ")";
 }

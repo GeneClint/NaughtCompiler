@@ -35,7 +35,7 @@ class NaughtParser {
   void writeFunctionDef(FuncDef f);
   void writeBlock(Block b);
   void writeStatement(Statement s);
-  tempName writeTerm(Term * &t);
+  tempName writeTerm(Term *& t);
 
   std::ofstream out;
   std::unordered_map<string, Decl*> symbols;

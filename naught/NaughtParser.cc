@@ -107,7 +107,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   tempName temp;
 
   // if the expression is an assignment expression
-  if (t != nullptr) { 
+  if (t != nullptr && !thisTerm) { 
     temp = writeTerm(t);
     out << t->toString() << " "; 
     if (connections.size() > 0)
