@@ -127,15 +127,16 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   return temp;
 }
 
-tempName NaughtParser::writeTerm(Term *t) {
+tempName NaughtParser::writeTerm(Term*&t) {
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
   ExprTerm *et = dynamic_cast<ExprTerm*>(t);
   if (et) {
     tempName temp = writeExpression(et->evaluate());
- 
-    return temp;
+    t = new Id(temp.second);
+    return temps.next(temp.first);
   } else if (ut) {
-    tempName otherTemp = writeTerm(ut->evaluate());
+    Term* other = ut->evaluate();
+    tempName otherTemp = writeTerm(other);
     tempName temp = temps.next("int32_t");
     string oper = ut->getOperator();
     string result = "";
