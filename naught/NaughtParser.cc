@@ -1,5 +1,6 @@
 #include "NaughtParser.h"
 #include "TempGen.h"
+#include "FunctionCall.h"
 
 using namespace std;
 
@@ -36,7 +37,7 @@ void NaughtParser::writeModule(Module *m) {
 
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   string id = f->getId().toString();
-  symbols.insert({id, f});
+  symbols.insert(make_pair(id, new FuncDecl(f->getId(), f->isStringReturning())));
   string type = f->isStringReturning() ? "char * " : "int32_t ";
   out << type << id << " ( ";
   auto params = f->getParams();
@@ -165,11 +166,12 @@ tempName NaughtParser::writeExpression(const Expression *e) {
 }
 
 tempName NaughtParser::writeTerm(Term *&t) {
-  String *s     = dynamic_cast<String*>(t);
-  Int *in       = dynamic_cast<Int*>(t);
-  Id *id        = dynamic_cast<Id*>(t);
-  UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
-  ExprTerm *et  = dynamic_cast<ExprTerm*>(t);
+  String *s        = dynamic_cast<String*>(t);
+  Int *in          = dynamic_cast<Int*>(t);
+  Id *id           = dynamic_cast<Id*>(t);
+  UnaryTerm *ut    = dynamic_cast<UnaryTerm*>(t);
+  ExprTerm *et     = dynamic_cast<ExprTerm*>(t);
+  FunctionCall *fc = dynamic_cast<FunctionCall*>(t);
 
   if (et) {
     tempName temp = writeExpression(et->evaluate());
@@ -221,9 +223,24 @@ tempName NaughtParser::writeTerm(Term *&t) {
           // variable exists, so just return the variable with type
           return make_pair(vd->getType(), name);
         }
-       }
+      }
     // TODO: ERROR message
     tempName temp = make_pair("id", id->getName());
+    return temp;
+  } else if (fc) {
+    // function call
+    string id = fc->getId().toString();
+    if (symbols.find(id) != symbols.end()) {
+      Decl *res = symbols.find(id)->second;
+      FuncDecl *fd = dynamic_cast<FuncDecl *>(res);
+      if (fd) {
+	string type = fd->isStringReturning() ? "char *" : "int32_t";
+	tempName temp = temps.next(type);
+	return temp;
+      }
+    }
+    // TODO: ERROR message
+    tempName temp = make_pair("id", id);
     return temp;
   } else {
     // defualt...
@@ -233,20 +250,29 @@ tempName NaughtParser::writeTerm(Term *&t) {
 }
 
 void NaughtParser::writeFunctionDef(FuncDef f) {
+  Id id = f.getId();
   string type = f.isStringReturning() ? "char * " : "int32_t ";
-  out << type << f.getId().toString() << " ( ";
-  
+  out << type << id.toString() << " ( ";
+
+  ParamList *ps;
   vector<Param> params; 
+  FuncDecl *toInsert;
   if (f.hasParams()) {
-    params = f.getParams()->getParams();
+    ps = f.getParams();
+    toInsert = new FuncDecl(id, *ps, f.isStringReturning());
+    params = ps->getParams();
     if (params.size() > 0) {
       out << params[0].toString();
       for(size_t i = 1; i < params.size(); i++) {
 	      out << " , " << params[i].toString();
       }
     }
+  } else {
+    toInsert = new FuncDecl(id, f.isStringReturning());
   }
   out << " ) " << endl;
+
+  symbols.insert(make_pair(id.toString(), toInsert));
   Block* bloc = f.getBlock();
   if (bloc) {
     vector<tempName> blocParams;
