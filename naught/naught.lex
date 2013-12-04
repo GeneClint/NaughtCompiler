@@ -63,7 +63,7 @@ number      {digit}+
 "&"          { yylval.type_val = new string("&"); return UNARY_OP; }
 "@"          { yylval.type_val = new string("*"); return UNARY_OP; }
 "int"        { yylval.type_val = new string("int32_t"); return TYPE; }
-"string"     { yylval.type_val = new string("nstring_st"); return TYPE; }
+"string"     { yylval.type_val = new string("char *"); return TYPE; }
 "pointer"    { yylval.type_val = new string("int32_t *"); return TYPE; }
 \"[^\"]*\"   { yylval.nstring_val = new String(yytext); return STRING_LITERAL; }
 {number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = &temp; return INT_LITERAL; }

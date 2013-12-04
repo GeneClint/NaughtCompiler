@@ -193,13 +193,13 @@ funcdecl :
             cout << (*$$).toString() << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
-          {             /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +(string)*$4 +*$5);
+          { $$ = new FuncDecl(Id(*$2), *$4, true);
             cout << (*$$).toString() << " -> funcdecl " << endl;
-          */}
+          }
         | SFUNCTION ID LPAREN  RPAREN
-          {             /*(*$$).toString() = new StrUtil(*$1 + *$2 +*$3 +*$4);
+          { $$ = new FuncDecl(Id(*$2), true);
             cout << (*$$).toString() << " -> funcdecl " << endl;
-          */}
+          }
 	;
 
 
@@ -253,12 +253,12 @@ funcdef :
             cout << (*$$).toString() << " -> funcdef " << endl;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
-          { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + (string)*$4 + *$5 + *$6);
-            cout << (*$$).toString() << " -> funcdef " << endl; */
+          { $$ = new FuncDef(*$2, $6, $4, true);
+            cout << (*$$).toString() << " -> funcdef " << endl;
           }
         | SFUNCTION ID LPAREN RPAREN block
-          { /* GULP $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-            cout << (*$$).toString() << " -> funcdef " << endl; */
+          { $$ = new FuncDef(*$2, $5, true);
+            cout << (*$$).toString() << " -> funcdef " << endl;
           }
         ;
 

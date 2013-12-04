@@ -910,7 +910,7 @@ YY_RULE_SETUP
 case 23:
 YY_RULE_SETUP
 #line 66 "naught.lex"
-{ yylval.type_val = new string("nstring_st"); return TYPE; }
+{ yylval.type_val = new string("char *"); return TYPE; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
