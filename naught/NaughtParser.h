@@ -9,6 +9,9 @@
 #include "Decl.h"
 #include "UnaryTerm.h"
 #include "ExprTerm.h"
+#include "String.h"
+#include "Int.h"
+#include "Id.h"
 
 #ifndef __NAUGHT_PARSER_H
 #define __NAUGHT_PARSER_H
