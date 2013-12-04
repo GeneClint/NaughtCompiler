@@ -20,8 +20,7 @@ int32_t temp11 = a;
 int32_t temp12 =  temp10 * temp11 ;
 int32_t  ( temp12 )  = ((3 * a) * a);
 int32_t temp13 =   ( temp7 )  +  ( temp12 )  ;
-int32_t temp14 = a;
-a = = temp13;
+a = temp13;
 
 
 int32_t temp15 = a;
@@ -42,8 +41,7 @@ int32_t y = temp20;
 int32_t temp21 = z;
 int32_t temp22 = y;
 int32_t temp23 =  temp21 + temp22 ;
-int32_t temp24 = z;
-z = = temp23;
+z = temp23;
 
 
 int32_t temp25 = complex ;

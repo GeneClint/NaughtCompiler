@@ -128,8 +128,14 @@ tempName NaughtParser::writeExpression(const Expression *e) {
 }
 
 tempName NaughtParser::writeTerm(Term *t) {
+  String *s     = dynamic_cast<String *>(t);
+  Int *in       = dynamic_cast<Int *>(t);
+  Id *id        = dynamic_cast<Id *>(t);
   UnaryTerm *ut = dynamic_cast<UnaryTerm*>(t);
-  ExprTerm *et = dynamic_cast<ExprTerm*>(t);
+  ExprTerm *et  = dynamic_cast<ExprTerm*>(t);
+  
+
+
   if (et) {
     tempName temp = writeExpression(et->evaluate());
     temp.second = " ( " + temp.second + " ) ";
@@ -137,6 +143,8 @@ tempName NaughtParser::writeTerm(Term *t) {
     return temp;
   } else if (ut) {
     tempName otherTemp = writeTerm(ut->evaluate());
+    
+    // TODO: change type based on operator
     tempName temp = temps.next("int32_t");
     string oper = ut->getOperator();
     string result = "";
@@ -149,11 +157,9 @@ tempName NaughtParser::writeTerm(Term *t) {
       result = oper + temp.second;
     }
     
-    //out << result;
     return temp;
   } else {
     tempName temp = temps.next("int32_t");
-    //out << t->toString();
     return temp;
   }
 }
