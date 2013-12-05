@@ -1,6 +1,7 @@
 #include "NaughtParser.h"
 #include "TempGen.h"
 #include "FunctionCall.h"
+#include "AddExpression.h"
 
 using namespace std;
 
@@ -92,14 +93,13 @@ tempName NaughtParser::writeExpression(const Expression *e) {
     tempName result = (this->temps).next(temps[0].first);
     out << result.first << " " << result.second << ";" << endl; 
     
+    out << "if (" << temps[0].second << ") {"<<endl;
     sub_e = e->getValue2();
     tempName val2 = writeExpression(sub_e);
-    sub_e = e->getValue3();
-    tempName val3 = writeExpression(sub_e);
-    
-    out << "if (" << temps[0].second << ") {"<<endl;
     out << "  " << result.second << " = " << val2.second << ";" << endl;
     out << "} else {" << endl;
+    sub_e = e->getValue3();
+    tempName val3 = writeExpression(sub_e);
     out << "  " << result.second << " = " << val3.second << ";" << endl;
     out << "}" << endl << endl;
 
@@ -145,24 +145,19 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   int connectOffset = 0;
   
   tempName temp;
-
-  if (temps[0].first == "char *") {
-    if (connections[0] == "+") {
-      tempName newLength = (this->temps).next("int32_t");
-      tempName snew = (this->temps).next("nstring_st*");
-      out << newLength.first << " " << newLength.second << " = ";
-      out << "*((int32_t*)" << temps[0].second << " - 1) + *((int32_t*)" << temps[1].second << " - 1);" << endl;
-      out << snew.first << " " << snew.second << " = " << " malloc(sizeof(int32_t) + (" << newLength.second << " + 1) * sizeof(char));" << endl;
-      out << snew.second << "->len = " << newLength.second << " ;" << endl;
-      tempName fakestring = (this->temps).next("char *");
-      out << fakestring.first << " " << fakestring.second << " = " << snew.second << "->str;" << endl;
-      out << "strcpy (" << fakestring.second << ", " << temps[0].second << ");" << endl;
-      out << "strcat (" << fakestring.second << ", " << temps[1].second << ");" << endl;
-      return fakestring;
-    } else {
-      temp = (this->temps).next("char *");
-      out << temp.first << " " << temp.second << " = " << " " << temps[0].second;
-    }
+  auto isAdd = dynamic_cast<AddExpression*>(const_cast<Expression*>(e));
+  if (temps[0].first == "char *" && isAdd) {
+    tempName newLength = (this->temps).next("int32_t");
+    tempName snew = (this->temps).next("nstring_st*");
+    out << newLength.first << " " << newLength.second << " = ";
+    out << "*((int32_t*)" << temps[0].second << " - 1) + *((int32_t*)" << temps[1].second << " - 1);" << endl;
+    out << snew.first << " " << snew.second << " = " << " malloc(sizeof(int32_t) + (" << newLength.second << " + 1) * sizeof(char));" << endl;
+    out << snew.second << "->len = " << newLength.second << " ;" << endl;
+    tempName fakestring = (this->temps).next("char *");
+    out << fakestring.first << " " << fakestring.second << " = " << snew.second << "->str;" << endl;
+    out << "strcpy (" << fakestring.second << ", " << temps[0].second << ");" << endl;
+    out << "strcat (" << fakestring.second << ", " << temps[1].second << ");" << endl;
+    return fakestring;
   } else {
     // if the expression is an assignment expression
     if (t != nullptr && !thisTerm) { 
@@ -214,7 +209,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
     if(oper.compare("print") == 0) {
       Id *otherI = dynamic_cast<Id*>(other);
       if (!otherI)
-	      out << otherTemp.first << " " << otherTemp.second << " = " << other->toString() << ";" << endl;
+	out << otherTemp.first << " " << otherTemp.second << " = " << other->toString() << ";" << endl;
       string code;
       string alter = "";
       if (otherTemp.first == "int32_t") {
@@ -251,7 +246,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
     tempName len = temps.next("int32_t");
     out << len.first << " " << len.second << " = strlen(" << val << ");" << endl;
     tempName snew = temps.next("nstring_st*");
-    out << snew.first << " " << snew.second << " = malloc(sizeof(int32_t) + sizeof(char) * " << len.second << " + 1);" << endl;
+    out << snew.first << " " << snew.second << " = malloc(sizeof(int32_t) + sizeof(char) * (" << len.second << " + 1));" << endl;
     out << snew.second << "->len = " << len.second << ";" << endl;
     out << "strcpy(" << snew.second << "->str, " << val << ");" << endl;
     t = new Id(snew.second + "->str");
@@ -281,16 +276,16 @@ tempName NaughtParser::writeTerm(Term *&t) {
       Decl *res = symbols.find(id)->second;
       FuncDecl *fd = dynamic_cast<FuncDecl *>(res);
       if (fd) {
-	      string type = fd->isStringReturning() ? "char *" : "int32_t";
-	      
-        auto args = fc->getArgs()->getArgs();
-        vector<tempName> *tempArgs = new vector<tempName>;
-        for(auto arg : args) {
-          tempArgs->push_back(writeExpression(arg)); 
-        }
+	string type = fd->isStringReturning() ? "char *" : "int32_t";
+	if (fc->hasArgs()) {
+	  auto args = fc->getArgs()->getArgs();
+	  vector<tempName> *tempArgs = new vector<tempName>;
+	  for(auto arg : args) {
+	    tempArgs->push_back(writeExpression(arg)); 
+	  }
        
-        fc->setTempArgs(tempArgs);  
-
+	  fc->setTempArgs(tempArgs);  
+	}
         tempName temp = temps.next(type);
 	      return temp;
       }
