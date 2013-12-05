@@ -285,6 +285,7 @@ param :
 block : 
 	      LCBRACE vardecl_list stmt_list RCBRACE
         { $$ = new Block(*$2, *$3);
+          delete $2;
           delete $3;
         }
 	    | LCBRACE              stmt_list RCBRACE
@@ -292,7 +293,10 @@ block :
           delete $2;
         }
 	    | LCBRACE vardecl_list           RCBRACE
-        { $$ = new Block(*$2); }
+        { 
+          $$ = new Block(*$2); 
+          delete $2;
+        }
       | LCBRACE RCBRACE
         { $$ = new Block(); }
         ;
