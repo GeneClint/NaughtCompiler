@@ -1,0 +1,8 @@
+#include "nstdlib.h"
+
+function nstrlen(string s) {
+  pointer stringAddress = &s;
+  pointer lengthAddress = stringAddress - 1;
+  int length = @lengthAddress;
+  return length;
+}

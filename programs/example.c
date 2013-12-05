@@ -8,11 +8,6 @@ typedef struct nstring_st {
   char      str[];
 } nstring_st;
 
-int32_t fact ( int32_t x , int32_t * p );
-
-char * initLabel (  );
-
-int32_t globalInt;
 int32_t main (  ) 
  { 
 int32_t temp0 = 1;
@@ -23,13 +18,13 @@ int32_t temp3 = 1;
 int32_t temp4 =  temp2 + temp3 ;
 int32_t y = temp4;
 int32_t z;
-char * temp5 = initLabel ();
+int32_t temp5 = initLabel ();
 char * label = temp5;
 int32_t * p;
 int32_t temp6 =  x * y ;
 int32_t temp7 =  y + temp6 ;
 int32_t temp8 = fact (y,p = &globalInt);
-printf("%d", temp8);
+printf("%d\n", temp8);
 int32_t temp9 = temp8;
 int32_t temp10 =  temp7 + temp9 ;
 z = temp10;
