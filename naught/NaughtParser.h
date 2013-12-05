@@ -12,6 +12,7 @@
 #include "String.h"
 #include "Int.h"
 #include "Id.h"
+#include "CondExpression.h"
 
 #ifndef __NAUGHT_PARSER_H
 #define __NAUGHT_PARSER_H

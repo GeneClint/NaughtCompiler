@@ -81,18 +81,29 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   vector<string> connections = e->getConnectors();
   vector<tempName> temps;
 
-  CondExpression* ce = dynamic_cast<CondExpression*>(e);
+  CondExpression* ce = dynamic_cast<CondExpression*>(const_cast<Expression*>(e));
 
   sub_e = e->getValue1();
   if (sub_e) {
     temps.push_back(writeExpression(sub_e));
   }
+
   if (ce) {
     tempName result = (this->temps).next(temps[0].first);
     out << result.first << " " << result.second << ";" << endl; 
-    out << "if (" << temps[0].second << ") {"<<endl;
-    sub_e = e->getValue2();
     
+    sub_e = e->getValue2();
+    tempName val2 = writeExpression(sub_e);
+    sub_e = e->getValue3();
+    tempName val3 = writeExpression(sub_e);
+    
+    out << "if (" << temps[0].second << ") {"<<endl;
+    out << "  " << result.second << " = " << val2.second << ";" << endl;
+    out << "} else {" << endl;
+    out << "  " << result.second << " = " << val3.second << ";" << endl;
+    out << "}" << endl << endl;
+
+    return result;
   }
 
   sub_e = e->getValue2();
