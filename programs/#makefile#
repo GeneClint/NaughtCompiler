@@ -1,0 +1,42 @@
+NCC = ../naught/comp
+CPP = cpp
+CC = gcc
+INCDIRS = -I ../nstdlib
+CFLAGS = -c -g -Wall -std=c99
+LDFLAGS = -L ../nstdlib -lnaught
+
+EXES = example stri
+
+.PRECIOUS: %.c
+
+all: $(EXES)
+
+example: example.o fact.o initLabel.o ../comp
+	 $(CC) example.o fact.o initLabel.o -o example $(LDFLAGS)
+	 ./example
+
+strings: strings.o ../comp
+	 $(CC) strings.o -o strings $(LDFLAGS)
+	 ./strings
+
+lvalue: lvalue.o ../comp
+	$(CC)  lvalue.o -o lvalue $(LDFLAGS)
+	./lvalue
+
+swap:  swapMain.o swap.o swap.h ../comp
+       $(CC) swapMain.o swap.o -o swap $(LDFLAGS)
+       ./swap
+
+tiny:  tiny.o ../comp
+       $(CC) tiny.o -o tiny $(LDFLAGS)
+       ./tiny
+
+%.c : %.n ../comp
+    $(CPP) $(INCDIRS) $< | $(NCC) -d -o $@ -
+    cat $@
+
+%.o : %.c
+    $(CC) $(CFLAGS) $(INCDIRS) $<
+
+clean:
+	rm -f *~ *.o *.c $(EXES)

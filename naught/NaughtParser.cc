@@ -10,7 +10,6 @@ void NaughtParser::write(Module *ast, string o) {
 }
 
 void NaughtParser::writeModule(Module *m) {
-  
   writeHeader();
   if (m->hasFuncDecls()) {
     vector<FuncDecl> decls = m->getFuncDecls()->getFuncDecls();
@@ -261,8 +260,8 @@ tempName NaughtParser::writeTerm(Term *&t) {
 	return temp;
       }
     }
-    // TODO: ERROR message
-    tempName temp = make_pair("id", id);
+    //default a function returns an int
+    tempName temp = temps.next("int32_t");
     return temp;
   } else {
     // defualt...
@@ -345,7 +344,8 @@ void NaughtParser::writeStatement(Statement s) {
 void NaughtParser::writeHeader() {
   out << "#include <stdio.h>" << endl;
   out << "#include <stdlib.h>" << endl;
-  out << "#include <string.h>" << endl << endl;
+  out << "#include <string.h>" << endl;
+  out << "#include <inttypes.h>" << endl << endl;
   
   out << "typedef struct nstring_st {" << endl <<
          "  int32_t   len;" << endl <<
