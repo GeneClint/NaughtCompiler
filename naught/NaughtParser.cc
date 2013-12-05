@@ -181,23 +181,33 @@ tempName NaughtParser::writeTerm(Term *&t) {
     // TODO: change type based on operator
     Term* other = ut->evaluate();
     tempName otherTemp = writeTerm(other);
-    tempName temp = temps.next("int32_t");
+    tempName temp = temps.next(otherTemp.first);
     string oper = ut->getOperator();
     string result = "";
     
 
     if(oper.compare("print") == 0) {
-      if(temp.first.compare("int32_t") == 0) {
-        out << "printf(\"%d\", " << temp.second << ");" << endl; 
-      } else if(temp.first.compare("int32_t *") == 0) { 
-        out << "printf(\"%p\", (void *)" << temp.second << ");" << endl; 
+      if(otherTemp.first.compare("int32_t") == 0) {
+        out << "printf(\"%d\", " << otherTemp.second << ");" << endl; 
+      } else if(otherTemp.first.compare("int32_t *") == 0) { 
+        out << "printf(\"%p\", (void *) " << otherTemp.second << ");" << endl; 
       } 
-      result = temp.second;
+      //result = temp.second;
+      return temp;
     } else if(oper.compare("&") == 0) {
       result = oper + temp.second;
       temp.first = temp.first + " *";
-    }
-    
+    } else if(oper.compare("*") == 0) {
+      size_t found = oper.find("*");
+      if(found != string::npos) {
+        // found
+        temp.first.erase(found, 1);
+        temp.second = oper + temp.second;
+
+      } else {
+        // ERROR
+      }
+    } 
     return temp;
   } else if(s) {
     string val = s->getString();
