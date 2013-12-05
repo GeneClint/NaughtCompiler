@@ -11,6 +11,7 @@ class VarDeclList {
  public:
   VarDeclList ();
   VarDeclList (const VarDecl &v);
+  virtual ~VarDeclList () {delete varDecls;};
 
   VarDeclList(const VarDeclList &other);
   VarDeclList& operator=(const VarDeclList &other);
@@ -18,7 +19,6 @@ class VarDeclList {
   VarDeclList& operator=(VarDeclList &&other) noexcept;
 
   VarDeclList* operator+ (const VarDecl &v);
-  virtual ~VarDeclList () {};
   vector<VarDecl> getVarDecls() const; 
 
   explicit operator string() const { return toString(); }
