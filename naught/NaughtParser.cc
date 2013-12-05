@@ -114,7 +114,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
           return writeTerm(thisTerm);
         } 
       } else {
-        // TODO: error, unknown id
+        // error, unknown id
       }
     }
     tempName temp = writeTerm(thisTerm);
@@ -151,7 +151,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
       if (connections.size() > 0)
 	      out << connections[connectOffset++];
     } else {
-      temp = (this->temps).next("int32_t");
+      temp = (this->temps).next(temps[0].first);
       out << temp.first << " " << temp.second << " = ";
     }
 
@@ -200,7 +200,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
 	      code = "%p";
 	      alter = "(void *) ";
       }
-      out << "printf(\"" << code << "\", " << alter << otherTemp.second << ");" << endl; 
+      out << "printf(\"" << code << "\\n\", " << alter << otherTemp.second << ");" << endl; 
       result = otherTemp.second;
       t = new Id(otherTemp.second);
       return temps.next(otherTemp.first);
@@ -345,8 +345,9 @@ void NaughtParser::writeStatement(Statement s) {
 void NaughtParser::writeHeader() {
   out << "#include <stdio.h>" << endl;
   out << "#include <stdlib.h>" << endl;
-  out << "#include <string.h>" << endl << endl;
-  
+  out << "#include <string.h>" << endl;
+  out << "#include <stdint.h>" << endl << endl;
+
   out << "typedef struct nstring_st {" << endl <<
          "  int32_t   len;" << endl <<
          "  char      str[];" << endl <<
