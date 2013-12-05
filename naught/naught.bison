@@ -200,9 +200,13 @@ vardecl_list :
           vardecl_list vardecl SEMI
           { auto add = *$1 + *$2;
 	          $$ = add;
+            delete $2;
           }
         | vardecl SEMI
-          { $$ = new VarDeclList(*$1); }
+          { 
+            $$ = new VarDeclList(*$1); 
+            delete $1;
+          }
         ;
 
 vardecl : 
