@@ -16,5 +16,27 @@ Id FunctionCall::getId() const {
 }
 
 string FunctionCall::toString() const {
-  return id.toString() + " (" + (hasArgs() ? args->toString() : "") + ")";
+  stringstream result;
+  result << id.toString();
+  if(tempArgs != nullptr) {
+    result << " (";
+    for(uint32_t i = 0; i < tempArgs->size(); ++i) {
+      if(i != 0) {
+        result << ", ";
+      }
+      result << (*tempArgs)[i].second;
+    }
+    result << ")";
+  } else {
+    result << " (" + (hasArgs() ? args->toString() : "") + ")";
+  }
+  return result.str();
+}
+
+void FunctionCall::setTempArgs(vector<pair<string, string>> *temps) {
+  tempArgs = temps;
+}
+
+vector<pair<string, string>> * FunctionCall::getTempArgs() {
+  return tempArgs;
 }

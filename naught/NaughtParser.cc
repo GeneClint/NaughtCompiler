@@ -166,7 +166,8 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   } else {
     // if the expression is an assignment expression
     if (t != nullptr && !thisTerm) { 
-      temp = writeTerm(t);
+      tempName termTemp = writeTerm(t);
+      temp = (this->temps).next(termTemp.first);
       out << t->toString() << " "; 
       if (connections.size() > 0)
 	      out << connections[connectOffset++];
@@ -204,7 +205,6 @@ tempName NaughtParser::writeTerm(Term *&t) {
     t = new Id(temp.second);
     return temps.next(temp.first);
   } else if (ut) {
-    // TODO: change type based on operator
     Term* other = ut->evaluate();
     tempName otherTemp = writeTerm(other);
     string oper = ut->getOperator();
@@ -271,7 +271,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
           return make_pair(vd->getType(), name);
         }
       }
-    // TODO: ERROR message
+    // ERROR message
     tempName temp = make_pair("id", id->getName());
     return temp;
   } else if (fc) {
@@ -281,9 +281,18 @@ tempName NaughtParser::writeTerm(Term *&t) {
       Decl *res = symbols.find(id)->second;
       FuncDecl *fd = dynamic_cast<FuncDecl *>(res);
       if (fd) {
-	string type = fd->isStringReturning() ? "char *" : "int32_t";
-	tempName temp = temps.next(type);
-	return temp;
+	      string type = fd->isStringReturning() ? "char *" : "int32_t";
+	      
+        auto args = fc->getArgs()->getArgs();
+        vector<tempName> *tempArgs = new vector<tempName>;
+        for(auto arg : args) {
+          tempArgs->push_back(writeExpression(arg)); 
+        }
+       
+        fc->setTempArgs(tempArgs);  
+
+        tempName temp = temps.next(type);
+	      return temp;
       }
     }
     //default a function returns an int
@@ -358,10 +367,7 @@ void NaughtParser::writeBlock(Block b, vector<tempName> params) {
 
 void NaughtParser::writeStatement(Statement s) {
   auto exp = s.getExpression();
-  tempName tempvar;
-  if (exp) {
-    tempvar = writeExpression(exp);
-  }
+  tempName tempvar = writeExpression(exp);
   if (s.isReturn()) {
     out << "return " << tempvar.second << ";" << endl;
   }
