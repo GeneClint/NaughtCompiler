@@ -130,42 +130,34 @@ module :
          funcdecl_list vardecl_list funcdef_list
           { AST = new Module($1, $2, $3);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         |              vardecl_list funcdef_list
           { AST = new Module(NULL, $1, $2);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         | funcdecl_list             funcdef_list
           { AST = new Module($1, NULL, $2);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         |                            funcdef_list
           { AST = new Module(NULL, NULL, $1);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         | funcdecl_list vardecl_list
           {             AST = new Module($1, $2, NULL);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         |              vardecl_list
           { AST = new Module(NULL, $1, NULL);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         | funcdecl_list             
           { AST = new Module($1, NULL, NULL);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         |
           { AST = new Module(NULL, NULL, NULL);
             $$ = AST;
-            cout << (*$$).toString() << " -> module " << endl;
           }
         ;
 
@@ -173,11 +165,9 @@ funcdecl_list :
           funcdecl_list funcdecl SEMI
           { auto add = *$1 + *$2;
             $$ = add;
-            cout << (*$$).toString() << " -> funcdecl_list " << endl;
           }
         | funcdecl SEMI
           { $$ = new FuncDeclList(*$1);
-            cout << (*$$).toString() << " -> funcdecl_list " << endl;
           }
        ;
  
@@ -185,20 +175,16 @@ funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
           { Id *id = new Id(*$2);
             $$ = new FuncDecl(*id, *$4);
-            cout << (*$$).toString() << " -> funcdecl " << endl;
           }
         | FUNCTION ID LPAREN  RPAREN
           { Id *id = new Id(*$2);
             $$ = new FuncDecl(*id);
-            cout << (*$$).toString() << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
           { $$ = new FuncDecl(Id(*$2), *$4, true);
-            cout << (*$$).toString() << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN  RPAREN
           { $$ = new FuncDecl(Id(*$2), true);
-            cout << (*$$).toString() << " -> funcdecl " << endl;
           }
 	;
 
@@ -207,58 +193,46 @@ vardecl_list :
           vardecl_list vardecl SEMI
           { auto add = *$1 + *$2;
 	          $$ = add;
-            cout << (*$$).toString() << " -> vardecl_list " << endl;
           }
         | vardecl SEMI
-          {    $$ = new VarDeclList(*$1);
-            cout << (*$$).toString() << " -> vardecl_list " << endl;
-          }
+          { $$ = new VarDeclList(*$1); }
         ;
 
 vardecl : 
          TYPE ID
           { Id *id = new Id(*$2);
             $$ = new VarDecl(*$1, *id);
-            cout << (*$$).toString() << " -> vardecl " << endl;
           }
        | TYPE ID ASSIGN expr
           { $$ = new VarDecl(*$1, *$2, false, $4);
-            cout << (*$$).toString() << " -> vardecl " << endl;
           }
        | EXTERN TYPE ID  /* extern variable */
           {    $$ = new VarDecl(*$2, *$3, true);
-            cout << (*$$).toString() << " -> vardecl " << endl;
           }
        ;
 
 funcdef_list :
          funcdef
 	        { $$ = new FuncDefList($1);
-	          cout << (*$$).toString() << " -> funcdef_list " << endl;
 	        }	 
        | funcdef_list funcdef
          { auto add = *$1 + $2;
 	   $$ = add;
-	   cout << (*$$).toString() << " -> funcdef_list " << endl;
 	 }	
 	;
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
           {       $$ = new FuncDef(*$2, $6, $4);
-            cout << (*$$).toString() << " -> funcdef " << endl;
           }
         | FUNCTION ID LPAREN RPAREN block
           { $$ = new FuncDef(*$2, $5);
-            cout << (*$$).toString() << " -> funcdef " << endl;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
           { $$ = new FuncDef(*$2, $6, $4, true);
-            cout << (*$$).toString() << " -> funcdef " << endl;
           }
         | SFUNCTION ID LPAREN RPAREN block
           { $$ = new FuncDef(*$2, $5, true);
-            cout << (*$$).toString() << " -> funcdef " << endl;
           }
         ;
 
@@ -266,134 +240,86 @@ param_list :
           param_list COMMA param
           { auto add = *$1 + *$3;
 	          $$ = add;
-            cout << (*$$).toString() << " -> param_list " << endl;
           }
         | param
           { $$ = new ParamList(*$1);
-            cout << (*$$).toString() << " -> param_list " << endl;
           }
         ;
 
 param :
          TYPE ID
           { $$ = new Param(*$1, *$2);
-            cout << (*$$).toString() << " -> param " << endl;
           }
         ;
 
 block : 
-	  LCBRACE vardecl_list stmt_list RCBRACE
-          { $$ = new Block(*$2, *$3);
-            cout << (*$$).toString() << " -> block " << endl;
-          }
-	| LCBRACE              stmt_list RCBRACE
-          { $$ = new Block(*(new VarDeclList()), *$2);
-            cout << (*$$).toString() << " -> block " << endl;
-          }
-	| LCBRACE vardecl_list           RCBRACE
-          { $$ = new Block(*$2);
-            cout << (*$$).toString() << " -> block " << endl;
-          }
-        | LCBRACE RCBRACE
-          { $$ = new Block();
-            cout << (*$$).toString() << " -> block " << endl;
-          }
+	      LCBRACE vardecl_list stmt_list RCBRACE
+        { $$ = new Block(*$2, *$3); }
+	    | LCBRACE              stmt_list RCBRACE
+        { $$ = new Block(*(new VarDeclList()), *$2); }
+	    | LCBRACE vardecl_list           RCBRACE
+        { $$ = new Block(*$2); }
+      | LCBRACE RCBRACE
+        { $$ = new Block(); }
         ;
 
 stmt_list :
-          stmt_list stmt
-          { auto add = *$1 + *$2;
-	          $$ = add;
-            cout << (*$$).toString() << " -> stmt_list " << endl;
-          }
-        | stmt
-          { $$ = new StatementList(*$1);
-            cout << (*$$).toString() << " -> stmt_list " << endl;
-          }
+        stmt_list stmt
+        { 
+          auto add = *$1 + *$2;
+	        $$ = add;
+        }
+      | stmt
+        { $$ = new StatementList(*$1); }
        ;
 
 stmt : 
-         expr SEMI
-          { $$ = new Statement($1);
-            cout << (*$$).toString() << " -> stmt " << endl;
-          }
-       | RETURN expr SEMI
-          { $$ = new Statement($2, true);
-            cout << (*$$).toString() << " -> stmt " << endl;
-          }
+        expr SEMI
+        { $$ = new Statement($1); }
+      | RETURN expr SEMI
+        { $$ = new Statement($2, true); }
      ;
 
 expr : 
         expr ADD expr
-        { $$ = new AddExpression(*$1, *$3);
-          cout << (*$$).toString() << " -> expr" << endl;
-        }
+        { $$ = new AddExpression(*$1, *$3); }
       | expr SUB expr
-        { $$ = new SubExpression(*$1, *$3);
-          cout << (*$$).toString() << " -> expr" << endl;
-        }
+        { $$ = new SubExpression(*$1, *$3); }
       | expr STAR expr
-        { $$ = new StarExpression(*$1, *$3);
-          cout << (*$$).toString() << " -> expr" << endl;
-        }
+        { $$ = new StarExpression(*$1, *$3); }
       | expr DIV expr
-        { $$ = new DivExpression(*$1, *$3);
-          cout << (*$$).toString() << " -> expr" << endl;
-        }
+        { $$ = new DivExpression(*$1, *$3); }
       | term  ASSIGN expr
-        { $$ = new AssignExpression(*$1, *$3);
-      	  cout << (*$$).toString() << " -> expr" << endl;
-        }
+        { $$ = new AssignExpression(*$1, *$3); }
       | expr QUESTION expr COLON expr
-        { $$ = new CondExpression(*$1, *$3, *$5);
-          cout << (*$$).toString() << " -> expr" << endl;
-        }
+        { $$ = new CondExpression(*$1, *$3, *$5); }
       | term
-        { $$ = $1;
-          cout << (*$$).toString() << " -> expr" << endl;
-        }
+        { $$ = $1; }
       ;
 
 term :
         STRING_LITERAL
-        { $$ = $1;
-          cout << (*$$).toString() << " -> term" << endl;
-        }
+        { $$ = $1; }
       | INT_LITERAL
-        { $$ = new Int(*$1);
-          cout << (*$$).toString() << " -> term" << endl;
-        }
+        { $$ = new Int(*$1); }
       | ID
-        { $$ = new Id(*$1);
-          cout << (*$$).toString() << " -> term" << endl;
-        }
+        { $$ = new Id(*$1); }
       | LPAREN expr RPAREN
-       {  $$ = new ExprTerm($2);
-         cout << (*$$).toString() << " -> term" << endl;
-        }
+       { $$ = new ExprTerm($2); }
       | UNARY_OP term
-        {  $$ = new UnaryTerm(*$1, $2);
-          cout << (*$$).toString() << " -> term" << endl;
-        }
+       { $$ = new UnaryTerm(*$1, $2); }
       | ID LPAREN arglist RPAREN  /* function call */
-       {  $$ = new FunctionCall(*$1, $3);
-         cout << (*$$).toString() << " -> term" << endl;
-       }
+       { $$ = new FunctionCall(*$1, $3); }
       | ID LPAREN RPAREN  /* function call */
-       {  $$ = new FunctionCall(*$1);
-         cout << (*$$).toString() << " -> term" << endl;
-       }
+       { $$ = new FunctionCall(*$1); }
       ;
 
 arglist :
         expr
-        { $$ = new ArgList($1);
-          cout << (*$$).toString() << " -> arglist" << endl;
-        }
+        { $$ = new ArgList($1); }
       | arglist COMMA expr
         { auto add = *$1 + $3;
 	        $$ = add;
-          cout << (*$$).toString() << " -> arglist" << endl;
         }
       ;
 
