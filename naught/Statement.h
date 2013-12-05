@@ -11,11 +11,7 @@ class Statement {
   bool isReturn() const;
   const Expression* getExpression() const;
   std::string toString() const;
-/*
- TODO: remove
-  Statement(const Statement &other);
-  Statement& operator=(const Statement &other);
-*/
+  
   friend std::ostream& operator<<(std::ostream &os, const Statement &p) {
     os << p.toString();
     return os;

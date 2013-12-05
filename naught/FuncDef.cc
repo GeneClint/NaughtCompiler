@@ -2,10 +2,6 @@
 
 using namespace std;
 
-FuncDef::~FuncDef() {
-  delete params;
-}
-
 bool FuncDef::hasParams() const {
   return params != NULL;
 }

@@ -224,7 +224,7 @@ funcdef_list :
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
-          {       $$ = new FuncDef(*$2, $6, $4);
+          { $$ = new FuncDef(*$2, $6, $4);
           }
         | FUNCTION ID LPAREN RPAREN block
           { $$ = new FuncDef(*$2, $5);
@@ -255,9 +255,13 @@ param :
 
 block : 
 	      LCBRACE vardecl_list stmt_list RCBRACE
-        { $$ = new Block(*$2, *$3); }
+        { $$ = new Block(*$2, *$3);
+          delete $3;
+        }
 	    | LCBRACE              stmt_list RCBRACE
-        { $$ = new Block(*(new VarDeclList()), *$2); }
+        { $$ = new Block(*(new VarDeclList()), *$2); 
+          delete $2;
+        }
 	    | LCBRACE vardecl_list           RCBRACE
         { $$ = new Block(*$2); }
       | LCBRACE RCBRACE
@@ -269,9 +273,12 @@ stmt_list :
         { 
           auto add = *$1 + *$2;
 	        $$ = add;
+          delete $2;
         }
       | stmt
-        { $$ = new StatementList(*$1); }
+        { $$ = new StatementList(*$1); 
+          delete $1;
+        }
        ;
 
 stmt : 

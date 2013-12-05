@@ -11,6 +11,10 @@ StatementList::StatementList() {
   statements = new vector<Statement>;
 }
 
+StatementList::~StatementList() {
+  delete statements;
+}
+
 StatementList::StatementList(StatementList &&other) noexcept {
   statements = other.statements;
   other.statements = NULL;
