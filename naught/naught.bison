@@ -62,6 +62,7 @@ extern Module *AST;
   FuncDef*    funcdef_val;
   FuncDefList*   funcdef_list_val;
   Module*     module_val;
+  Id*         id_val;
 }
 
 /***********************************************************************
@@ -88,7 +89,7 @@ extern Module *AST;
 %token <type_val> TYPE
 %token <nstring_val> STRING_LITERAL
 %token <int_val> INT_LITERAL
-%token <type_val> ID
+%token <id_val> ID
 
 /**********************************************************
  * Now we're defining the type associated with nodes
@@ -173,18 +174,18 @@ funcdecl_list :
  
 funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
-          { Id *id = new Id(*$2);
-            $$ = new FuncDecl(*id, *$4);
+          { 
+            $$ = new FuncDecl(*$2, *$4);
           }
         | FUNCTION ID LPAREN  RPAREN
-          { Id *id = new Id(*$2);
-            $$ = new FuncDecl(*id);
+          {
+            $$ = new FuncDecl(*$2);
           }
         | SFUNCTION ID LPAREN param_list RPAREN
-          { $$ = new FuncDecl(Id(*$2), *$4, true);
+          { $$ = new FuncDecl(*$2, *$4, true);
           }
         | SFUNCTION ID LPAREN  RPAREN
-          { $$ = new FuncDecl(Id(*$2), true);
+          { $$ = new FuncDecl(*$2, true);
           }
 	;
 
@@ -200,8 +201,8 @@ vardecl_list :
 
 vardecl : 
          TYPE ID
-          { Id *id = new Id(*$2);
-            $$ = new VarDecl(*$1, *id);
+          { 
+            $$ = new VarDecl(*$1, *$2);
           }
        | TYPE ID ASSIGN expr
           { $$ = new VarDecl(*$1, *$2, false, $4);
@@ -303,15 +304,21 @@ term :
       | INT_LITERAL
         { $$ = $1; }
       | ID
-        { $$ = new Id(*$1); }
+        { $$ = $1; }
       | LPAREN expr RPAREN
        { $$ = new ExprTerm($2); }
       | UNARY_OP term
        { $$ = new UnaryTerm(*$1, $2); }
       | ID LPAREN arglist RPAREN  /* function call */
-       { $$ = new FunctionCall(*$1, $3); }
+       { 
+        $$ = new FunctionCall($1->getName(), $3); 
+        delete $1; 
+       }
       | ID LPAREN RPAREN  /* function call */
-       { $$ = new FunctionCall(*$1); }
+       { 
+        $$ = new FunctionCall($1->getName());
+        delete $1;
+       }
       ;
 
 arglist :

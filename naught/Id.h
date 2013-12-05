@@ -8,7 +8,6 @@
 class Id : public Term {
 public:
   Id (const std::string &n) : Term(), name(n) {};
-  //Id (StrUtil * ignore) : Term(), name("") {};
   std::string getName() const;
   std::string toString() const;
 private:

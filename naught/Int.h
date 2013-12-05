@@ -8,7 +8,6 @@
 class Int: public Term {
  public:
   virtual ~Int() {};
-  Int  (StrUtil *ignore) : Term(), val(0) {};
   Int (int &v) : Term (), val(v) {};
   int getValue() const;
   virtual std::string toString() const;

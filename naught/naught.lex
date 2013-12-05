@@ -29,7 +29,7 @@
  #include "Module.h"
  #include "String.h"
  #include "Int.h"
-
+ #include "Id.h"
  #include "parser.hh"
 %}
 
@@ -43,23 +43,23 @@ number      {digit}+
 %%
 
 "#".*        { /* ignore single line comments. */ }
-";"          { yylval.string_val = new StrUtil(yytext); return SEMI; }
-","          { yylval.string_val = new StrUtil(yytext); return COMMA; }
+";"          { yylval.string_val = NULL; return SEMI; }
+","          { yylval.string_val = NULL; return COMMA; }
 "="          { yylval.string_val = NULL; return ASSIGN; }
-"+"          { yylval.string_val = new StrUtil(yytext); return ADD; }
-"*"          { yylval.string_val = new StrUtil(yytext); return STAR; }
-"-"          { yylval.string_val = new StrUtil(yytext); return SUB; }
-"/"          { yylval.string_val = new StrUtil(yytext); return DIV; }
-"?"          { yylval.string_val = new StrUtil(yytext); return QUESTION; }
-":"          { yylval.string_val = new StrUtil(yytext); return COLON; }
-"("          { yylval.string_val = new StrUtil(yytext); return LPAREN; }
-")"          { yylval.string_val = new StrUtil(yytext); return RPAREN; }
-"{"          { yylval.string_val = NULL ; return LCBRACE; }
+"+"          { yylval.string_val = NULL; return ADD; }
+"*"          { yylval.string_val = NULL; return STAR; }
+"-"          { yylval.string_val = NULL; return SUB; }
+"/"          { yylval.string_val = NULL; return DIV; }
+"?"          { yylval.string_val = NULL; return QUESTION; }
+":"          { yylval.string_val = NULL; return COLON; }
+"("          { yylval.string_val = NULL; return LPAREN; }
+")"          { yylval.string_val = NULL; return RPAREN; }
+"{"          { yylval.string_val = NULL; return LCBRACE; }
 "}"          { yylval.string_val = NULL; return RCBRACE; }
-"extern"     { yylval.string_val = new StrUtil(yytext); return EXTERN; }
-"sfunction"  { yylval.string_val = new StrUtil(yytext); return SFUNCTION; }
-"function"   { yylval.string_val = new StrUtil(yytext); return FUNCTION; }
-"return"     { yylval.string_val = new StrUtil(yytext); return RETURN; }
+"extern"     { yylval.string_val = NULL; return EXTERN; }
+"sfunction"  { yylval.string_val = NULL; return SFUNCTION; }
+"function"   { yylval.string_val = NULL; return FUNCTION; }
+"return"     { yylval.string_val = NULL; return RETURN; }
 "print"      { yylval.type_val = new string("print"); return UNARY_OP; }
 "&"          { yylval.type_val = new string("&"); return UNARY_OP; }
 "@"          { yylval.type_val = new string("*"); return UNARY_OP; }
@@ -68,7 +68,7 @@ number      {digit}+
 "pointer"    { yylval.type_val = new string("int32_t *"); return TYPE; }
 \"[^\"]*\"   { yylval.nstring_val = new String(yytext); return STRING_LITERAL; }
 {number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = new Int(temp); return INT_LITERAL; }
-{ident}      { yylval.type_val = new string(yytext); return ID; }
+{ident}      { yylval.id_val = new Id(yytext); return ID; }
 [ \t\r\f]    { /* ignore white space. */ }
 [\n]         { yylineno++; }
 .            { runtime_error e(string("Lexer: Line ") + to_string(yylineno) + 
