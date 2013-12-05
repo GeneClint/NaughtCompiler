@@ -10,6 +10,7 @@ void NaughtParser::write(Module *ast, string o) {
 }
 
 void NaughtParser::writeModule(Module *m) {
+
   writeHeader();
   if (m->hasFuncDecls()) {
     vector<FuncDecl> decls = m->getFuncDecls()->getFuncDecls();
@@ -150,7 +151,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
       if (connections.size() > 0)
 	      out << connections[connectOffset++];
     } else {
-      temp = (this->temps).next("int32_t");
+      temp = (this->temps).next(temps[0].first);
       out << temp.first << " " << temp.second << " = ";
     }
 
@@ -199,7 +200,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
 	      code = "%p";
 	      alter = "(void *) ";
       }
-      out << "printf(\"" << code << "\", " << alter << otherTemp.second << ");" << endl; 
+      out << "printf(\"" << code << "\\n\", " << alter << otherTemp.second << ");" << endl; 
       result = otherTemp.second;
       t = new Id(otherTemp.second);
       return temps.next(otherTemp.first);
@@ -346,7 +347,7 @@ void NaughtParser::writeHeader() {
   out << "#include <stdlib.h>" << endl;
   out << "#include <string.h>" << endl;
   out << "#include <inttypes.h>" << endl << endl;
-  
+
   out << "typedef struct nstring_st {" << endl <<
          "  int32_t   len;" << endl <<
          "  char      str[];" << endl <<
