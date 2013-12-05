@@ -20,6 +20,8 @@ class FuncDef {
   Id getId() const;
   std::string toString() const;
   bool isStringReturning() const {return isString;};
+  void deleteBloc() { delete bloc; }
+
 
   friend ostream& operator<<(ostream &os, const FuncDef &obj) {
     os << obj.toString();
