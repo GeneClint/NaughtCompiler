@@ -232,12 +232,16 @@ vardecl :
 
 funcdef_list :
          funcdef
-	        { $$ = new FuncDefList(*$1);
+	        { 
+            $$ = new FuncDefList(*$1);
+            delete $1;
 	        }	 
        | funcdef_list funcdef
-         { auto add = *$1 + *$2;
+         { 
+            auto add = *$1 + *$2;
 	          $$ = add;
-	        }	
+            delete $2;
+         }	
 	;
 
 funcdef :
