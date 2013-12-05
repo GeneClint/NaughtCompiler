@@ -33,6 +33,7 @@ void NaughtParser::writeModule(Module *m) {
       out << endl;
     }
   }
+  symbols.clear();
 }
 
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
@@ -181,19 +182,34 @@ tempName NaughtParser::writeTerm(Term *&t) {
     // TODO: change type based on operator
     Term* other = ut->evaluate();
     tempName otherTemp = writeTerm(other);
-    tempName temp = temps.next("int32_t");
     string oper = ut->getOperator();
     string result = "";
     
 
     if(oper.compare("print") == 0) {
-      out << "printf(\"%d\", " << temp.second << ");" << endl; 
-      result = temp.second;
+      Id *otherI = dynamic_cast<Id*>(other);
+      if (!otherI)
+	out << otherTemp.first << " " << otherTemp.second << " = " << other->toString() << ";" << endl;
+      string code;
+      string alter = "";
+      if (otherTemp.first == "int32_t") {
+	code = "%d";
+      } else if (otherTemp.first == "char *") {
+	code = "%s";
+      } else {
+	code = "%p";
+	alter = "(void *) ";
+      }
+      out << "printf(\"" << code << "\", " << alter << otherTemp.second << ");" << endl; 
+      result = otherTemp.second;
+      t = new Id(otherTemp.second);
+      return temps.next(otherTemp.first);
     } else {
+      tempName temp = temps.next("int32_t");
       result = oper + temp.second;
     }
     
-    return temp;
+    return otherTemp;
   } else if(s) {
     string val = s->getString();
     tempName len = temps.next("int32_t");
