@@ -12,11 +12,8 @@ class VarDecl : public Decl {
  public:
   VarDecl (const std::string &t, const Id &i,
 	   const bool &ex = false, const Expression *e = NULL) :
-           type(t), id(i), ext(ex), exp(e) {};
-  VarDecl (const StrUtil &t, const StrUtil &i,
-	   const bool &ex = false, const Expression *e = NULL) :
-	   type(t.toString()), id(Id(i.toString())), ext(ex), exp(e) {};
-
+           type(t), id(i.getName()), ext(ex), exp(e) {};
+  
   Id getId() const;
   std::string getType() const;
   bool isExtern() const;

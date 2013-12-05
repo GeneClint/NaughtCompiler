@@ -8,8 +8,8 @@
 
 class Param {
  public:
-  Param (const std::string &_type, const Id &_id) : type(_type), id(_id) {};
-  Param (const StrUtil &_type, const Id &_id) : type(_type.toString()), id(_id) {};
+  Param (const std::string &_type, const Id &_id) : type(_type), id(_id.getName()) {};
+  Param (const StrUtil &_type, const Id &_id) : type(_type.toString()), id(_id.getName()) {};
   Id getId() const;
   std::string getType() const;
   std::string toString() const;

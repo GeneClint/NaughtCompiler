@@ -70,8 +70,9 @@ tempName NaughtParser::writeVarDecl(VarDecl* v) {
     out << " = " << tempvar.second;
   }
   out << ";";
-  
-  symbols.insert({id, new VarDecl(v->getType(), new Id(id))});
+ 
+  Id insId = Id(id); 
+  symbols.insert({id, new VarDecl(v->getType(), insId)});
  
   tempName retVal = make_pair(type, id);
 
@@ -345,7 +346,8 @@ void NaughtParser::writeBlock(Block b, vector<tempName> params) {
   
   // add parameters to symbol table
   for(tempName param : params) {
-    symbols.insert({param.second, new VarDecl(param.first, new Id(param.second))});
+    Id insId = Id(param.second);
+    symbols.insert({param.second, new VarDecl(param.first, insId)});
   }
 
   for(auto decl : decls) {

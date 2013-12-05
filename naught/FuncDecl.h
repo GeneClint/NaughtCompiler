@@ -11,8 +11,8 @@
 
 class FuncDecl : public Decl {
   public:
-    FuncDecl(const Id &i, bool s = false) : id(i), isString(s) {};
-    FuncDecl(const Id &i, const ParamList &pl, bool s = false) : id(i), params(pl), isString(s) {};
+    FuncDecl(const Id &i, bool s = false) : id(i.getName()), isString(s) {};
+    FuncDecl(const Id &i, const ParamList &pl, bool s = false) : id(i.getName()), params(pl), isString(s) {};
     virtual ~FuncDecl() {};
     
     const Id getId() const;
