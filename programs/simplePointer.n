@@ -1,0 +1,7 @@
+function p() {
+  int x = 5;
+  pointer y = &x;
+  int z = @y;
+  
+  return z;
+}

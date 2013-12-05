@@ -33,6 +33,7 @@ void NaughtParser::writeModule(Module *m) {
       out << endl;
     }
   }
+  symbols.clear();
 }
 
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
@@ -181,34 +182,45 @@ tempName NaughtParser::writeTerm(Term *&t) {
     // TODO: change type based on operator
     Term* other = ut->evaluate();
     tempName otherTemp = writeTerm(other);
-    tempName temp = temps.next(otherTemp.first);
     string oper = ut->getOperator();
     string result = "";
     
 
     if(oper.compare("print") == 0) {
-      if(otherTemp.first.compare("int32_t") == 0) {
-        out << "printf(\"%d\", " << otherTemp.second << ");" << endl; 
-      } else if(otherTemp.first.compare("int32_t *") == 0) { 
-        out << "printf(\"%p\", (void *) " << otherTemp.second << ");" << endl; 
-      } 
-      //result = temp.second;
-      return temp;
-    } else if(oper.compare("&") == 0) {
-      result = oper + temp.second;
-      temp.first = temp.first + " *";
-    } else if(oper.compare("*") == 0) {
-      size_t found = oper.find("*");
-      if(found != string::npos) {
-        // found
-        temp.first.erase(found, 1);
-        temp.second = oper + temp.second;
-
+      Id *otherI = dynamic_cast<Id*>(other);
+      if (!otherI)
+	      out << otherTemp.first << " " << otherTemp.second << " = " << other->toString() << ";" << endl;
+      string code;
+      string alter = "";
+      if (otherTemp.first == "int32_t") {
+	      code = "%d";
+      } else if (otherTemp.first == "char *") {
+	      code = "%s";
       } else {
-        // ERROR
+	      code = "%p";
+	      alter = "(void *) ";
       }
-    } 
-    return temp;
+      out << "printf(\"" << code << "\", " << alter << otherTemp.second << ");" << endl; 
+      result = otherTemp.second;
+      t = new Id(otherTemp.second);
+      return temps.next(otherTemp.first);
+    } else if(oper.compare("&") == 0) {
+
+      return temps.next(otherTemp.first + " *"); 
+    
+    } else {
+      string curType = otherTemp.first;
+      size_t starIndex = curType.rfind("*");
+      if(starIndex != string::npos) {
+        //found star
+        curType.erase(starIndex - 1, 2);
+        return temps.next(curType);
+      }
+      
+      // Not found, ERROR
+      return temps.next(curType);
+
+    }   
   } else if(s) {
     string val = s->getString();
     tempName len = temps.next("int32_t");
@@ -326,9 +338,8 @@ void NaughtParser::writeStatement(Statement s) {
     tempvar = writeExpression(exp);
   }
   if (s.isReturn()) {
-    out << "return " << tempvar.second << ";";
+    out << "return " << tempvar.second << ";" << endl;
   }
-  out << endl;
 }
 
 void NaughtParser::writeHeader() {

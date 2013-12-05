@@ -23,7 +23,6 @@ int32_t temp9 = temp8;
 int32_t temp10 =  temp5 + temp9 ;
 a = temp10;
 
-
 return a;
 
  } 
@@ -40,9 +39,7 @@ int32_t y = temp14;
 int32_t temp15 =  z + y ;
 z = temp15;
 
-
 int32_t temp16 = complex (z,x);
-
 
 return z;
 

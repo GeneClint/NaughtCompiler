@@ -1,10 +1,14 @@
 # x and y should be equal
 function main() {
-  pointer p;
+  #pointer p;
   int x = 5;
-  p = &x;
+  pointer p = &x;
 
   int y = @p;
+
+  print x;
+  print y;
+  print p;
 
   return 0;
 }

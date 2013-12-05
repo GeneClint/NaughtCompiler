@@ -1,0 +1,7 @@
+function s() {
+  int x = 5;
+  pointer y = &x;
+  print y;
+
+  return @y;
+}

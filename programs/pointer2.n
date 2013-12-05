@@ -1,0 +1,23 @@
+function ptrMADNESS(pointer x) {
+  pointer y = print x + 1;
+  return @(y - 1);
+}
+
+function main() {
+  int x = 5;
+  pointer y = &x;
+  int z = 10;
+  int a = print x + print z;
+  int res;
+  
+  print x;
+  print y;
+  
+  res = ptrMADNESS(y);
+
+  print res;
+
+  return 0;
+
+}
+
