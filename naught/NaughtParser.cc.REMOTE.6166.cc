@@ -10,7 +10,7 @@ void NaughtParser::write(Module *ast, string o) {
 }
 
 void NaughtParser::writeModule(Module *m) {
-
+  
   writeHeader();
   if (m->hasFuncDecls()) {
     vector<FuncDecl> decls = m->getFuncDecls()->getFuncDecls();
@@ -81,18 +81,9 @@ tempName NaughtParser::writeExpression(const Expression *e) {
   vector<string> connections = e->getConnectors();
   vector<tempName> temps;
 
-  CondExpression* ce = dynamic_cast<CondExpression*>(e);
-
   sub_e = e->getValue1();
   if (sub_e) {
     temps.push_back(writeExpression(sub_e));
-  }
-  if (ce) {
-    tempName result = (this->temps).next(temps[0].first);
-    out << result.first << " " << result.second << ";" << endl; 
-    out << "if (" << temps[0].second << ") {"<<endl;
-    sub_e = e->getValue2();
-    
   }
 
   sub_e = e->getValue2();
@@ -123,7 +114,7 @@ tempName NaughtParser::writeExpression(const Expression *e) {
           return writeTerm(thisTerm);
         } 
       } else {
-        // TODO: error, unknown id
+        // error, unknown id
       }
     }
     tempName temp = writeTerm(thisTerm);
@@ -167,16 +158,11 @@ tempName NaughtParser::writeExpression(const Expression *e) {
     if (temps.size() > 0) {
       out << " " << temps[0].second;
       for(size_t i = 1; i < temps.size(); i++) {
-	      out << " " << connections[connectOffset + i - 1] << " " << temps[i].second << " ";
+	out << " " << connections[connectOffset + i - 1] << " " << temps[i].second << " ";
       }
     }
   } 
   out << ";" << endl;
-
-  if(t != nullptr && !thisTerm) {
-    out << temp.first << " " << temp.second << " = " << t->toString() << ";" << endl;
-  }
-
   return temp;
 }
 
@@ -275,8 +261,8 @@ tempName NaughtParser::writeTerm(Term *&t) {
 	return temp;
       }
     }
-    //default a function returns an int
-    tempName temp = temps.next("int32_t");
+    // TODO: ERROR message
+    tempName temp = make_pair("id", id);
     return temp;
   } else {
     // defualt...
@@ -360,7 +346,7 @@ void NaughtParser::writeHeader() {
   out << "#include <stdio.h>" << endl;
   out << "#include <stdlib.h>" << endl;
   out << "#include <string.h>" << endl;
-  out << "#include <inttypes.h>" << endl << endl;
+  out << "#include <stdint.h>" << endl << endl;
 
   out << "typedef struct nstring_st {" << endl <<
          "  int32_t   len;" << endl <<
