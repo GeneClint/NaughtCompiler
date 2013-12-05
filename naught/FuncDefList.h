@@ -10,10 +10,10 @@
 class FuncDefList {
  public:
   FuncDefList ();
-  FuncDefList (const FuncDef *f);
-  FuncDefList* operator+ (const FuncDef *p);
-  virtual ~FuncDefList () {};
-  vector<const FuncDef*> getFuncDefs() const;
+  FuncDefList (const FuncDef &f);
+  FuncDefList* operator+ (const FuncDef &p);
+  virtual ~FuncDefList ();
+  vector<FuncDef> getFuncDefs() const;
 
   FuncDefList(const FuncDefList &other);
   FuncDefList& operator=(const FuncDefList &other);
@@ -37,7 +37,7 @@ class FuncDefList {
   }
 
  private:
-  vector<const FuncDef*> *funcDefs; 
+  vector<FuncDef> *funcDefs; 
 };
 
 #endif

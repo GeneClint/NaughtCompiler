@@ -8,7 +8,11 @@
 using namespace std;
 
 FuncDefList::FuncDefList() {
-  funcDefs = new vector<const FuncDef*>;
+  funcDefs = new vector<FuncDef>;
+}
+
+FuncDefList::~FuncDefList() {
+  delete funcDefs;
 }
 
 FuncDefList::FuncDefList(FuncDefList &&other) noexcept {
@@ -17,13 +21,13 @@ FuncDefList::FuncDefList(FuncDefList &&other) noexcept {
 }
 
 FuncDefList::FuncDefList(const FuncDefList &other) {
-  funcDefs = new vector<const FuncDef*>(*other.funcDefs);
+  funcDefs = new vector<FuncDef>(*other.funcDefs);
 }
 
 FuncDefList& FuncDefList::operator=(const FuncDefList &other) {
   if (&other == this) return *this;
-  if (funcDefs != NULL) delete funcDefs;
-  funcDefs = new vector<const FuncDef*>(*other.funcDefs);
+  if (funcDefs != NULL) delete funcDefs; 
+  funcDefs = new vector<FuncDef>(*other.funcDefs);
   return *this;
 }
 
@@ -35,17 +39,17 @@ FuncDefList& FuncDefList::operator=(FuncDefList &&other) noexcept {
   return *this;
 }
 
-FuncDefList::FuncDefList(const FuncDef *p) {
-  funcDefs = new vector<const FuncDef*>;
+FuncDefList::FuncDefList(const FuncDef &p) {
+  funcDefs = new vector<FuncDef>;
   funcDefs->push_back(p);
 }
 
-FuncDefList* FuncDefList::operator+(const FuncDef *p) {
+FuncDefList* FuncDefList::operator+(const FuncDef &p) {
   funcDefs->push_back(p);
   return this;
 }
 
-vector<const FuncDef*> FuncDefList::getFuncDefs() const {
+vector<FuncDef> FuncDefList::getFuncDefs() const {
   return *funcDefs;
 }
 
@@ -54,7 +58,7 @@ string FuncDefList::toString() const {
   for(size_t i = 0; i < funcDefs->size(); ++i) {
     if(i != 0)
       ss << ",";
-    ss << (*funcDefs)[i]->toString();
+    ss << (*funcDefs)[i].toString();
   }
   return ss.str();
 }

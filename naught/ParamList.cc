@@ -11,6 +11,10 @@ ParamList::ParamList() {
   params = new vector<Param>;
 }
 
+ParamList::~ParamList() {
+  delete params;
+}
+
 ParamList::ParamList(ParamList &&other) noexcept {
   params = other.params;
   other.params = NULL;

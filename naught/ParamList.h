@@ -18,7 +18,7 @@ class ParamList {
   ParamList& operator=(ParamList &&other) noexcept;
 
   ParamList* operator+ (const Param &p);
-  virtual ~ParamList () {};
+  virtual ~ParamList ();
   vector<Param> getParams() const; 
 
   explicit operator string() const { return toString(); }

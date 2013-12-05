@@ -11,6 +11,12 @@ Module::Module(const Module &other) {
     funcDefList = new FuncDefList(*other.funcDefList);
 }
 
+Module::~Module() {
+  if(funcDeclList != nullptr) delete funcDeclList;
+  if(varDeclList != nullptr) delete varDeclList;
+  if(funcDefList != nullptr) delete funcDefList;
+}
+
 Module& Module::operator=(const Module &other) {
   if (&other == this) return *this;
   if (other.funcDeclList)

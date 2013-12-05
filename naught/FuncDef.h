@@ -13,16 +13,13 @@ class FuncDef {
     id(i), bloc(b), params(NULL), isString(s) {};
   FuncDef(Id i, const Block *b, const ParamList *p, bool s = false) :
     id(i), bloc(b), params(p), isString(s) {};
-  FuncDef(StrUtil &i, const Block *b, bool s = false) : 
-    id(Id(i.toString())), bloc(b), params(NULL), isString(s) {};
-  FuncDef(StrUtil &i, const Block *b, const ParamList *p, bool s = false) :
-    id(Id(i.toString())), bloc(b), params(p), isString(s) {};
   bool hasParams() const;
   Block* getBlock() const;
   ParamList* getParams() const;
   Id getId() const;
   std::string toString() const;
   bool isStringReturning() const {return isString;};
+  ~FuncDef();
 
   friend ostream& operator<<(ostream &os, const FuncDef &obj) {
     os << obj.toString();

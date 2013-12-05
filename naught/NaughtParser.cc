@@ -28,11 +28,14 @@ void NaughtParser::writeModule(Module *m) {
     }
   }
   if (m->hasFuncDefs()) {
-    vector<const FuncDef*> defs = m->getFuncDefs()->getFuncDefs();
-    for(const FuncDef* def : defs) {
-      writeFunctionDef(*def);
+    vector<FuncDef> defs = m->getFuncDefs()->getFuncDefs();
+    for(FuncDef def : defs) {
+      writeFunctionDef(&def);
       out << endl;
     }
+  }
+  for(auto kv : symbols) {
+    delete kv.second;
   }
   symbols.clear();
 }
@@ -300,17 +303,17 @@ tempName NaughtParser::writeTerm(Term *&t) {
   }
 }
 
-void NaughtParser::writeFunctionDef(FuncDef f) {
-  Id id = f.getId();
-  string type = f.isStringReturning() ? "char * " : "int32_t ";
+void NaughtParser::writeFunctionDef(FuncDef *f) {
+  Id id = f->getId();
+  string type = f->isStringReturning() ? "char * " : "int32_t ";
   out << type << id.toString() << " ( ";
 
   ParamList *ps;
   vector<Param> params; 
   FuncDecl *toInsert;
-  if (f.hasParams()) {
-    ps = f.getParams();
-    toInsert = new FuncDecl(id, *ps, f.isStringReturning());
+  if (f->hasParams()) {
+    ps = f->getParams();
+    toInsert = new FuncDecl(id, *ps, f->isStringReturning());
     params = ps->getParams();
     if (params.size() > 0) {
       out << params[0].toString();
@@ -319,12 +322,12 @@ void NaughtParser::writeFunctionDef(FuncDef f) {
       }
     }
   } else {
-    toInsert = new FuncDecl(id, f.isStringReturning());
+    toInsert = new FuncDecl(id, f->isStringReturning());
   }
   out << " ) " << endl;
 
   symbols.insert(make_pair(id.toString(), toInsert));
-  Block* bloc = f.getBlock();
+  Block* bloc = f->getBlock();
   if (bloc) {
     vector<tempName> blocParams;
     for(Param p : params) {
@@ -355,7 +358,9 @@ void NaughtParser::writeBlock(Block b, vector<tempName> params) {
     out << endl;
   }
   for (auto id : scope) {
+    Decl* removed = symbols[id.second];
     symbols.erase (id.second);
+    delete removed;
   }
   out << " } " << endl;
 }

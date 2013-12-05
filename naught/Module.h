@@ -13,7 +13,7 @@ class Module {
            const VarDeclList *vdl, 
            const FuncDefList *fdnl) : 
            funcDeclList(fdcl), varDeclList(vdl), funcDefList(fdnl) {};
-    virtual ~Module() {};
+    virtual ~Module();
     
     Module(const Module &other);
     Module& operator=(const Module &other);
