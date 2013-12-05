@@ -28,28 +28,30 @@ printf("%d\n", temp8);
 int32_t temp9 = temp8;
 int32_t temp10 =  temp7 + temp9 ;
 z = temp10;
+int32_t temp11 = z;
 
-int32_t temp11 = strlen(" = ");
-nstring_st* temp12 = malloc(sizeof(int32_t) + sizeof(char) * temp11 + 1);
-temp12->len = temp11;
-strcpy(temp12->str, " = ");
-char * temp13 = temp12->str;
-int32_t temp14 = *((int32_t*)label - 1) + *((int32_t*)temp13 - 1);
-nstring_st* temp15 =  malloc(sizeof(int32_t) + (temp14 + 1) * sizeof(char));
-temp15->len = temp14 ;
-char * temp16 = temp15->str;
-strcpy (temp16, label);
-strcat (temp16, temp13);
-char * temp17 =  temp16;
+int32_t temp12 = strlen(" = ");
+nstring_st* temp13 = malloc(sizeof(int32_t) + sizeof(char) * temp12 + 1);
+temp13->len = temp12;
+strcpy(temp13->str, " = ");
+char * temp14 = temp13->str;
+int32_t temp15 = *((int32_t*)label - 1) + *((int32_t*)temp14 - 1);
+nstring_st* temp16 =  malloc(sizeof(int32_t) + (temp15 + 1) * sizeof(char));
+temp16->len = temp15 ;
+char * temp17 = temp16->str;
+strcpy (temp17, label);
+strcat (temp17, temp14);
+char * temp18 =  temp17;
+char * temp18 = label;
 
-int32_t temp18 = printf ("%s %d\n",label,z);
+int32_t temp19 = printf ("%s %d\n",label,z);
 
-int32_t temp19 = printf ("The label '%s' has length %d\n",label,nstrlen (label));
+int32_t temp20 = printf ("The label '%s' has length %d\n",label,nstrlen (label));
 
-int32_t temp20 = printf ("globalInt = %d\n",*p);
+int32_t temp21 = printf ("globalInt = %d\n",*p);
 
-int32_t temp21 = 0;
-return temp21;
+int32_t temp22 = 0;
+return temp22;
 
  } 
 
