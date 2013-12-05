@@ -28,6 +28,7 @@
  #include "FuncDefList.h"
  #include "Module.h"
  #include "String.h"
+ #include "Int.h"
 
  #include "parser.hh"
 %}
@@ -44,7 +45,7 @@ number      {digit}+
 "#".*        { /* ignore single line comments. */ }
 ";"          { yylval.string_val = new StrUtil(yytext); return SEMI; }
 ","          { yylval.string_val = new StrUtil(yytext); return COMMA; }
-"="          { yylval.string_val = new StrUtil(yytext); return ASSIGN; }
+"="          { yylval.string_val = NULL; return ASSIGN; }
 "+"          { yylval.string_val = new StrUtil(yytext); return ADD; }
 "*"          { yylval.string_val = new StrUtil(yytext); return STAR; }
 "-"          { yylval.string_val = new StrUtil(yytext); return SUB; }
@@ -53,8 +54,8 @@ number      {digit}+
 ":"          { yylval.string_val = new StrUtil(yytext); return COLON; }
 "("          { yylval.string_val = new StrUtil(yytext); return LPAREN; }
 ")"          { yylval.string_val = new StrUtil(yytext); return RPAREN; }
-"{"          { yylval.string_val = new StrUtil(yytext); return LCBRACE; }
-"}"          { yylval.string_val = new StrUtil(yytext); return RCBRACE; }
+"{"          { yylval.string_val = NULL ; return LCBRACE; }
+"}"          { yylval.string_val = NULL; return RCBRACE; }
 "extern"     { yylval.string_val = new StrUtil(yytext); return EXTERN; }
 "sfunction"  { yylval.string_val = new StrUtil(yytext); return SFUNCTION; }
 "function"   { yylval.string_val = new StrUtil(yytext); return FUNCTION; }
@@ -66,7 +67,7 @@ number      {digit}+
 "string"     { yylval.type_val = new string("char *"); return TYPE; }
 "pointer"    { yylval.type_val = new string("int32_t *"); return TYPE; }
 \"[^\"]*\"   { yylval.nstring_val = new String(yytext); return STRING_LITERAL; }
-{number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = &temp; return INT_LITERAL; }
+{number}     { int temp = stoi((string)yytext, nullptr); yylval.int_val = new Int(temp); return INT_LITERAL; }
 {ident}      { yylval.type_val = new string(yytext); return ID; }
 [ \t\r\f]    { /* ignore white space. */ }
 [\n]         { yylineno++; }

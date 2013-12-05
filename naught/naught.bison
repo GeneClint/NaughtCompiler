@@ -43,7 +43,7 @@ extern Module *AST;
  ***************************************/
 %union {
   string*     type_val;
-  int*        int_val;
+  Int*        int_val;
   String*     nstring_val;
   StrUtil*    string_val;
   Term*	      term_val;
@@ -301,7 +301,7 @@ term :
         STRING_LITERAL
         { $$ = $1; }
       | INT_LITERAL
-        { $$ = new Int(*$1); }
+        { $$ = $1; }
       | ID
         { $$ = new Id(*$1); }
       | LPAREN expr RPAREN
