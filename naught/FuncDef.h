@@ -9,16 +9,19 @@
 
 class FuncDef {
  public:
-  FuncDef(Id i, const Block *b, bool s = false) :
-    id(i.getName()), bloc(b), params(NULL), isString(s) {};
-  FuncDef(Id i, const Block *b, const ParamList *p, bool s = false) :
-    id(i.getName()), bloc(b), params(p), isString(s) {};
+  FuncDef(Id &i, const Block *b, bool s = false) :
+    id(&i), bloc(b), params(nullptr), isString(s) {};
+  FuncDef(Id &i, const Block *b, const ParamList *p, bool s = false) :
+    id(&i), bloc(b), params(p), isString(s) {};
+
   bool hasParams() const;
   Block* getBlock() const;
   ParamList* getParams() const;
   Id getId() const;
   std::string toString() const;
   bool isStringReturning() const {return isString;};
+  void deleteBloc() { delete bloc; }
+
 
   friend ostream& operator<<(ostream &os, const FuncDef &obj) {
     os << obj.toString();
@@ -26,7 +29,7 @@ class FuncDef {
   }
 
  private:
-  Id id;
+  Id *id;
   const Block *bloc;
   const ParamList *params;
   bool isString;

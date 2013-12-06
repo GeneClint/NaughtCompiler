@@ -8,7 +8,7 @@ using std::string;
 
 class String : public Term {
   public:
-    String(string s);
+    String(string s) : str(s), length(str.length() - 1) {};
     string getString() const;
     int getLength() const;
     virtual string toString() const;

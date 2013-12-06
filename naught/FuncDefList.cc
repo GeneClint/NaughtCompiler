@@ -12,6 +12,10 @@ FuncDefList::FuncDefList() {
 }
 
 FuncDefList::~FuncDefList() {
+  for(FuncDef fd : *funcDefs) {
+    fd.deleteBloc();
+  }
+  
   delete funcDefs;
 }
 

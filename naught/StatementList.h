@@ -11,6 +11,7 @@ class StatementList {
  public:
   StatementList ();
   StatementList (const Statement &s);
+  virtual ~StatementList ();
 
   StatementList(const StatementList &other);
   StatementList& operator=(const StatementList &other);
@@ -18,7 +19,6 @@ class StatementList {
   StatementList& operator=(StatementList &&other) noexcept;
 
   StatementList* operator+ (const Statement &s);
-  virtual ~StatementList ();
   vector<Statement> getStatements() const; 
 
   explicit operator string() const { return toString(); }

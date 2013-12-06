@@ -3,7 +3,7 @@
 #include "VarDecl.h"
 
 Id VarDecl::getId() const {
-  return id;
+  return *id;
 }
 
 std::string VarDecl::getType() const {
@@ -22,5 +22,5 @@ std::string VarDecl::toString() const {
   string external = ext ? "extern " : "";
   string expression = (exp != NULL) ? " = " + exp->toString() : "";
 
-  return external + type + " " + id.toString() + expression;
+  return external + type + " " + id->toString() + expression;
 }

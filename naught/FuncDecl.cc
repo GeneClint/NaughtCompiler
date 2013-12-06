@@ -4,7 +4,7 @@
 #include "Param.h"
 
 const Id FuncDecl::getId() const {
-  return id;
+  return *id;
 }
 
 vector<Param> FuncDecl::getParams() const {
@@ -12,5 +12,5 @@ vector<Param> FuncDecl::getParams() const {
 }
 
 std::string FuncDecl::toString() const {
-  return id.toString() + "(" + params.toString() + ")";
+  return id->toString() + "(" + params.toString() + ")";
 }

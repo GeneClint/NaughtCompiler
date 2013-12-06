@@ -12,12 +12,12 @@ ArgList* FunctionCall::getArgs() const {
 }
 
 Id FunctionCall::getId() const {
-  return id;
+  return *id;
 }
 
 string FunctionCall::toString() const {
   stringstream result;
-  result << id.toString();
+  result << id->toString();
   if(tempArgs != nullptr) {
     result << " (";
     for(uint32_t i = 0; i < tempArgs->size(); ++i) {

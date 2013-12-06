@@ -201,6 +201,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
 
   if (et) {
     tempName temp = writeExpression(et->evaluate());
+    delete t;
     t = new Id(temp.second);
     return temps.next(temp.first);
   } else if (ut) {
