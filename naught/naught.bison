@@ -178,8 +178,7 @@ funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
           { 
             $$ = new FuncDecl(*$2, *$4);
-            delete $2;
-	    delete $4;
+	          delete $4;
           }
         | FUNCTION ID LPAREN  RPAREN
           {
@@ -188,8 +187,7 @@ funcdecl :
         | SFUNCTION ID LPAREN param_list RPAREN
           { 
             $$ = new FuncDecl(*$2, *$4, true);
-            delete $2;
-	    delete $4;
+	          delete $4;
          }
         | SFUNCTION ID LPAREN  RPAREN
           { 
@@ -216,19 +214,16 @@ vardecl :
           { 
             $$ = new VarDecl(*$1, *$2);
             delete $1;
-	    delete $2;
           }
        | TYPE ID ASSIGN expr
           { 
             $$ = new VarDecl(*$1, *$2, false, $4);
             delete $1;
-	    delete $2;
           }
        | EXTERN TYPE ID  /* extern variable */
           { 
             $$ = new VarDecl(*$2, *$3, true);
             delete $2;
-	    delete $3;
           }
        ;
 
@@ -250,17 +245,14 @@ funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
           { 
             $$ = new FuncDef(*$2, $6, $4);
-	    delete $2;
           }
         | FUNCTION ID LPAREN RPAREN block
           { 
             $$ = new FuncDef(*$2, $5);
-	    delete $2;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
           { 
             $$ = new FuncDef(*$2, $6, $4, true);
-	    delete $2;
           }
         | SFUNCTION ID LPAREN RPAREN block
           { 
@@ -358,11 +350,11 @@ term :
          delete $1; }
       | ID LPAREN arglist RPAREN  /* function call */
        { 
-        $$ = new FunctionCall($1->getName(), $3); 
+        $$ = new FunctionCall(*$1, $3); 
        }
       | ID LPAREN RPAREN  /* function call */
        { 
-        $$ = new FunctionCall($1->getName(());
+        $$ = new FunctionCall(*$1);
        }
       ;
 
