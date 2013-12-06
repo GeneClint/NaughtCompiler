@@ -4,11 +4,6 @@
 
 using std::string;
 
-String::String(string s) {
-  str = s;
-  length = s.length() - 2;
-}
-
 string String::getString() const {
   return str;
 }

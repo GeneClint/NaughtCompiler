@@ -9,7 +9,6 @@
 class UnaryTerm : public Term {
  public:
   UnaryTerm (std::string _op, Term *t) : op(_op), internal(t) {};
-  //UnaryTerm (StrUtil &s, Term *t) : op(s.toString()), internal(t) {};
   std::string getOperator() {return op;}
   Term* evaluate() {return internal;}
   std::string toString() const;

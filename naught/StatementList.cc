@@ -12,6 +12,9 @@ StatementList::StatementList() {
 }
 
 StatementList::~StatementList() {
+ /* for(Statement s : *statements) {
+    s.deleteExp(); 
+  }*/
   delete statements;
 }
 
