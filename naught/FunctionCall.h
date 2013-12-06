@@ -16,7 +16,7 @@ using std::make_pair;
 
 class FunctionCall : public Term {
  public:
-  FunctionCall (const string &s, const ArgList* a = nullptr) : id(s), args(a), tempArgs(nullptr) {};
+  FunctionCall (Id &i, const ArgList* a = nullptr) : id(&i), args(a), tempArgs(nullptr) {};
   bool hasArgs() const;
   ArgList* getArgs() const;
   Id getId() const;
@@ -25,7 +25,7 @@ class FunctionCall : public Term {
   vector<pair<string, string>> *getTempArgs();
 
  private:
-  const Id id;
+  Id *id;
   const ArgList *args;
   vector<pair<string, string>> *tempArgs;
 };

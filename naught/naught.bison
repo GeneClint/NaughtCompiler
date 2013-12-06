@@ -176,22 +176,18 @@ funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
           { 
             $$ = new FuncDecl(*$2, *$4);
-            delete $2;
           }
         | FUNCTION ID LPAREN  RPAREN
           {
             $$ = new FuncDecl(*$2);
-            delete $2;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
           { 
             $$ = new FuncDecl(*$2, *$4, true);
-            delete $2;
           }
         | SFUNCTION ID LPAREN  RPAREN
           { 
             $$ = new FuncDecl(*$2, true);
-            delete $2;
           }
 	;
 
@@ -214,19 +210,16 @@ vardecl :
           { 
             $$ = new VarDecl(*$1, *$2);
             delete $1;
-            delete $2;
           }
        | TYPE ID ASSIGN expr
           { 
             $$ = new VarDecl(*$1, *$2, false, $4);
             delete $1;
-            delete $2;
           }
        | EXTERN TYPE ID  /* extern variable */
           { 
             $$ = new VarDecl(*$2, *$3, true);
             delete $2;
-            delete $3;
           }
        ;
 
@@ -248,32 +241,30 @@ funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
           { 
             $$ = new FuncDef(*$2, $6, $4);
-            delete $2;
           }
         | FUNCTION ID LPAREN RPAREN block
           { 
             $$ = new FuncDef(*$2, $5);
-            delete $2;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
           { 
             $$ = new FuncDef(*$2, $6, $4, true);
-            delete $2;
           }
         | SFUNCTION ID LPAREN RPAREN block
           { 
             $$ = new FuncDef(*$2, $5, true);
-            delete $2;
           }
         ;
 
 param_list : 
           param_list COMMA param
-          { auto add = *$1 + *$3;
+          { 
+            auto add = *$1 + *$3;
 	          $$ = add;
           }
         | param
-          { $$ = new ParamList(*$1);
+          { 
+            $$ = new ParamList(*$1);
           }
         ;
 
@@ -282,7 +273,6 @@ param :
           { 
             $$ = new Param(*$1, *$2);
             delete $1;
-            delete $2;
           }
         ;
 
@@ -355,13 +345,11 @@ term :
        { $$ = new UnaryTerm(*$1, $2); }
       | ID LPAREN arglist RPAREN  /* function call */
        { 
-        $$ = new FunctionCall($1->getName(), $3); 
-        delete $1; 
+        $$ = new FunctionCall(*$1, $3); 
        }
       | ID LPAREN RPAREN  /* function call */
        { 
-        $$ = new FunctionCall($1->getName());
-        delete $1;
+        $$ = new FunctionCall(*$1);
        }
       ;
 

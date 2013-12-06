@@ -3,7 +3,7 @@
 #include "Param.h"
 
 Id Param::getId() const {
-  return id;
+  return *id;
 }
 
 std::string Param::getType() const {
@@ -11,5 +11,5 @@ std::string Param::getType() const {
 }
 
 std::string Param::toString() const {
-  return type + " " + id.toString();
+  return type + " " + id->toString();
 }

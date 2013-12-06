@@ -9,10 +9,10 @@
 
 class FuncDef {
  public:
-  FuncDef(Id i, const Block *b, bool s = false) :
-    id(i.getName()), bloc(b), params(nullptr), isString(s) {};
-  FuncDef(Id i, const Block *b, const ParamList *p, bool s = false) :
-    id(i.getName()), bloc(b), params(p), isString(s) {};
+  FuncDef(Id &i, const Block *b, bool s = false) :
+    id(&i), bloc(b), params(nullptr), isString(s) {};
+  FuncDef(Id &i, const Block *b, const ParamList *p, bool s = false) :
+    id(&i), bloc(b), params(p), isString(s) {};
 
   bool hasParams() const;
   Block* getBlock() const;
@@ -29,7 +29,7 @@ class FuncDef {
   }
 
  private:
-  Id id;
+  Id *id;
   const Block *bloc;
   const ParamList *params;
   bool isString;

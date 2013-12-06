@@ -15,10 +15,10 @@ ParamList* FuncDef::getParams() const {
 }
 
 Id FuncDef::getId() const {
-  return id;
+  return *id;
 }
 
 std::string FuncDef::toString() const {
   string pars = hasParams() ? params->toString() + " " : "";
-  return id.toString() + " " + pars + bloc->toString();
+  return id->toString() + " " + pars + bloc->toString();
 }
