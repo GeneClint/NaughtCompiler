@@ -345,13 +345,13 @@ void NaughtParser::writeFunctionDef(FuncDef *f) {
       blocParams.push_back(make_pair(p.getType(), p.getId().getName()));
     }
 
-    writeBlock(*bloc, blocParams);
+    writeBlock(bloc, blocParams);
   }
 }
 
-void NaughtParser::writeBlock(Block b, vector<tempName> params) {
+void NaughtParser::writeBlock(Block *b, vector<tempName> params) {
   out << " { " << endl;
-  auto decls = b.getVarDecls();
+  auto decls = b->getVarDecls();
   vector<tempName> scope(params);
   
   // add parameters to symbol table
@@ -364,9 +364,9 @@ void NaughtParser::writeBlock(Block b, vector<tempName> params) {
     scope.push_back(writeVarDecl(&decl));
     out << endl;
   }
-  auto stmts = b.getStatements();
+  auto stmts = b->getStatements();
   for(auto stmt : stmts) {
-    writeStatement(stmt);
+    writeStatement(&stmt);
     out << endl;
   }
   for (auto id : scope) {
@@ -377,10 +377,10 @@ void NaughtParser::writeBlock(Block b, vector<tempName> params) {
   out << " } " << endl;
 }
 
-void NaughtParser::writeStatement(Statement s) {
-  auto exp = s.getExpression();
+void NaughtParser::writeStatement(Statement *s) {
+  auto exp = s->getExpression();
   tempName tempvar = writeExpression(exp);
-  if (s.isReturn()) {
+  if (s->isReturn()) {
     out << "return " << tempvar.second << ";" << endl;
   }
 }
