@@ -166,9 +166,11 @@ funcdecl_list :
           funcdecl_list funcdecl SEMI
           { auto add = *$1 + *$2;
             $$ = add;
+	    delete $2;
           }
         | funcdecl SEMI
           { $$ = new FuncDeclList(*$1);
+            delete $1;
           }
        ;
  
@@ -177,6 +179,7 @@ funcdecl :
           { 
             $$ = new FuncDecl(*$2, *$4);
             delete $2;
+	    delete $4;
           }
         | FUNCTION ID LPAREN  RPAREN
           {
@@ -187,6 +190,7 @@ funcdecl :
           { 
             $$ = new FuncDecl(*$2, *$4, true);
             delete $2;
+	    delete $4;
           }
         | SFUNCTION ID LPAREN  RPAREN
           { 
@@ -233,9 +237,11 @@ vardecl :
 funcdef_list :
          funcdef
 	        { $$ = new FuncDefList(*$1);
+		  delete $1;
 	        }	 
        | funcdef_list funcdef
          { auto add = *$1 + *$2;
+	   delete $2;
 	          $$ = add;
 	        }	
 	;
@@ -266,10 +272,12 @@ funcdef :
 param_list : 
           param_list COMMA param
           { auto add = *$1 + *$3;
-	          $$ = add;
+	    $$ = add;
+	    delete $3;
           }
         | param
           { $$ = new ParamList(*$1);
+	    delete $1;
           }
         ;
 
@@ -348,7 +356,8 @@ term :
       | LPAREN expr RPAREN
        { $$ = new ExprTerm($2); }
       | UNARY_OP term
-       { $$ = new UnaryTerm(*$1, $2); }
+       { $$ = new UnaryTerm(*$1, $2);
+         delete $1; }
       | ID LPAREN arglist RPAREN  /* function call */
        { 
         $$ = new FunctionCall($1->getName(), $3); 
