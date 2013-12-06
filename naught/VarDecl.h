@@ -13,7 +13,8 @@ class VarDecl : public Decl {
   VarDecl (const std::string &t, Id &i,
 	         const bool &ex = false, const Expression *e = nullptr) :
             type(t), id(&i), ext(ex), exp(e) {}; 
-  
+
+  //~VarDecl() { delete id; }
 
   Id getId() const;
   std::string getType() const;

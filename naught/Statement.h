@@ -13,7 +13,7 @@ class Statement {
   const Expression* getExpression() const;
   std::string toString() const;
 
-void deleteExp() { delete exp; }
+  void deleteExp() { delete exp; }
 
   friend std::ostream& operator<<(std::ostream &os, const Statement &p) {
     os << p.toString();

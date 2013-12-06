@@ -14,6 +14,8 @@ class FuncDef {
   FuncDef(Id &i, const Block *b, const ParamList *p, bool s = false) :
     id(&i), bloc(b), params(p), isString(s) {};
 
+//  ~FuncDef() {delete id;}
+
   bool hasParams() const;
   Block* getBlock() const;
   ParamList* getParams() const;

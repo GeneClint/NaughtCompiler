@@ -42,7 +42,8 @@ void NaughtParser::writeModule(Module *m) {
 
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   string id = f->getId().toString();
-  symbols.insert(make_pair(id, new FuncDecl(f->getId(), f->isStringReturning())));
+  Id *insertId = new Id(id);
+  symbols.insert(make_pair(id, new FuncDecl(*insertId, f->isStringReturning())));
   string type = f->isStringReturning() ? "char * " : "int32_t ";
   out << type << id << " ( ";
   auto params = f->getParams();
@@ -71,8 +72,8 @@ tempName NaughtParser::writeVarDecl(VarDecl* v) {
   }
   out << ";";
  
-  Id insId = Id(id); 
-  symbols.insert({id, new VarDecl(v->getType(), insId)});
+  Id *insId = new Id(id); 
+  symbols.insert({id, new VarDecl(v->getType(), *insId)});
  
   tempName retVal = make_pair(type, id);
 
@@ -201,7 +202,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
 
   if (et) {
     tempName temp = writeExpression(et->evaluate());
-    delete t;
+    //delete t;
     t = new Id(temp.second);
     return temps.next(temp.first);
   } else if (ut) {
@@ -227,6 +228,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
       }
       out << "printf(\"" << code << "\\n\", " << alter << otherTemp.second << ");" << endl; 
       result = otherTemp.second;
+      //delete t;
       t = new Id(otherTemp.second);
       return temps.next(otherTemp.first);
     } else if(oper.compare("&") == 0) {
@@ -254,6 +256,7 @@ tempName NaughtParser::writeTerm(Term *&t) {
     out << snew.first << " " << snew.second << " = malloc(sizeof(int32_t) + sizeof(char) * (" << len.second << " + 1));" << endl;
     out << snew.second << "->len = " << len.second << ";" << endl;
     out << "strcpy(" << snew.second << "->str, " << val << ");" << endl;
+    //delete t;
     t = new Id(snew.second + "->str");
     return temps.next("char *");
   } else if(in) {
@@ -282,7 +285,9 @@ tempName NaughtParser::writeTerm(Term *&t) {
       FuncDecl *fd = dynamic_cast<FuncDecl *>(res);
       if (fd) {
 	string type = fd->isStringReturning() ? "char *" : "int32_t";
-	if (fc->hasArgs()) {
+	
+  // calulate args and insert new temp arg names into the functionCall
+  if (fc->hasArgs()) {
 	  auto args = fc->getArgs()->getArgs();
 	  vector<tempName> *tempArgs = new vector<tempName>;
 	  for(auto arg : args) {
@@ -309,13 +314,14 @@ void NaughtParser::writeFunctionDef(FuncDef *f) {
   Id id = f->getId();
   string type = f->isStringReturning() ? "char * " : "int32_t ";
   out << type << id.toString() << " ( ";
+  Id *insertId = new Id(id.getName());
 
   ParamList *ps;
   vector<Param> params; 
   FuncDecl *toInsert;
   if (f->hasParams()) {
     ps = f->getParams();
-    toInsert = new FuncDecl(id, *ps, f->isStringReturning());
+    toInsert = new FuncDecl(*insertId, *ps, f->isStringReturning());
     params = ps->getParams();
     if (params.size() > 0) {
       out << params[0].toString();
@@ -324,7 +330,7 @@ void NaughtParser::writeFunctionDef(FuncDef *f) {
       }
     }
   } else {
-    toInsert = new FuncDecl(id, f->isStringReturning());
+    toInsert = new FuncDecl(*insertId, f->isStringReturning());
   }
   out << " ) " << endl;
 
@@ -347,8 +353,8 @@ void NaughtParser::writeBlock(Block b, vector<tempName> params) {
   
   // add parameters to symbol table
   for(tempName param : params) {
-    Id insId = Id(param.second);
-    symbols.insert({param.second, new VarDecl(param.first, insId)});
+    Id *insId = new Id(param.second);
+    symbols.insert({param.second, new VarDecl(param.first, *insId)});
   }
 
   for(auto decl : decls) {

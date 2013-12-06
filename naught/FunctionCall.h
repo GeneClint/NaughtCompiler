@@ -17,6 +17,12 @@ using std::make_pair;
 class FunctionCall : public Term {
  public:
   FunctionCall (Id &i, const ArgList* a = nullptr) : id(&i), args(a), tempArgs(nullptr) {};
+  ~FunctionCall() { 
+    /*delete id; 
+    if(tempArgs != nullptr)
+      delete tempArgs*/;
+  }
+  
   bool hasArgs() const;
   ArgList* getArgs() const;
   Id getId() const;

@@ -10,6 +10,8 @@ class Param {
  public:
   Param (const std::string &_type, Id &_id) : type(_type), id(&_id) {};
   Param (const StrUtil &_type, Id &_id) : type(_type.toString()), id(&_id) {};
+  //~Param() { delete id; }
+  
   Id getId() const;
   std::string getType() const;
   std::string toString() const;
