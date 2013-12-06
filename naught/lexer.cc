@@ -527,9 +527,10 @@ char *yytext;
  #include "FuncDefList.h"
  #include "Module.h"
  #include "String.h"
-
+ #include "Int.h"
+ #include "Id.h"
  #include "parser.hh"
-#line 533 "lexer.cc"
+#line 534 "lexer.cc"
 
 #define INITIAL 0
 
@@ -711,10 +712,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 42 "naught.lex"
+#line 43 "naught.lex"
 
 
-#line 718 "lexer.cc"
+#line 719 "lexer.cc"
 
 	if ( !(yy_init) )
 		{
@@ -799,154 +800,154 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 44 "naught.lex"
+#line 45 "naught.lex"
 { /* ignore single line comments. */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 45 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return SEMI; }
+#line 46 "naught.lex"
+{ yylval.string_val = NULL; return SEMI; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 46 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return COMMA; }
+#line 47 "naught.lex"
+{ yylval.string_val = NULL; return COMMA; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 47 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return ASSIGN; }
+#line 48 "naught.lex"
+{ yylval.string_val = NULL; return ASSIGN; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 48 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return ADD; }
+#line 49 "naught.lex"
+{ yylval.string_val = NULL; return ADD; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 49 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return STAR; }
+#line 50 "naught.lex"
+{ yylval.string_val = NULL; return STAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 50 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return SUB; }
+#line 51 "naught.lex"
+{ yylval.string_val = NULL; return SUB; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 51 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return DIV; }
+#line 52 "naught.lex"
+{ yylval.string_val = NULL; return DIV; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 52 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return QUESTION; }
+#line 53 "naught.lex"
+{ yylval.string_val = NULL; return QUESTION; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 53 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return COLON; }
+#line 54 "naught.lex"
+{ yylval.string_val = NULL; return COLON; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 54 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return LPAREN; }
+#line 55 "naught.lex"
+{ yylval.string_val = NULL; return LPAREN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 55 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return RPAREN; }
+#line 56 "naught.lex"
+{ yylval.string_val = NULL; return RPAREN; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 56 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return LCBRACE; }
+#line 57 "naught.lex"
+{ yylval.string_val = NULL; return LCBRACE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return RCBRACE; }
+#line 58 "naught.lex"
+{ yylval.string_val = NULL; return RCBRACE; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 58 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return EXTERN; }
+#line 59 "naught.lex"
+{ yylval.string_val = NULL; return EXTERN; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 59 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return SFUNCTION; }
+#line 60 "naught.lex"
+{ yylval.string_val = NULL; return SFUNCTION; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 60 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return FUNCTION; }
+#line 61 "naught.lex"
+{ yylval.string_val = NULL; return FUNCTION; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 61 "naught.lex"
-{ yylval.string_val = new StrUtil(yytext); return RETURN; }
+#line 62 "naught.lex"
+{ yylval.string_val = NULL; return RETURN; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 62 "naught.lex"
+#line 63 "naught.lex"
 { yylval.type_val = new string("print"); return UNARY_OP; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 63 "naught.lex"
+#line 64 "naught.lex"
 { yylval.type_val = new string("&"); return UNARY_OP; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 64 "naught.lex"
+#line 65 "naught.lex"
 { yylval.type_val = new string("*"); return UNARY_OP; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 65 "naught.lex"
+#line 66 "naught.lex"
 { yylval.type_val = new string("int32_t"); return TYPE; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 66 "naught.lex"
+#line 67 "naught.lex"
 { yylval.type_val = new string("char *"); return TYPE; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 67 "naught.lex"
+#line 68 "naught.lex"
 { yylval.type_val = new string("int32_t *"); return TYPE; }
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 68 "naught.lex"
+#line 69 "naught.lex"
 { yylval.nstring_val = new String(yytext); return STRING_LITERAL; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 69 "naught.lex"
-{ int temp = stoi((string)yytext, nullptr); yylval.int_val = &temp; return INT_LITERAL; }
+#line 70 "naught.lex"
+{ int temp = stoi((string)yytext, nullptr); yylval.int_val = new Int(temp); return INT_LITERAL; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 70 "naught.lex"
-{ yylval.type_val = new string(yytext); return ID; }
+#line 71 "naught.lex"
+{ yylval.id_val = new Id(yytext); return ID; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 71 "naught.lex"
+#line 72 "naught.lex"
 { /* ignore white space. */ }
 	YY_BREAK
 case 29:
 /* rule 29 can match eol */
 YY_RULE_SETUP
-#line 72 "naught.lex"
+#line 73 "naught.lex"
 { yylineno++; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 73 "naught.lex"
+#line 74 "naught.lex"
 { runtime_error e(string("Lexer: Line ") + to_string(yylineno) + 
                        ": Illegal character: " + yytext);
                throw e;
@@ -954,10 +955,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 77 "naught.lex"
+#line 78 "naught.lex"
 ECHO;
 	YY_BREAK
-#line 961 "lexer.cc"
+#line 962 "lexer.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1951,4 +1952,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 77 "naught.lex"
+#line 78 "naught.lex"

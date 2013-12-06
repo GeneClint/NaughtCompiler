@@ -168,7 +168,7 @@ typedef union YYSTYPE
 #line 44 "naught.bison"
 
   string*     type_val;
-  int*        int_val;
+  Int*        int_val;
   String*     nstring_val;
   StrUtil*    string_val;
   Term*	      term_val;
@@ -187,10 +187,11 @@ typedef union YYSTYPE
   FuncDef*    funcdef_val;
   FuncDefList*   funcdef_list_val;
   Module*     module_val;
+  Id*         id_val;
 
 
 /* Line 374 of yacc.c  */
-#line 194 "parser.cc"
+#line 195 "parser.cc"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -218,7 +219,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 377 of yacc.c  */
-#line 222 "parser.cc"
+#line 223 "parser.cc"
 
 #ifdef short
 # undef short
@@ -530,12 +531,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   130,   130,   134,   138,   142,   146,   150,   154,   159,
-     165,   169,   175,   179,   183,   186,   193,   197,   202,   206,
-     209,   215,   218,   225,   228,   231,   234,   240,   244,   250,
-     256,   258,   260,   262,   267,   272,   277,   279,   284,   286,
-     288,   290,   292,   294,   296,   301,   303,   305,   307,   309,
-     311,   313,   318,   320
+       0,   131,   131,   135,   139,   143,   147,   151,   155,   160,
+     166,   171,   178,   184,   189,   195,   204,   209,   217,   223,
+     229,   238,   242,   250,   255,   260,   265,   273,   278,   285,
+     294,   299,   303,   308,   313,   319,   326,   328,   333,   335,
+     337,   339,   341,   343,   345,   350,   352,   354,   356,   358,
+     361,   366,   374,   376
 };
 #endif
 
@@ -1540,7 +1541,7 @@ yyreduce:
     {
         case 2:
 /* Line 1813 of yacc.c  */
-#line 131 "naught.bison"
+#line 132 "naught.bison"
     { AST = new Module((yyvsp[(1) - (3)].funcdecl_list_val), (yyvsp[(2) - (3)].vardecl_list_val), (yyvsp[(3) - (3)].funcdef_list_val));
             (yyval.module_val) = AST;
           }
@@ -1548,7 +1549,7 @@ yyreduce:
 
   case 3:
 /* Line 1813 of yacc.c  */
-#line 135 "naught.bison"
+#line 136 "naught.bison"
     { AST = new Module(NULL, (yyvsp[(1) - (2)].vardecl_list_val), (yyvsp[(2) - (2)].funcdef_list_val));
             (yyval.module_val) = AST;
           }
@@ -1556,7 +1557,7 @@ yyreduce:
 
   case 4:
 /* Line 1813 of yacc.c  */
-#line 139 "naught.bison"
+#line 140 "naught.bison"
     { AST = new Module((yyvsp[(1) - (2)].funcdecl_list_val), NULL, (yyvsp[(2) - (2)].funcdef_list_val));
             (yyval.module_val) = AST;
           }
@@ -1564,7 +1565,7 @@ yyreduce:
 
   case 5:
 /* Line 1813 of yacc.c  */
-#line 143 "naught.bison"
+#line 144 "naught.bison"
     { AST = new Module(NULL, NULL, (yyvsp[(1) - (1)].funcdef_list_val));
             (yyval.module_val) = AST;
           }
@@ -1572,7 +1573,7 @@ yyreduce:
 
   case 6:
 /* Line 1813 of yacc.c  */
-#line 147 "naught.bison"
+#line 148 "naught.bison"
     {             AST = new Module((yyvsp[(1) - (2)].funcdecl_list_val), (yyvsp[(2) - (2)].vardecl_list_val), NULL);
             (yyval.module_val) = AST;
           }
@@ -1580,7 +1581,7 @@ yyreduce:
 
   case 7:
 /* Line 1813 of yacc.c  */
-#line 151 "naught.bison"
+#line 152 "naught.bison"
     { AST = new Module(NULL, (yyvsp[(1) - (1)].vardecl_list_val), NULL);
             (yyval.module_val) = AST;
           }
@@ -1588,7 +1589,7 @@ yyreduce:
 
   case 8:
 /* Line 1813 of yacc.c  */
-#line 155 "naught.bison"
+#line 156 "naught.bison"
     { AST = new Module((yyvsp[(1) - (1)].funcdecl_list_val), NULL, NULL);
             (yyval.module_val) = AST;
           }
@@ -1596,7 +1597,7 @@ yyreduce:
 
   case 9:
 /* Line 1813 of yacc.c  */
-#line 159 "naught.bison"
+#line 160 "naught.bison"
     { AST = new Module(NULL, NULL, NULL);
             (yyval.module_val) = AST;
           }
@@ -1604,294 +1605,349 @@ yyreduce:
 
   case 10:
 /* Line 1813 of yacc.c  */
-#line 166 "naught.bison"
+#line 167 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].funcdecl_list_val) + *(yyvsp[(2) - (3)].funcdecl_val);
             (yyval.funcdecl_list_val) = add;
+	    delete (yyvsp[(2) - (3)].funcdecl_val);
           }
     break;
 
   case 11:
 /* Line 1813 of yacc.c  */
-#line 170 "naught.bison"
+#line 172 "naught.bison"
     { (yyval.funcdecl_list_val) = new FuncDeclList(*(yyvsp[(1) - (2)].funcdecl_val));
+            delete (yyvsp[(1) - (2)].funcdecl_val);
           }
     break;
 
   case 12:
 /* Line 1813 of yacc.c  */
-#line 176 "naught.bison"
-    { Id *id = new Id(*(yyvsp[(2) - (5)].type_val));
-            (yyval.funcdecl_val) = new FuncDecl(*id, *(yyvsp[(4) - (5)].param_list_val));
+#line 179 "naught.bison"
+    { 
+            (yyval.funcdecl_val) = new FuncDecl(*(yyvsp[(2) - (5)].id_val), *(yyvsp[(4) - (5)].param_list_val));
+            delete (yyvsp[(2) - (5)].id_val);
+	    delete (yyvsp[(4) - (5)].param_list_val);
           }
     break;
 
   case 13:
 /* Line 1813 of yacc.c  */
-#line 180 "naught.bison"
-    { Id *id = new Id(*(yyvsp[(2) - (4)].type_val));
-            (yyval.funcdecl_val) = new FuncDecl(*id);
+#line 185 "naught.bison"
+    {
+            (yyval.funcdecl_val) = new FuncDecl(*(yyvsp[(2) - (4)].id_val));
+            delete (yyvsp[(2) - (4)].id_val);
           }
     break;
 
   case 14:
 /* Line 1813 of yacc.c  */
-#line 184 "naught.bison"
-    { (yyval.funcdecl_val) = new FuncDecl(Id(*(yyvsp[(2) - (5)].type_val)), *(yyvsp[(4) - (5)].param_list_val), true);
+#line 190 "naught.bison"
+    { 
+            (yyval.funcdecl_val) = new FuncDecl(*(yyvsp[(2) - (5)].id_val), *(yyvsp[(4) - (5)].param_list_val), true);
+            delete (yyvsp[(2) - (5)].id_val);
+	    delete (yyvsp[(4) - (5)].param_list_val);
           }
     break;
 
   case 15:
 /* Line 1813 of yacc.c  */
-#line 187 "naught.bison"
-    { (yyval.funcdecl_val) = new FuncDecl(Id(*(yyvsp[(2) - (4)].type_val)), true);
+#line 196 "naught.bison"
+    { 
+            (yyval.funcdecl_val) = new FuncDecl(*(yyvsp[(2) - (4)].id_val), true);
+            delete (yyvsp[(2) - (4)].id_val);
           }
     break;
 
   case 16:
 /* Line 1813 of yacc.c  */
-#line 194 "naught.bison"
+#line 205 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].vardecl_list_val) + *(yyvsp[(2) - (3)].vardecl_val);
 	          (yyval.vardecl_list_val) = add;
+            delete (yyvsp[(2) - (3)].vardecl_val);
           }
     break;
 
   case 17:
 /* Line 1813 of yacc.c  */
-#line 198 "naught.bison"
-    { (yyval.vardecl_list_val) = new VarDeclList(*(yyvsp[(1) - (2)].vardecl_val)); }
+#line 210 "naught.bison"
+    { 
+            (yyval.vardecl_list_val) = new VarDeclList(*(yyvsp[(1) - (2)].vardecl_val)); 
+            delete (yyvsp[(1) - (2)].vardecl_val);
+          }
     break;
 
   case 18:
 /* Line 1813 of yacc.c  */
-#line 203 "naught.bison"
-    { Id *id = new Id(*(yyvsp[(2) - (2)].type_val));
-            (yyval.vardecl_val) = new VarDecl(*(yyvsp[(1) - (2)].type_val), *id);
+#line 218 "naught.bison"
+    { 
+            (yyval.vardecl_val) = new VarDecl(*(yyvsp[(1) - (2)].type_val), *(yyvsp[(2) - (2)].id_val));
+            delete (yyvsp[(1) - (2)].type_val);
+            delete (yyvsp[(2) - (2)].id_val);
           }
     break;
 
   case 19:
 /* Line 1813 of yacc.c  */
-#line 207 "naught.bison"
-    { (yyval.vardecl_val) = new VarDecl(*(yyvsp[(1) - (4)].type_val), *(yyvsp[(2) - (4)].type_val), false, (yyvsp[(4) - (4)].expr_val));
+#line 224 "naught.bison"
+    { 
+            (yyval.vardecl_val) = new VarDecl(*(yyvsp[(1) - (4)].type_val), *(yyvsp[(2) - (4)].id_val), false, (yyvsp[(4) - (4)].expr_val));
+            delete (yyvsp[(1) - (4)].type_val);
+            delete (yyvsp[(2) - (4)].id_val);
           }
     break;
 
   case 20:
 /* Line 1813 of yacc.c  */
-#line 210 "naught.bison"
-    {    (yyval.vardecl_val) = new VarDecl(*(yyvsp[(2) - (3)].type_val), *(yyvsp[(3) - (3)].type_val), true);
+#line 230 "naught.bison"
+    { 
+            (yyval.vardecl_val) = new VarDecl(*(yyvsp[(2) - (3)].type_val), *(yyvsp[(3) - (3)].id_val), true);
+            delete (yyvsp[(2) - (3)].type_val);
+            delete (yyvsp[(3) - (3)].id_val);
           }
     break;
 
   case 21:
 /* Line 1813 of yacc.c  */
-#line 216 "naught.bison"
-    { (yyval.funcdef_list_val) = new FuncDefList((yyvsp[(1) - (1)].funcdef_val));
+#line 239 "naught.bison"
+    { (yyval.funcdef_list_val) = new FuncDefList(*(yyvsp[(1) - (1)].funcdef_val));
+		  delete (yyvsp[(1) - (1)].funcdef_val);
 	        }
     break;
 
   case 22:
 /* Line 1813 of yacc.c  */
-#line 219 "naught.bison"
-    { auto add = *(yyvsp[(1) - (2)].funcdef_list_val) + (yyvsp[(2) - (2)].funcdef_val);
-	   (yyval.funcdef_list_val) = add;
-	 }
+#line 243 "naught.bison"
+    { auto add = *(yyvsp[(1) - (2)].funcdef_list_val) + *(yyvsp[(2) - (2)].funcdef_val);
+	   delete (yyvsp[(2) - (2)].funcdef_val);
+	          (yyval.funcdef_list_val) = add;
+	        }
     break;
 
   case 23:
 /* Line 1813 of yacc.c  */
-#line 226 "naught.bison"
-    {       (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (6)].type_val), (yyvsp[(6) - (6)].block_val), (yyvsp[(4) - (6)].param_list_val));
+#line 251 "naught.bison"
+    { 
+            (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (6)].id_val), (yyvsp[(6) - (6)].block_val), (yyvsp[(4) - (6)].param_list_val));
+            delete (yyvsp[(2) - (6)].id_val);
           }
     break;
 
   case 24:
 /* Line 1813 of yacc.c  */
-#line 229 "naught.bison"
-    { (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (5)].type_val), (yyvsp[(5) - (5)].block_val));
+#line 256 "naught.bison"
+    { 
+            (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (5)].id_val), (yyvsp[(5) - (5)].block_val));
+            delete (yyvsp[(2) - (5)].id_val);
           }
     break;
 
   case 25:
 /* Line 1813 of yacc.c  */
-#line 232 "naught.bison"
-    { (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (6)].type_val), (yyvsp[(6) - (6)].block_val), (yyvsp[(4) - (6)].param_list_val), true);
+#line 261 "naught.bison"
+    { 
+            (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (6)].id_val), (yyvsp[(6) - (6)].block_val), (yyvsp[(4) - (6)].param_list_val), true);
+            delete (yyvsp[(2) - (6)].id_val);
           }
     break;
 
   case 26:
 /* Line 1813 of yacc.c  */
-#line 235 "naught.bison"
-    { (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (5)].type_val), (yyvsp[(5) - (5)].block_val), true);
+#line 266 "naught.bison"
+    { 
+            (yyval.funcdef_val) = new FuncDef(*(yyvsp[(2) - (5)].id_val), (yyvsp[(5) - (5)].block_val), true);
+            delete (yyvsp[(2) - (5)].id_val);
           }
     break;
 
   case 27:
 /* Line 1813 of yacc.c  */
-#line 241 "naught.bison"
+#line 274 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].param_list_val) + *(yyvsp[(3) - (3)].param_val);
-	          (yyval.param_list_val) = add;
+	    (yyval.param_list_val) = add;
+	    delete (yyvsp[(3) - (3)].param_val);
           }
     break;
 
   case 28:
 /* Line 1813 of yacc.c  */
-#line 245 "naught.bison"
+#line 279 "naught.bison"
     { (yyval.param_list_val) = new ParamList(*(yyvsp[(1) - (1)].param_val));
+	    delete (yyvsp[(1) - (1)].param_val);
           }
     break;
 
   case 29:
 /* Line 1813 of yacc.c  */
-#line 251 "naught.bison"
-    { (yyval.param_val) = new Param(*(yyvsp[(1) - (2)].type_val), *(yyvsp[(2) - (2)].type_val));
+#line 286 "naught.bison"
+    { 
+            (yyval.param_val) = new Param(*(yyvsp[(1) - (2)].type_val), *(yyvsp[(2) - (2)].id_val));
+            delete (yyvsp[(1) - (2)].type_val);
+            delete (yyvsp[(2) - (2)].id_val);
           }
     break;
 
   case 30:
 /* Line 1813 of yacc.c  */
-#line 257 "naught.bison"
-    { (yyval.block_val) = new Block(*(yyvsp[(2) - (4)].vardecl_list_val), *(yyvsp[(3) - (4)].stmnt_list_val)); }
+#line 295 "naught.bison"
+    { (yyval.block_val) = new Block(*(yyvsp[(2) - (4)].vardecl_list_val), *(yyvsp[(3) - (4)].stmnt_list_val));
+          delete (yyvsp[(2) - (4)].vardecl_list_val);
+          delete (yyvsp[(3) - (4)].stmnt_list_val);
+        }
     break;
 
   case 31:
 /* Line 1813 of yacc.c  */
-#line 259 "naught.bison"
-    { (yyval.block_val) = new Block(*(new VarDeclList()), *(yyvsp[(2) - (3)].stmnt_list_val)); }
+#line 300 "naught.bison"
+    { (yyval.block_val) = new Block(*(new VarDeclList()), *(yyvsp[(2) - (3)].stmnt_list_val)); 
+          delete (yyvsp[(2) - (3)].stmnt_list_val);
+        }
     break;
 
   case 32:
 /* Line 1813 of yacc.c  */
-#line 261 "naught.bison"
-    { (yyval.block_val) = new Block(*(yyvsp[(2) - (3)].vardecl_list_val)); }
+#line 304 "naught.bison"
+    { 
+          (yyval.block_val) = new Block(*(yyvsp[(2) - (3)].vardecl_list_val)); 
+          delete (yyvsp[(2) - (3)].vardecl_list_val);
+        }
     break;
 
   case 33:
 /* Line 1813 of yacc.c  */
-#line 263 "naught.bison"
+#line 309 "naught.bison"
     { (yyval.block_val) = new Block(); }
     break;
 
   case 34:
 /* Line 1813 of yacc.c  */
-#line 268 "naught.bison"
+#line 314 "naught.bison"
     { 
           auto add = *(yyvsp[(1) - (2)].stmnt_list_val) + *(yyvsp[(2) - (2)].stmnt_val);
 	        (yyval.stmnt_list_val) = add;
+          delete (yyvsp[(2) - (2)].stmnt_val);
         }
     break;
 
   case 35:
 /* Line 1813 of yacc.c  */
-#line 273 "naught.bison"
-    { (yyval.stmnt_list_val) = new StatementList(*(yyvsp[(1) - (1)].stmnt_val)); }
+#line 320 "naught.bison"
+    { (yyval.stmnt_list_val) = new StatementList(*(yyvsp[(1) - (1)].stmnt_val)); 
+          delete (yyvsp[(1) - (1)].stmnt_val);
+        }
     break;
 
   case 36:
 /* Line 1813 of yacc.c  */
-#line 278 "naught.bison"
+#line 327 "naught.bison"
     { (yyval.stmnt_val) = new Statement((yyvsp[(1) - (2)].expr_val)); }
     break;
 
   case 37:
 /* Line 1813 of yacc.c  */
-#line 280 "naught.bison"
+#line 329 "naught.bison"
     { (yyval.stmnt_val) = new Statement((yyvsp[(2) - (3)].expr_val), true); }
     break;
 
   case 38:
 /* Line 1813 of yacc.c  */
-#line 285 "naught.bison"
+#line 334 "naught.bison"
     { (yyval.expr_val) = new AddExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val)); }
     break;
 
   case 39:
 /* Line 1813 of yacc.c  */
-#line 287 "naught.bison"
+#line 336 "naught.bison"
     { (yyval.expr_val) = new SubExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val)); }
     break;
 
   case 40:
 /* Line 1813 of yacc.c  */
-#line 289 "naught.bison"
+#line 338 "naught.bison"
     { (yyval.expr_val) = new StarExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val)); }
     break;
 
   case 41:
 /* Line 1813 of yacc.c  */
-#line 291 "naught.bison"
+#line 340 "naught.bison"
     { (yyval.expr_val) = new DivExpression(*(yyvsp[(1) - (3)].expr_val), *(yyvsp[(3) - (3)].expr_val)); }
     break;
 
   case 42:
 /* Line 1813 of yacc.c  */
-#line 293 "naught.bison"
+#line 342 "naught.bison"
     { (yyval.expr_val) = new AssignExpression(*(yyvsp[(1) - (3)].term_val), *(yyvsp[(3) - (3)].expr_val)); }
     break;
 
   case 43:
 /* Line 1813 of yacc.c  */
-#line 295 "naught.bison"
+#line 344 "naught.bison"
     { (yyval.expr_val) = new CondExpression(*(yyvsp[(1) - (5)].expr_val), *(yyvsp[(3) - (5)].expr_val), *(yyvsp[(5) - (5)].expr_val)); }
     break;
 
   case 44:
 /* Line 1813 of yacc.c  */
-#line 297 "naught.bison"
+#line 346 "naught.bison"
     { (yyval.expr_val) = (yyvsp[(1) - (1)].term_val); }
     break;
 
   case 45:
 /* Line 1813 of yacc.c  */
-#line 302 "naught.bison"
+#line 351 "naught.bison"
     { (yyval.term_val) = (yyvsp[(1) - (1)].nstring_val); }
     break;
 
   case 46:
 /* Line 1813 of yacc.c  */
-#line 304 "naught.bison"
-    { (yyval.term_val) = new Int(*(yyvsp[(1) - (1)].int_val)); }
+#line 353 "naught.bison"
+    { (yyval.term_val) = (yyvsp[(1) - (1)].int_val); }
     break;
 
   case 47:
 /* Line 1813 of yacc.c  */
-#line 306 "naught.bison"
-    { (yyval.term_val) = new Id(*(yyvsp[(1) - (1)].type_val)); }
+#line 355 "naught.bison"
+    { (yyval.term_val) = (yyvsp[(1) - (1)].id_val); }
     break;
 
   case 48:
 /* Line 1813 of yacc.c  */
-#line 308 "naught.bison"
+#line 357 "naught.bison"
     { (yyval.term_val) = new ExprTerm((yyvsp[(2) - (3)].expr_val)); }
     break;
 
   case 49:
 /* Line 1813 of yacc.c  */
-#line 310 "naught.bison"
-    { (yyval.term_val) = new UnaryTerm(*(yyvsp[(1) - (2)].type_val), (yyvsp[(2) - (2)].term_val)); }
+#line 359 "naught.bison"
+    { (yyval.term_val) = new UnaryTerm(*(yyvsp[(1) - (2)].type_val), (yyvsp[(2) - (2)].term_val));
+         delete (yyvsp[(1) - (2)].type_val); }
     break;
 
   case 50:
 /* Line 1813 of yacc.c  */
-#line 312 "naught.bison"
-    { (yyval.term_val) = new FunctionCall(*(yyvsp[(1) - (4)].type_val), (yyvsp[(3) - (4)].arglist_val)); }
+#line 362 "naught.bison"
+    { 
+        (yyval.term_val) = new FunctionCall((yyvsp[(1) - (4)].id_val)->getName(), (yyvsp[(3) - (4)].arglist_val)); 
+        delete (yyvsp[(1) - (4)].id_val); 
+       }
     break;
 
   case 51:
 /* Line 1813 of yacc.c  */
-#line 314 "naught.bison"
-    { (yyval.term_val) = new FunctionCall(*(yyvsp[(1) - (3)].type_val)); }
+#line 367 "naught.bison"
+    { 
+        (yyval.term_val) = new FunctionCall((yyvsp[(1) - (3)].id_val)->getName());
+        delete (yyvsp[(1) - (3)].id_val);
+       }
     break;
 
   case 52:
 /* Line 1813 of yacc.c  */
-#line 319 "naught.bison"
+#line 375 "naught.bison"
     { (yyval.arglist_val) = new ArgList((yyvsp[(1) - (1)].expr_val)); }
     break;
 
   case 53:
 /* Line 1813 of yacc.c  */
-#line 321 "naught.bison"
+#line 377 "naught.bison"
     { auto add = *(yyvsp[(1) - (3)].arglist_val) + (yyvsp[(3) - (3)].expr_val);
 	        (yyval.arglist_val) = add;
         }
@@ -1899,7 +1955,7 @@ yyreduce:
 
 
 /* Line 1813 of yacc.c  */
-#line 1903 "parser.cc"
+#line 1959 "parser.cc"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2131,5 +2187,5 @@ yyreturn:
 
 
 /* Line 2076 of yacc.c  */
-#line 326 "naught.bison"
+#line 382 "naught.bison"
 
