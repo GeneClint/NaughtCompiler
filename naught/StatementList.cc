@@ -1,3 +1,7 @@
+// Gene Kim
+// 1130267
+// genelkim@uw.edu
+
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -12,9 +16,6 @@ StatementList::StatementList() {
 }
 
 StatementList::~StatementList() {
- /* for(Statement s : *statements) {
-    s.deleteExp(); 
-  }*/
   delete statements;
 }
 

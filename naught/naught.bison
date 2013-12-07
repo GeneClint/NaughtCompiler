@@ -242,7 +242,7 @@ funcdef_list :
 	;
 
 funcdef :
-	  FUNCTION ID LPAREN param_list RPAREN block
+	      FUNCTION ID LPAREN param_list RPAREN block
           { 
             $$ = new FuncDef(*$2, $6, $4);
           }
@@ -250,7 +250,7 @@ funcdef :
           { 
             $$ = new FuncDef(*$2, $5);
           }
-	| SFUNCTION ID LPAREN param_list RPAREN block
+	      | SFUNCTION ID LPAREN param_list RPAREN block
           { 
             $$ = new FuncDef(*$2, $6, $4, true);
           }
@@ -328,7 +328,7 @@ expr :
         { $$ = new StarExpression(*$1, *$3); }
       | expr DIV expr
         { $$ = new DivExpression(*$1, *$3); }
-      | term  ASSIGN expr
+      | term ASSIGN expr
         { $$ = new AssignExpression(*$1, *$3); }
       | expr QUESTION expr COLON expr
         { $$ = new CondExpression(*$1, *$3, *$5); }

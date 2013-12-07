@@ -1,3 +1,7 @@
+// Gene Kim
+// 1130267
+// genelkim@uw.edu
+
 #include <string>
 
 #ifndef __STAR_EXPR_H

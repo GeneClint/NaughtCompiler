@@ -1,3 +1,7 @@
+// Gene Kim
+// 1130267
+// genelkim@uw.edu
+
 #include "NaughtParser.h"
 #include "TempGen.h"
 #include "FunctionCall.h"
@@ -43,7 +47,7 @@ void NaughtParser::writeModule(Module *m) {
 void NaughtParser::writeFunctionDecl(FuncDecl *f) {
   string id = f->getId().toString();
   Id *insertId = new Id(id);
-  symbols.insert(make_pair(id, new FuncDecl(insertId, f->isStringReturning())));
+  symbols.insert(make_pair(id, new FuncDecl(*insertId, f->isStringReturning())));
   string type = f->isStringReturning() ? "char * " : "int32_t ";
   out << type << id << " ( ";
   auto params = f->getParams();
@@ -73,7 +77,7 @@ tempName NaughtParser::writeVarDecl(VarDecl* v) {
   out << ";";
  
   Id *insId = new Id(id); 
-  symbols.insert({id, new VarDecl(v->getType(), insId)});
+  symbols.insert({id, new VarDecl(v->getType(), *insId)});
  
   tempName retVal = make_pair(type, id);
 
@@ -324,7 +328,7 @@ void NaughtParser::writeFunctionDef(FuncDef *f) {
   FuncDecl *toInsert;
   if (f->hasParams()) {
     ps = f->getParams();
-    toInsert = new FuncDecl(insertId, *ps, f->isStringReturning());
+    toInsert = new FuncDecl(*insertId, *ps, f->isStringReturning());
     params = ps->getParams();
     if (params.size() > 0) {
       out << params[0].toString();
@@ -333,7 +337,7 @@ void NaughtParser::writeFunctionDef(FuncDef *f) {
       }
     }
   } else {
-    toInsert = new FuncDecl(insertId, f->isStringReturning());
+    toInsert = new FuncDecl(*insertId, f->isStringReturning());
   }
   out << " ) " << endl;
 
@@ -357,7 +361,7 @@ void NaughtParser::writeBlock(Block b, vector<tempName> params) {
   // add parameters to symbol table
   for(tempName param : params) {
     Id *insId = new Id(param.second);
-    symbols.insert({param.second, new VarDecl(param.first, insId)});
+    symbols.insert({param.second, new VarDecl(param.first, *insId)});
   }
 
   for(auto decl : decls) {

@@ -1,3 +1,8 @@
+// Gene Kim
+// 1130267
+// genelkim@uw.edu
+
+
 #include <string>
 #include "Id.h"
 #include "ParamList.h"

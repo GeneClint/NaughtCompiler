@@ -1,4 +1,7 @@
 /* main.cc */
+// Gene Kim
+// 1130267
+// genelkim@uw.edu
 
 #include <iostream>
 #include <fstream>

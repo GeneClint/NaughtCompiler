@@ -1,3 +1,7 @@
+// Gene Kim
+// 1130267
+// genelkim@uw.edu
+
 #include "Block.h"
 #include <string>
 #include <vector>
